@@ -21,37 +21,51 @@
         </div>
       <% } %>
 
-      <form action="/books/update/<%= id %>" method="post" class="space-y-5">
+      <form action="/books/edit/<%= book.id_book %>" method="post" class="space-y-5">
         <div>
           <label class="block text-sm font-medium text-gray-200 mb-1">Name</label>
-          <input
-            type="text"
-            name="name"
-            value="<%= name %>"
-            autocomplete="off"
-            class="w-full rounded-lg border border-gray-600 bg-gray-800 text-white px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          />
+          <input type="text" name="name" value="<%= book.name %>" class="w-full rounded-lg border border-gray-600 bg-gray-800 text-white px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
         </div>
-
+        <div>
+          <label class="block text-sm font-medium text-gray-200 mb-1">ISBN</label>
+          <input type="text" name="isbn" value="<%= book.isbn %>" class="w-full rounded-lg border border-gray-600 bg-gray-800 text-white px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-200 mb-1">Year Published</label>
+          <input type="number" name="year_published" value="<%= book.year_published %>" class="w-full rounded-lg border border-gray-600 bg-gray-800 text-white px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-200 mb-1">Number of Pages</label>
+          <input type="number" name="num_pages" value="<%= book.num_pages %>" class="w-full rounded-lg border border-gray-600 bg-gray-800 text-white px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
+        </div>
         <div>
           <label class="block text-sm font-medium text-gray-200 mb-1">Author</label>
-          <input
-            type="text"
-            name="author"
-            value="<%= author %>"
-            autocomplete="off"
-            class="w-full rounded-lg border border-gray-600 bg-gray-800 text-white px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          />
+          <select name="id_author" class="w-full rounded-lg border border-gray-600 bg-gray-800 text-white px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required>
+            <option value="">Selecciona un autor</option>
+            <% authors.forEach(author => { %>
+              <option value="<%= author.id_author %>" <%= book.id_author == author.id_author ? 'selected' : '' %>><%= author.name %></option>
+            <% }) %>
+          </select>
         </div>
-
         <div>
-          <button
-            type="submit"
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 shadow-md"
-          >
-            Update Book
-          </button>
+          <label class="block text-sm font-medium text-gray-200 mb-1">Category</label>
+          <select name="id_category" class="w-full rounded-lg border border-gray-600 bg-gray-800 text-white px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required>
+            <option value="">Selecciona una categoría</option>
+            <% categories.forEach(category => { %>
+              <option value="<%= category.id_category %>" <%= book.id_category == category.id_category ? 'selected' : '' %>><%= category.name %></option>
+            <% }) %>
+          </select>
         </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-200 mb-1">Publisher</label>
+          <select name="id_publisher" class="w-full rounded-lg border border-gray-600 bg-gray-800 text-white px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required>
+            <option value="">Selecciona una editorial</option>
+            <% publishers.forEach(publisher => { %>
+              <option value="<%= publisher.id_publisher %>" <%= book.id_publisher == publisher.id_publisher ? 'selected' : '' %>><%= publisher.name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-lg shadow transition">Guardar cambios</button>
       </form>
     </div>
 </main>

@@ -1,111 +1,121 @@
 const express = require('express');
 const router = express.Router();
-const dbConn = require('../lib/db');
+const Book = require('../models/Book');
+const Author = require('../models/Author');
+const Category = require('../models/Category');
+const Publisher = require('../models/Publisher');
 
-// Mostrar lista de libros
-router.get('/', (req, res) => {
-  dbConn.query('SELECT * FROM books ORDER BY id DESC', (err, rows) => {
-    if (err) {
-      req.flash('error', err);
-      res.render('books', { data: '' });
-    } else {
-      res.render('books', { data: rows });
-    }
-  });
-});
-
-// Formulario para añadir libro
-router.get('/add', (req, res) => {
-  res.render('books/add', {
-    name: '',
-    author: ''
-  });
-});
-
-// Añadir libro
-router.post('/add', (req, res) => {
-  const { name, author } = req.body;
-  let errors = false;
-
-  if (!name || !author) {
-    errors = true;
-    req.flash('error', 'Please enter name and author');
-    return res.render('books/add', { name, author });
-  }
-
-  if (!errors) {
-    const form_data = { name, author };
-    dbConn.query('INSERT INTO books SET ?', form_data, (err) => {
-      if (err) {
-        req.flash('error', err);
-        return res.render('books/add', form_data);
-      } else {
-        req.flash('success', 'Book successfully added');
-        res.redirect('/books');
-      }
+// Mostrar todos los libros activos con datos relacionados
+router.get('/', async (req, res) => {
+  try {
+    const books = await Book.findAll({
+      where: { state: 1 },
+      include: [
+        { model: Author, attributes: ['name'] },
+        { model: Category, attributes: ['name'] },
+        { model: Publisher, attributes: ['name'] },
+      ],
     });
+    res.render('books/index', { books, messages: req.flash() });
+  } catch (error) {
+    res.status(500).send('Error al obtener los libros');
   }
 });
 
-// Mostrar formulario de edición
-router.get('/edit/:id', (req, res) => {
-  const id = req.params.id;
-
-  dbConn.query('SELECT * FROM books WHERE id = ?', [id], (err, rows) => {
-    if (err) throw err;
-
-    if (rows.length <= 0) {
-      req.flash('error', `Book not found with id = ${id}`);
-      return res.redirect('/books');
-    }
-
-    res.render('books/edit', {
-      title: 'Edit Book',
-      id: rows[0].id,
-      name: rows[0].name,
-      author: rows[0].author
+// Ruta para mostrar el formulario de añadir libro
+router.get('/add', async (req, res) => {
+  try {
+    const authors = await Author.findAll({ where: { state: 1 } });
+    const categories = await Category.findAll({ where: { state: 1 } });
+    const publishers = await Publisher.findAll({ where: { state: 1 } });
+    // Enviar valores vacíos para los campos del formulario
+    res.render('books/add', {
+      authors,
+      categories,
+      publishers,
+      messages: req.flash(),
+      name: '',
+      isbn: '',
+      year_published: '',
+      num_pages: '',
+      id_author: '',
+      id_category: '',
+      id_publisher: ''
     });
-  });
+  } catch (error) {
+    res.status(500).send('Error al cargar el formulario de añadir libro');
+  }
 });
 
-// Actualizar libro
-router.post('/update/:id', (req, res) => {
-  const id = req.params.id;
-  const { name, author } = req.body;
-  let errors = false;
-
-  if (!name || !author) {
-    errors = true;
-    req.flash('error', 'Please enter name and author');
-    return res.render('books/edit', { id, name, author });
-  }
-
-  if (!errors) {
-    const form_data = { name, author };
-    dbConn.query('UPDATE books SET ? WHERE id = ?', [form_data, id], (err) => {
-      if (err) {
-        req.flash('error', err);
-        return res.render('books/edit', { id, name, author });
-      } else {
-        req.flash('success', 'Book successfully updated');
-        res.redirect('/books');
-      }
+// Ruta para procesar el formulario de añadir libro
+router.post('/add', async (req, res) => {
+  try {
+    const { name, isbn, year_published, num_pages, id_author, id_category, id_publisher } = req.body;
+    await Book.create({
+      name,
+      isbn,
+      year_published,
+      num_pages,
+      id_author,
+      id_category,
+      id_publisher,
+      state: 1
     });
-  }
-});
-
-// Eliminar libro
-router.get('/delete/:id', (req, res) => {
-  const id = req.params.id;
-
-  dbConn.query('DELETE FROM books WHERE id = ?', [id], (err) => {
-    if (err) {
-      req.flash('error', err);
-    } else {
-      req.flash('success', `Book successfully deleted! ID = ${id}`);
-    }
+    req.flash('success', 'Libro añadido correctamente');
     res.redirect('/books');
-  });
+  } catch (error) {
+    req.flash('error', 'Error al añadir el libro');
+    res.redirect('/books/add');
+  }
+});
+
+// Ruta para mostrar el formulario de edición de libro
+router.get('/edit/:id', async (req, res) => {
+  try {
+    const book = await Book.findByPk(req.params.id);
+    const authors = await Author.findAll({ where: { state: 1 } });
+    const categories = await Category.findAll({ where: { state: 1 } });
+    const publishers = await Publisher.findAll({ where: { state: 1 } });
+    if (!book) return res.status(404).send('Libro no encontrado');
+    res.render('books/edit', { book, authors, categories, publishers, messages: req.flash() });
+  } catch (error) {
+    res.status(500).send('Error al cargar el formulario de edición');
+  }
+});
+
+// Ruta para procesar la edición de un libro
+router.post('/edit/:id', async (req, res) => {
+  try {
+    const { name, isbn, year_published, num_pages, id_author, id_category, id_publisher } = req.body;
+    await Book.update({
+      name,
+      isbn,
+      year_published,
+      num_pages,
+      id_author,
+      id_category,
+      id_publisher
+    }, {
+      where: { id_book: req.params.id }
+    });
+    req.flash('success', 'Libro editado correctamente');
+    res.redirect('/books');
+  } catch (error) {
+    req.flash('error', 'Error al editar el libro');
+    res.redirect(`/books/edit/${req.params.id}`);
+  }
+});
+
+// Ruta para eliminar (desactivar) un libro
+router.get('/delete/:id', async (req, res) => {
+  try {
+    await Book.update({ state: 0 }, { where: { id_book: req.params.id } });
+    req.flash('success', 'Libro eliminado correctamente');
+    res.redirect('/books');
+  } catch (error) {
+    req.flash('error', 'Error al eliminar el libro');
+    res.redirect('/books');
+  }
 });
 
 module.exports = router;

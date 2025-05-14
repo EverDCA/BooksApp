@@ -3,6 +3,7 @@
 import debugLib from 'debug';
 import http from 'http';
 import app from '../app.js';
+import { connect } from '../config/database.js';
 
 const debug = debugLib('crud:server');
 
@@ -18,11 +19,18 @@ app.set('port', port);
 const server = http.createServer(app);
 
 /**
- * Listen on provided port, on all network interfaces.
+ * Ensure database connection is established before starting the server.
  */
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+(async () => {
+  try {
+    await connect(); // Ensure database connection is established
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+  } catch (error) {
+    console.error('Failed to start the server:', error);
+  }
+})();
 
 /**
  * Normalize a port into a number, string, or false.

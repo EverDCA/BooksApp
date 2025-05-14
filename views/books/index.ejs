@@ -33,7 +33,7 @@
       <% } %>
 
       <!-- Table or Message -->
-      <% if (data.length) { %>
+      <% if (books.length) { %>
         <div class="overflow-x-auto bg-white/5 backdrop-blur-sm rounded-2xl shadow-lg">
           <table class="min-w-full text-sm sm:text-base text-gray-200">
             <thead class="bg-white/10 text-gray-300 uppercase text-xs">
@@ -41,18 +41,24 @@
                 <th class="text-left px-4 sm:px-6 py-3">#</th>
                 <th class="text-left px-4 sm:px-6 py-3">Name</th>
                 <th class="text-left px-4 sm:px-6 py-3">Author</th>
+                <th class="text-left px-4 sm:px-6 py-3">Category</th>
+                <th class="text-left px-4 sm:px-6 py-3">Publisher</th>
+                <th class="text-left px-4 sm:px-6 py-3">Year Published</th>
                 <th class="text-left px-4 sm:px-6 py-3">Action</th>
               </tr>
             </thead>
             <tbody>
-              <% data.forEach((book, i) => { %>
+              <% books.forEach((book, i) => { %>
                 <tr class="border-t border-white/10 hover:bg-white/10 transition">
                   <td class="px-4 sm:px-6 py-3"><%= i + 1 %></td>
                   <td class="px-4 sm:px-6 py-3"><%= book.name %></td>
-                  <td class="px-4 sm:px-6 py-3"><%= book.author %></td>
+                  <td class="px-4 sm:px-6 py-3"><%= book.Author ? book.Author.name : '' %></td>
+                  <td class="px-4 sm:px-6 py-3"><%= book.Category ? book.Category.name : '' %></td>
+                  <td class="px-4 sm:px-6 py-3"><%= book.Publisher ? book.Publisher.name : '' %></td>
+                  <td class="px-4 sm:px-6 py-3"><%= book.year_published %></td>
                   <td class="px-4 sm:px-6 py-3 flex flex-wrap gap-2">
-                    <a href="/books/edit/<%= book.id %>" class="bg-yellow-500 hover:bg-yellow-600 text-black px-3 py-1 rounded text-sm shadow transition">Edit</a>
-                    <a href="/books/delete/<%= book.id %>" onclick="return confirm('Are you sure?')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm shadow transition">Delete</a>
+                    <a href="/books/edit/<%= book.id_book %>" class="bg-yellow-500 hover:bg-yellow-600 text-black px-3 py-1 rounded text-sm shadow transition">Edit</a>
+                    <a href="/books/delete/<%= book.id_book %>" onclick="return confirm('Are you sure?')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm shadow transition">Delete</a>
                   </td>
                 </tr>
               <% }) %>

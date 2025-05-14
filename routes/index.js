@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-/* GET home page. */
+// Ruta principal para la página de inicio
 router.get('/', (req, res) => {
-  res.render('index', {
-    title: 'Node.js Simple CRUD with Express.js and MySQL Tutorial'
-  });
+  res.render('index');
 });
 
 module.exports = router;

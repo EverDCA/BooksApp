@@ -5,11 +5,16 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const flash = require('express-flash');
 const session = require('express-session');
-const connection = require('./lib/db'); // Aún se usa, aunque no se llama directamente aquí
+const { connect } = require('./config/database'); // Updated to use Sequelize
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const booksRouter = require('./routes/books');
+
+const Author = require('./models/Author');
+const Category = require('./models/Category');
+const Publisher = require('./models/Publisher');
+const Book = require('./models/Book');
 
 const app = express();
 
@@ -34,6 +39,20 @@ app.use(
 );
 
 app.use(flash());
+
+// Connect to the database
+(async () => {
+  try {
+    await connect();
+    await Author.sync();
+    await Category.sync();
+    await Publisher.sync();
+    await Book.sync();
+    console.log('Database connection established and all models synchronized.');
+  } catch (error) {
+    console.error('Database connection failed:', error);
+  }
+})();
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
