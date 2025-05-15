@@ -5,18 +5,25 @@ const Author = require('../models/Author');
 const Category = require('../models/Category');
 const Publisher = require('../models/Publisher');
 
-// Mostrar todos los libros activos con datos relacionados
+// Mostrar todos los libros activos con paginación
 router.get('/', async (req, res) => {
   try {
-    const books = await Book.findAll({
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
+    const { count, rows: books } = await Book.findAndCountAll({
       where: { state: 1 },
-      include: [
-        { model: Author, attributes: ['name'] },
-        { model: Category, attributes: ['name'] },
-        { model: Publisher, attributes: ['name'] },
-      ],
+      limit,
+      offset,
+      order: [['name', 'ASC']]
     });
-    res.render('books/index', { books, messages: req.flash() });
+    const totalPages = Math.ceil(count / limit);
+    res.render('books/index', {
+      books,
+      messages: req.flash(),
+      currentPage: page,
+      totalPages
+    });
   } catch (error) {
     res.status(500).send('Error al obtener los libros');
   }

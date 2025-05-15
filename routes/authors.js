@@ -2,11 +2,27 @@ const express = require('express');
 const router = express.Router();
 const Author = require('../models/Author');
 
-// Mostrar todos los autores activos
+// Mostrar todos los autores activos con paginación
 router.get('/', async (req, res) => {
   try {
-    const authors = await Author.findAll({ where: { state: 1 } });
-    res.render('authors/index', { authors, messages: req.flash() });
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10; // Cambia este valor si quieres más/menos por página
+    const offset = (page - 1) * limit;
+
+    // Obtener autores activos con paginación
+    const { count, rows: authors } = await Author.findAndCountAll({
+      where: { state: 1 },
+      limit,
+      offset,
+      order: [['name', 'ASC']]
+    });
+    const totalPages = Math.ceil(count / limit);
+    res.render('authors/index', {
+      authors,
+      messages: req.flash(),
+      currentPage: page,
+      totalPages
+    });
   } catch (error) {
     res.status(500).send('Error al obtener los autores');
   }

@@ -2,11 +2,25 @@ const express = require('express');
 const router = express.Router();
 const Publisher = require('../models/Publisher');
 
-// Mostrar todos los publishers activos
+// Mostrar todas las editoriales activas con paginación
 router.get('/', async (req, res) => {
   try {
-    const publishers = await Publisher.findAll({ where: { state: 1 } });
-    res.render('publishers/index', { publishers, messages: req.flash() });
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
+    const { count, rows: publishers } = await Publisher.findAndCountAll({
+      where: { state: 1 },
+      limit,
+      offset,
+      order: [['name', 'ASC']]
+    });
+    const totalPages = Math.ceil(count / limit);
+    res.render('publishers/index', {
+      publishers,
+      messages: req.flash(),
+      currentPage: page,
+      totalPages
+    });
   } catch (error) {
     res.status(500).send('Error al obtener las editoriales');
   }

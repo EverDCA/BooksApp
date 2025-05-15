@@ -2,11 +2,27 @@ const express = require('express');
 const router = express.Router();
 const Category = require('../models/Category');
 
-// Mostrar todas las categorías activas
+// Mostrar todas las categorías activas con paginación
 router.get('/', async (req, res) => {
   try {
-    const categories = await Category.findAll({ where: { state: 1 } });
-    res.render('categories/index', { categories, messages: req.flash() });
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10; // Cambia este valor si quieres más/menos por página
+    const offset = (page - 1) * limit;
+
+    // Obtener categorías activas con paginación
+    const { count, rows: categories } = await Category.findAndCountAll({
+      where: { state: 1 },
+      limit,
+      offset,
+      order: [['name', 'ASC']]
+    });
+    const totalPages = Math.ceil(count / limit);
+    res.render('categories/index', {
+      categories,
+      messages: req.flash(),
+      currentPage: page,
+      totalPages
+    });
   } catch (error) {
     res.status(500).send('Error al obtener las categorías');
   }
