@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Publishers</title>
+    <link rel="stylesheet" href="/output.css">
+  </head>
+  <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white">
+    <%- include('../books/navbar.ejs') %>
+    <div class="max-w-5xl mx-auto px-4 pt-6 sm:pt-8">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h1 class="text-3xl sm:text-4xl font-bold">🏢 Publishers</h1>
+        <a href="/publishers/add" class="bg-gradient-to-r from-violet-900 to-fuchsia-900 hover:brightness-110 text-white px-4 py-2 rounded-lg shadow-md transition">
+          + Add Publisher
+        </a>
+      </div>
+      <% if (messages.success) { %>
+        <div class="bg-green-600/20 border border-green-400 text-green-300 px-4 py-2 rounded mb-4 shadow text-sm sm:text-base">
+          <%- messages.success %>
+        </div>
+      <% } %>
+      <% if (messages.error) { %>
+        <div class="bg-red-600/20 border border-red-400 text-red-300 px-4 py-2 rounded mb-4 shadow text-sm sm:text-base">
+          <%- messages.error %>
+        </div>
+      <% } %>
+      <% if (publishers.length) { %>
+        <div class="overflow-x-auto bg-white/5 backdrop-blur-sm rounded-2xl shadow-lg">
+          <table class="min-w-full text-sm sm:text-base text-gray-200">
+            <thead class="bg-white/10 text-gray-300 uppercase text-xs">
+              <tr>
+                <th class="text-left px-4 sm:px-6 py-3">#</th>
+                <th class="text-left px-4 sm:px-6 py-3">Name</th>
+                <th class="text-left px-4 sm:px-6 py-3">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% publishers.forEach((publisher, i) => { %>
+                <tr class="border-t border-white/10 hover:bg-white/10 transition">
+                  <td class="px-4 sm:px-6 py-3"><%= i + 1 %></td>
+                  <td class="px-4 sm:px-6 py-3"><%= publisher.name %></td>
+                  <td class="px-4 sm:px-6 py-3 flex flex-wrap gap-2">
+                    <a href="/publishers/edit/<%= publisher.id_publisher %>" class="bg-yellow-500 hover:bg-yellow-600 text-black px-3 py-1 rounded text-sm shadow transition">Edit</a>
+                    <a href="/publishers/delete/<%= publisher.id_publisher %>" onclick="return confirm('Are you sure?')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm shadow transition">Delete</a>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } else { %>
+        <p class="text-center text-gray-300 mt-10 text-lg">No publisher found!</p>
+      <% } %>
+    </div>
+  </body>
+</html>

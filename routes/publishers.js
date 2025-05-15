@@ -1,0 +1,69 @@
+const express = require('express');
+const router = express.Router();
+const Publisher = require('../models/Publisher');
+
+// Mostrar todos los publishers activos
+router.get('/', async (req, res) => {
+  try {
+    const publishers = await Publisher.findAll({ where: { state: 1 } });
+    res.render('publishers/index', { publishers, messages: req.flash() });
+  } catch (error) {
+    res.status(500).send('Error al obtener las editoriales');
+  }
+});
+
+// Mostrar formulario para añadir publisher
+router.get('/add', (req, res) => {
+  res.render('publishers/add', { name: '', messages: req.flash() });
+});
+
+// Procesar formulario para añadir publisher
+router.post('/add', async (req, res) => {
+  try {
+    const { name } = req.body;
+    await Publisher.create({ name, state: 1 });
+    req.flash('success', 'Editorial añadida correctamente');
+    res.redirect('/publishers');
+  } catch (error) {
+    req.flash('error', 'Error al añadir la editorial');
+    res.redirect('/publishers/add');
+  }
+});
+
+// Mostrar formulario para editar publisher
+router.get('/edit/:id', async (req, res) => {
+  try {
+    const publisher = await Publisher.findByPk(req.params.id);
+    if (!publisher) return res.status(404).send('Editorial no encontrada');
+    res.render('publishers/edit', { publisher, messages: req.flash() });
+  } catch (error) {
+    res.status(500).send('Error al cargar el formulario de edición');
+  }
+});
+
+// Procesar edición de publisher
+router.post('/edit/:id', async (req, res) => {
+  try {
+    const { name } = req.body;
+    await Publisher.update({ name }, { where: { id_publisher: req.params.id } });
+    req.flash('success', 'Editorial editada correctamente');
+    res.redirect('/publishers');
+  } catch (error) {
+    req.flash('error', 'Error al editar la editorial');
+    res.redirect(`/publishers/edit/${req.params.id}`);
+  }
+});
+
+// Eliminar (desactivar) publisher
+router.get('/delete/:id', async (req, res) => {
+  try {
+    await Publisher.update({ state: 0 }, { where: { id_publisher: req.params.id } });
+    req.flash('success', 'Editorial eliminada correctamente');
+    res.redirect('/publishers');
+  } catch (error) {
+    req.flash('error', 'Error al eliminar la editorial');
+    res.redirect('/publishers');
+  }
+});
+
+module.exports = router;

@@ -10,6 +10,9 @@ const { connect } = require('./config/database'); // Updated to use Sequelize
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const booksRouter = require('./routes/books');
+const categoriesRouter = require('./routes/categories');
+const authorsRouter = require('./routes/authors'); 
+const publishersRouter = require('./routes/publishers');
 
 const Author = require('./models/Author');
 const Category = require('./models/Category');
@@ -57,6 +60,9 @@ app.use(flash());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/books', booksRouter);
+app.use('/categories', categoriesRouter);
+app.use('/authors', authorsRouter); 
+app.use('/publishers', publishersRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
