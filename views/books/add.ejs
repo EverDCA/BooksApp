@@ -8,32 +8,32 @@
   </head>
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs') %>
-    <div class="max-w-2xl mx-auto px-4 pt-6 sm:pt-8">
-      <div class="card bg-base-200 border border-base-300 shadow-lg p-8">
-        <h1 class="card-title text-2xl font-bold mb-6">Add Book</h1>
+    <div class="flex flex-1 items-center justify-center py-8">
+      <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-xl w-full min-h-[220px]">
+        <h1 class="card-title text-4xl font-bold mb-8 text-center">Add Book</h1>
         <% if (messages.error) { %>
-          <div class="alert alert-error mb-4"><%- messages.error %></div>
+          <div class="alert alert-error mb-6 text-lg"><%- messages.error %></div>
         <% } %>
-        <form action="/books/add" method="POST" class="space-y-4">
+        <form action="/books/add" method="POST" class="space-y-6">
           <div>
-            <label class="block text-sm font-medium mb-1">Name</label>
-            <input type="text" name="name" value="<%= name %>" autocomplete="off" class="input input-bordered w-full" required />
+            <label class="block text-lg font-semibold mb-2">Name</label>
+            <input type="text" name="name" value="<%= name %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
           </div>
           <div>
-            <label class="block text-sm font-medium mb-1">ISBN</label>
-            <input type="text" name="isbn" value="<%= isbn %>" autocomplete="off" class="input input-bordered w-full" required />
+            <label class="block text-lg font-semibold mb-2">ISBN</label>
+            <input type="text" name="isbn" value="<%= isbn %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
           </div>
           <div>
-            <label class="block text-sm font-medium mb-1">Year Published</label>
-            <input type="number" name="year_published" value="<%= year_published %>" class="input input-bordered w-full" required />
+            <label class="block text-lg font-semibold mb-2">Year Published</label>
+            <input type="number" name="year_published" value="<%= year_published %>" class="input input-bordered input-lg w-full" required />
           </div>
           <div>
-            <label class="block text-sm font-medium mb-1">Number of Pages</label>
-            <input type="number" name="num_pages" value="<%= num_pages %>" class="input input-bordered w-full" required />
+            <label class="block text-lg font-semibold mb-2">Number of Pages</label>
+            <input type="number" name="num_pages" value="<%= num_pages %>" class="input input-bordered input-lg w-full" required />
           </div>
           <div>
-            <label class="block text-sm font-medium mb-1">Author</label>
-            <select name="id_author" class="select select-bordered w-full" required>
+            <label class="block text-lg font-semibold mb-2">Author</label>
+            <select name="id_author" class="select select-bordered select-lg w-full" required>
               <option value="">Selecciona un autor</option>
               <% authors.forEach(author => { %>
                 <option value="<%= author.id_author %>" <%= id_author == author.id_author ? 'selected' : '' %>><%= author.name %></option>
@@ -41,8 +41,8 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium mb-1">Category</label>
-            <select name="id_category" class="select select-bordered w-full" required>
+            <label class="block text-lg font-semibold mb-2">Category</label>
+            <select name="id_category" class="select select-bordered select-lg w-full" required>
               <option value="">Selecciona una categoría</option>
               <% categories.forEach(category => { %>
                 <option value="<%= category.id_category %>" <%= id_category == category.id_category ? 'selected' : '' %>><%= category.name %></option>
@@ -50,15 +50,15 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium mb-1">Publisher</label>
-            <select name="id_publisher" class="select select-bordered w-full" required>
+            <label class="block text-lg font-semibold mb-2">Publisher</label>
+            <select name="id_publisher" class="select select-bordered select-lg w-full" required>
               <option value="">Selecciona una editorial</option>
               <% publishers.forEach(publisher => { %>
                 <option value="<%= publisher.id_publisher %>" <%= id_publisher == publisher.id_publisher ? 'selected' : '' %>><%= publisher.name %></option>
               <% }) %>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary btn-wide">Save</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-wide mx-auto block">Save</button>
         </form>
       </div>
     </div>

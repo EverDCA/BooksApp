@@ -8,18 +8,18 @@
   </head>
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs') %>
-    <div class="max-w-2xl mx-auto px-4 pt-6 sm:pt-8">
-      <div class="card bg-base-200 border border-base-300 shadow-lg p-8">
-        <h1 class="card-title text-2xl font-bold mb-6">Add Category</h1>
+    <div class="flex flex-1 items-center justify-center py-8">
+      <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-2xl w-full min-h-[320px]">
+        <h1 class="card-title text-4xl font-bold mb-8 text-center">Add Category</h1>
         <% if (messages.error) { %>
-          <div class="alert alert-error mb-4"><%- messages.error %></div>
+          <div class="alert alert-error mb-6 text-lg"><%- messages.error %></div>
         <% } %>
-        <form action="/categories/add" method="POST" class="space-y-4">
+        <form action="/categories/add" method="POST" class="space-y-6">
           <div>
-            <label class="block text-sm font-medium mb-1">Name</label>
-            <input type="text" name="name" value="<%= name %>" autocomplete="off" class="input input-bordered w-full" required />
+            <label class="block text-lg font-semibold mb-2">Name</label>
+            <input type="text" name="name" value="<%= name %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
           </div>
-          <button type="submit" class="btn btn-primary btn-wide">Save</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-wide mx-auto block">Save</button>
         </form>
       </div>
     </div>
