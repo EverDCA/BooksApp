@@ -1,3 +1,4 @@
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -5,24 +6,22 @@
     <title>Add Author</title>
     <link rel="stylesheet" href="/output.css">
   </head>
-  <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white">
+  <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs') %>
-    <main class="flex items-center justify-center min-h-[calc(100vh-64px)] p-4">
-      <div class="w-full max-w-md bg-white/5 backdrop-blur rounded-2xl shadow-lg p-8 space-y-6 border border-white/10">
-        <h1 class="text-2xl font-bold text-center text-white">Add Author</h1>
+    <div class="max-w-2xl mx-auto px-4 pt-6 sm:pt-8 ">
+      <div class="card bg-base-200 border border-base-300 shadow-lg p-8">
+        <h1 class="card-title text-2xl font-bold mb-6">Add Author</h1>
         <% if (messages.error) { %>
-          <div class="bg-red-600/20 text-red-300 px-4 py-2 rounded-lg text-sm border border-red-500/30">
-            <%- messages.error %>
-          </div>
+          <div class="alert alert-error mb-4"><%- messages.error %></div>
         <% } %>
-        <form action="/authors/add" method="post" class="space-y-5">
+        <form action="/authors/add" method="POST" class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-200 mb-1">Name</label>
-            <input type="text" name="name" value="<%= name %>" autocomplete="off" class="w-full rounded-lg border border-gray-600 bg-gray-800 text-white px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
+            <label class="block text-sm font-medium mb-1">Name</label>
+            <input type="text" name="name" value="<%= name %>" autocomplete="off" class="input input-bordered w-full" required />
           </div>
-          <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-lg shadow transition">Add Author</button>
+          <button type="submit" class="btn btn-primary btn-wide">Save</button>
         </form>
       </div>
-    </main>
+    </div>
   </body>
 </html>

@@ -12,22 +12,22 @@
 
     <div class="flex-1 grid grid-cols-1 md:grid-cols-3 grid-rows-4 md:grid-rows-2 gap-6 p-6 place-items-center">
       <!-- Bienvenida y enlaces -->
-      <div class="row-span-1 col-span-1 bg-white/10 border border-white/10 rounded-2xl p-8 flex flex-col justify-center shadow-xl w-full h-full hover:bg-indigo-800/30 transition duration-250 group">
-        <h2 class="text-3xl font-bold mb-4 text-center">Bienvenido</h2>
+      <div class="row-span-1 col-span-1 card bg-base-200 border border-base-300 rounded-2xl p-8 flex flex-col justify-center shadow-xl w-full h-full hover:bg-primary/20 transition duration-250 group animate-fade-down animate-once animate-delay-[200ms] animate-ease-in-out">
+        <h2 class="card-title text-3xl font-bold mb-4 text-center animate-fade animate-delay-500">Bienvenido</h2>
         <ul class="space-y-4 text-center flex flex-col">
-          <li><a href="/authors" class=" group-hover:p-1.5 hover:border-1 hover:rounded-lg hover:bg-black/40 font-semibold  transition text-xl group-hover:text-blue-300/80">Autores</a></li>
-          <li><a href="/books" class=" group-hover:p-1.5 hover:border-1 hover:rounded-lg hover:bg-black/40 font-semibold  transition text-xl group-hover:text-violet-300/80">Libros</a></li>
-          <li><a href="/publishers" class=" group-hover:p-1.5 hover:border-1 hover:rounded-lg hover:bg-black/40 font-semibold  transition text-xl group-hover:text-yellow-300/80">Editoriales</a></li>
-          <li><a href="/categories" class=" group-hover:p-1.5 hover:border-1 hover:rounded-lg hover:bg-black/40 font-semibold  transition text-xl group-hover:text-green-300/80">Categorías</a></li>
+          <li><a href="/authors" class="btn btn-primary btn-wide animate-fade animate-delay-800">Autores</a></li>
+          <li><a href="/books" class="btn btn-secondary btn-wide animate-fade animate-delay-900">Libros</a></li>
+          <li><a href="/publishers" class="btn btn-warning btn-wide animate-fade animate-delay-1000">Editoriales</a></li>
+          <li><a href="/categories" class="btn btn-success btn-wide animate-fade animate-delay-1100">Categorías</a></li>
         </ul>
       </div>
       <!-- Mejores libros (carrusel) -->
-      <div class="row-span-1 col-span-1 md:col-span-2 bg-white/10 border border-white/10 rounded-2xl p-8 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-sky-800/30 transition duration-250">
-        <h2 class="text-xl font-bold mb-4 tracking-wide text-center">NUESTROS MEJORES LIBROS!</h2>
-        <div class="w-full flex gap-4 overflow-x-auto pb-2 justify-center">
+      <div class="row-span-1 col-span-1 md:col-span-2 card bg-base-200 border border-base-300 rounded-2xl p-8 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-accent/20 transition duration-250 animate-fade-down animate-once animate-delay-[300ms] animate-ease-in-out">
+        <h2 class="card-title text-xl font-bold mb-4 tracking-wide text-center animate-fade animate-delay-500">NUESTROS MEJORES LIBROS!</h2>
+        <div class="carousel w-full flex gap-4 overflow-x-auto pb-2 justify-center">
           <% featuredBooks.forEach(book => { %>
-            <div class="min-w-[220px] bg-zinc-900/80 border border-violet-900 rounded-xl p-4 flex flex-col items-center shadow-md">
-              <div class="font-bold text-lg text-violet-300 mb-1"><%= book.name %></div>
+            <div class="carousel-item min-w-[220px] card bg-base-100 border border-primary rounded-xl p-4 flex flex-col items-center shadow-md animate-fade animate-delay-1000">
+              <div class="card-title font-bold text-lg text-primary mb-1"><%= book.name %></div>
               <div class="text-xs text-gray-400 mb-1">Autor: <%= book.Author ? book.Author.name : '-' %></div>
               <div class="text-xs text-gray-400 mb-1">Categoría: <%= book.Category ? book.Category.name : '-' %></div>
               <div class="text-xs text-gray-400 mb-1">Editorial: <%= book.Publisher ? book.Publisher.name : '-' %></div>
@@ -37,33 +37,33 @@
         </div>
       </div>
       <!-- Estadísticas -->
-      <div class="row-span-1 col-span-1 md:col-span-2 bg-white/10 border border-white/10 rounded-2xl p-8 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-emerald-800/30 transition duration-250 group">
-        <h2 class="text-lg font-bold mb-2 text-center">ESTADÍSTICAS</h2>
-        <p class="text-gray-300 text-center">(Número de libros, autores, categorías y editoriales)</p>
-        <div class="flex gap-8 mt-4 justify-center">
-          <div class="flex flex-col items-center">
-            <span class="text-3xl font-bold text-violet-400 stat-animate " data-value="<%= stats.books %>">0</span>
-            <span class="text-xs text-gray-400">Libros</span>
+      <div class="row-span-1 col-span-1 md:col-span-2 card bg-base-200 border border-base-300 rounded-2xl p-8 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-success/20 transition duration-250 group animate-fade-down animate-once animate-delay-[400ms] animate-ease-in-out">
+        <h2 class="card-title text-lg font-bold mb-2 text-center animate-fade animate-delay-00">ESTADÍSTICAS</h2>
+        <p class="text-gray-300 text-center animate-fade animate-delay-500">(Número de libros, autores, categorías y editoriales)</p>
+        <div class="stats stats-horizontal w-full flex gap-8 mt-4 justify-center">
+          <div class="stat flex flex-col items-center">
+            <span class="stat-value text-primary stat-animate animate-flip-up animate-delay-600 animate-ease-in-out" data-value="<%= stats.books %>">0</span>
+            <span class="stat-title text-xs text-gray-400">Libros</span>
           </div>
-          <div class="flex flex-col items-center">
-            <span class="text-3xl font-bold text-blue-400 stat-animate " data-value="<%= stats.authors %>">0</span>
-            <span class="text-xs text-gray-400">Autores</span>
+          <div class="stat flex flex-col items-center">
+            <span class="stat-value text-info stat-animate animate-flip-up animate-delay-750 animate-ease-in-out" data-value="<%= stats.authors %>">0</span>
+            <span class="stat-title text-xs text-gray-400">Autores</span>
           </div>
-          <div class="flex flex-col items-center">
-            <span class="text-3xl font-bold text-green-400 stat-animate " data-value="<%= stats.categories %>">0</span>
-            <span class="text-xs text-gray-400">Categorías</span>
+          <div class="stat flex flex-col items-center">
+            <span class="stat-value text-success stat-animate animate-flip-up animate-delay-950 animate-ease-in-out" data-value="<%= stats.categories %>">0</span>
+            <span class="stat-title text-xs text-gray-400">Categorías</span>
           </div>
-          <div class="flex flex-col items-center">
-            <span class="text-3xl font-bold text-yellow-400 stat-animate " data-value="<%= stats.publishers %>">0</span>
-            <span class="text-xs text-gray-400">Editoriales</span>
+          <div class="stat flex flex-col items-center">
+            <span class="stat-value text-warning stat-animate animate-flip-up animate-delay-1100 animate-ease-in-out" data-value="<%= stats.publishers %>">0</span>
+            <span class="stat-title text-xs text-gray-400">Editoriales</span>
           </div>
         </div>
       </div>
       <!-- Libro recomendado -->
-      <div class="row-span-1 col-span-1 bg-white/10 border border-white/10 rounded-2xl p-8 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-pink-800/30 transition duration-250">
-        <h2 class="text-lg font-bold mb-2 text-center">LIBRO RECOMENDADO DEL DÍA!</h2>
+      <div class="row-span-1 col-span-1 card bg-base-200 border border-base-300 rounded-2xl p-8 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-secondary/20 transition duration-250 animate-fade-down animate-once animate-delay-[500ms] animate-ease-in-out">
+        <h2 class="card-title text-lg font-bold mb-2 text-center">LIBRO RECOMENDADO DEL DÍA!</h2>
         <% if (recommendedBook) { %>
-          <div class="font-bold text-lg text-violet-300 mb-1"><%= recommendedBook.name %></div>
+          <div class="font-bold text-lg text-primary mb-1"><%= recommendedBook.name %></div>
           <div class="text-xs text-gray-400 mb-1">Autor: <%= recommendedBook.Author ? recommendedBook.Author.name : '-' %></div>
           <div class="text-xs text-gray-400 mb-1">Categoría: <%= recommendedBook.Category ? recommendedBook.Category.name : '-' %></div>
           <div class="text-xs text-gray-400 mb-1">Editorial: <%= recommendedBook.Publisher ? recommendedBook.Publisher.name : '-' %></div>
@@ -74,7 +74,7 @@
       </div>
     </div>
     <script>
-      // Animación de estadísticas (más lenta)
+      // Animación de estadísticas
       document.querySelectorAll('.stat-animate').forEach(el => {
         const end = parseInt(el.dataset.value, 10);
         let current = 0;

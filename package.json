@@ -20,6 +20,10 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7",
-    "tailwindcss": "^4.1.6"
+    "tailwindcss": "^4.1.6",
+    "tailwindcss-animated": "^2.0.0"
+  },
+  "devDependencies": {
+    "daisyui": "^5.0.35"
   }
 }
