@@ -14,7 +14,7 @@
         <% if (messages.error) { %>
           <div class="alert alert-error mb-6 text-lg"><%- messages.error %></div>
         <% } %>
-        <form action="/publishers/edit/<%= publisher._id %>" method="POST" class="space-y-6">
+        <form action="/publishers/edit/<%= publisher.id_category %>" method="POST" class="space-y-6">
           <div>
             <label class="block text-lg font-semibold mb-2">Name</label>
             <input type="text" name="name" value="<%= publisher.name %>" autocomplete="off" class="input input-bordered input-lg w-full" required />

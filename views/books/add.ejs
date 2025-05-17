@@ -9,7 +9,7 @@
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs') %>
     <div class="flex flex-1 items-center justify-center py-8">
-      <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-xl w-full min-h-[220px]">
+      <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-2xl w-full min-h-[220px]">
         <h1 class="card-title text-4xl font-bold mb-8 text-center">Add Book</h1>
         <% if (messages.error) { %>
           <div class="alert alert-error mb-6 text-lg"><%- messages.error %></div>
