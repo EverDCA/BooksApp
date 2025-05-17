@@ -1,97 +1,214 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome</title>
-    <link rel="stylesheet" href="/output.css">
+    <link rel="stylesheet" href="/output.css" />
   </head>
-  <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
-    
+  <body
+    class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col"
+  >
     <%- include('./books/navbar.ejs') %>
 
-    <div class="flex-1 grid grid-cols-1 md:grid-cols-3 grid-rows-4 md:grid-rows-2 gap-6 p-6 place-items-center h-[100dvh] min-h-0">
+    <div
+      class="flex-1 grid grid-cols-1 md:grid-cols-3 grid-rows-4 md:grid-rows-2 gap-6 p-6 place-items-center h-[100dvh] min-h-0"
+    >
       <!-- Bienvenida y enlaces -->
-      <div class="row-span-1 col-span-1 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center shadow-xl w-full h-full hover:bg-primary/20 transition duration-250 group animate-fade-down animate-once animate-delay-[200ms] animate-ease-in-out">
-        <h2 class="card-title text-2xl font-bold mb-4 animate-fade animate-delay-500 self-center">Bienvenido</h2>
+      <div
+        class="row-span-1 col-span-1 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center shadow-xl w-full h-full hover:bg-primary/20 transition duration-250 group animate-fade-down animate-once animate-delay-[200ms] animate-ease-in-out"
+      >
+        <h2
+          class="card-title text-2xl font-bold mb-4 animate-fade animate-delay-500 self-center"
+        >
+          Bienvenido
+        </h2>
         <ul class="space-y-4 text-center flex flex-col">
-          <li><a href="/authors" class="btn btn-primary btn-wide animate-fade animate-delay-800">Autores</a></li>
-          <li><a href="/books" class="btn btn-secondary btn-wide animate-fade animate-delay-900">Libros</a></li>
-          <li><a href="/publishers" class="btn btn-warning btn-wide animate-fade animate-delay-1000">Editoriales</a></li>
-          <li><a href="/categories" class="btn btn-success btn-wide animate-fade animate-delay-1100">Categorías</a></li>
+          <li>
+            <a
+              href="/authors"
+              class="btn btn-primary btn-wide animate-fade animate-delay-800"
+              >Autores</a
+            >
+          </li>
+          <li>
+            <a
+              href="/books"
+              class="btn btn-secondary btn-wide animate-fade animate-delay-900"
+              >Libros</a
+            >
+          </li>
+          <li>
+            <a
+              href="/publishers"
+              class="btn btn-warning btn-wide animate-fade animate-delay-1000"
+              >Editoriales</a
+            >
+          </li>
+          <li>
+            <a
+              href="/categories"
+              class="btn btn-success btn-wide animate-fade animate-delay-1100"
+              >Categorías</a
+            >
+          </li>
         </ul>
       </div>
       <!-- Mejores libros -->
-      <div class="row-span-1 col-span-1 md:col-span-2 flex flex-col justify-center items-center  p-6 w-full transition duration-250 group animate-fade-down animate-once animate-delay-[300ms]">
-        <h2 class="card-title text-2xl font-bold mb-4 text-center animate-fade animate-delay-500">MEJORES LIBROS</h2>
-        <div class="flex gap-8 w-full max-w-5xl justify-center items-center overflow-x-auto pb-4 px-2 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100 snap-x snap-mandatory">
+      <div
+        class="row-span-1 col-span-1 md:col-span-2 flex flex-col justify-center items-center p-6 w-full transition duration-250 group animate-fade-down animate-once animate-delay-[300ms]"
+      >
+        <h2
+          class="card-title text-2xl font-bold mb-4 text-center animate-fade animate-delay-500"
+        >
+          MEJORES LIBROS
+        </h2>
+        <div
+          class="flex gap-8 w-full max-w-5xl justify-center items-center overflow-x-auto pb-4 px-2 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100 snap-x snap-mandatory"
+        >
           <% featuredBooks.slice(0, 3).forEach(function(book, idx) { %>
-            <div class="card card-lg border-4 shadow-2xl min-w-[260px] max-w-xs w-full mx-auto flex flex-col items-center justify-center transition-transform duration-300 hover:scale-95
-              <% if(idx === 0) { %> border-primary bg-primary/20 <% } else if(idx === 1) { %> border-secondary bg-secondary/20 <% } else { %> border-warning bg-warning/20 <% } %> snap-start">
-              <figure class="w-full h-28 bg-gradient-to-br from-base-100/60 to-base-200/60 flex items-center justify-center rounded-t-2xl">
-                <span class="text-3xl text-primary drop-shadow"><i class="fa-solid fa-book"></i></span>
-              </figure>
-              <div class="card-body items-center text-center p-4 w-full">
-                <div class="card-title font-bold text-lg mb-2 line-clamp-2 text-white"><%= book.name %></div>
-                <div class="flex flex-wrap gap-2 justify-center mb-2">
-                  <span class="badge badge-secondary badge-outline">Autor: <%= book.Author ? book.Author.name : '-' %></span>
-                  <span class="badge badge-accent badge-outline">Categoría: <%= book.Category ? book.Category.name : '-' %></span>
-                  <span class="badge badge-info badge-outline">Editorial: <%= book.Publisher ? book.Publisher.name : '-' %></span>
-                </div>
-                <div class="text-xs text-gray-300">Publicado: <%= book.year_published %></div>
+          <div
+            class="card card-lg border-4 shadow-2xl min-w-[260px] max-w-xs w-full mx-auto flex flex-col items-center justify-center transition-transform duration-300 hover:scale-95 <% if(idx === 0) { %> border-primary bg-primary/20 <% } else if(idx === 1) { %> border-secondary bg-secondary/20 <% } else { %> border-warning bg-warning/20 <% } %> snap-start"
+          >
+            <figure
+              class="w-full h-28 bg-gradient-to-br from-base-100/60 to-base-200/60 flex items-center justify-center rounded-t-2xl"
+            >
+              <span class="text-3xl text-primary drop-shadow"
+                ><img src="..." alt="Imagen">
+              </span>
+            </figure>
+            <div class="card-body items-center text-center p-4 w-full">
+              <div
+                class="card-title font-bold text-lg mb-2 line-clamp-2 text-white"
+              >
+                <%= book.name %>
+              </div>
+              <div class="flex flex-wrap gap-2 justify-center mb-2">
+                <span class="badge badge-secondary badge-outline"
+                  >Autor: <%= book.Author ? book.Author.name : '-' %></span
+                >
+                <span class="badge badge-accent badge-outline"
+                  >Categoría: <%= book.Category ? book.Category.name : '-'
+                  %></span
+                >
+                <span class="badge badge-info badge-outline"
+                  >Editorial: <%= book.Publisher ? book.Publisher.name : '-'
+                  %></span
+                >
+              </div>
+              <div class="text-xs text-gray-300">
+                Publicado: <%= book.year_published %>
               </div>
             </div>
+          </div>
           <% }) %>
         </div>
       </div>
       <!-- Estadísticas -->
-      <div class="row-span-1 col-span-1 md:col-span-2 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-success/20 transition duration-250 group animate-fade-down animate-once animate-delay-[400ms]">
-        <h2 class="card-title text-lg font-bold mb-2 text-center animate-fade animate-delay-00">ESTADÍSTICAS</h2>
-        <p class="text-gray-300 text-center animate-fade animate-delay-500">(Número de libros, autores, categorías y editoriales)</p>
-        <div class="stats stats-horizontal w-full flex gap-8 mt-4 justify-center">
-          <div class="stat flex flex-col items-center">
-            <span class="stat-value text-primary stat-animate animate-flip-up animate-delay-600 animate-ease-in-out" data-value="<%= stats.books %>">0</span>
-            <span class="stat-title text-xs text-gray-400">Libros</span>
+      <div
+        class="row-span-1 col-span-1 md:col-span-2 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-success/20 transition duration-250 group animate-fade-down animate-once animate-delay-[400ms] glass"
+      >
+        <h2
+          class="card-title text-lg font-bold text-center animate-fade animate-delay-100 mb-10"
+        >
+          ESTADÍSTICAS
+        </h2>
+        <p class="text-neutral-content text-center animate-fade animate-delay-500 mb-4">
+          (Número de libros, autores, categorías y editoriales)
+        </p>
+        <figure
+          class="w-full h-40 bg-base-300 p-6 flex items-center justify-center rounded-box"
+        >
+          <div
+            class="stats stats-horizontal w-full flex gap-8 mt-4 justify-center"
+          >
+            <div class="stat flex flex-col items-center">
+              <span
+                class="stat-value text-primary stat-animate animate-flip-up animate-delay-600 animate-ease-in-out"
+                data-value="<%= stats.books %>"
+                >0</span
+              >
+              <span class="stat-title text-xs text-gray-400">Libros</span>
+            </div>
+            <div class="stat flex flex-col items-center">
+              <span
+                class="stat-value text-info stat-animate animate-flip-up animate-delay-750 animate-ease-in-out"
+                data-value="<%= stats.authors %>"
+                >0</span
+              >
+              <span class="stat-title text-xs text-gray-400">Autores</span>
+            </div>
+            <div class="stat flex flex-col items-center">
+              <span
+                class="stat-value text-success stat-animate animate-flip-up animate-delay-950 animate-ease-in-out"
+                data-value="<%= stats.categories %>"
+                >0</span
+              >
+              <span class="stat-title text-xs text-gray-400">Categorías</span>
+            </div>
+            <div class="stat flex flex-col items-center">
+              <span
+                class="stat-value text-warning stat-animate animate-flip-up animate-delay-1100 animate-ease-in-out"
+                data-value="<%= stats.publishers %>"
+                >0</span
+              >
+              <span class="stat-title text-xs text-gray-400">Editoriales</span>
+            </div>
           </div>
-          <div class="stat flex flex-col items-center">
-            <span class="stat-value text-info stat-animate animate-flip-up animate-delay-750 animate-ease-in-out" data-value="<%= stats.authors %>">0</span>
-            <span class="stat-title text-xs text-gray-400">Autores</span>
-          </div>
-          <div class="stat flex flex-col items-center">
-            <span class="stat-value text-success stat-animate animate-flip-up animate-delay-950 animate-ease-in-out" data-value="<%= stats.categories %>">0</span>
-            <span class="stat-title text-xs text-gray-400">Categorías</span>
-          </div>
-          <div class="stat flex flex-col items-center">
-            <span class="stat-value text-warning stat-animate animate-flip-up animate-delay-1100 animate-ease-in-out" data-value="<%= stats.publishers %>">0</span>
-            <span class="stat-title text-xs text-gray-400">Editoriales</span>
-          </div>
-        </div>
+        </figure>
       </div>
       <!-- Libro recomendado -->
-      <div class="row-span-1 col-span-1 card card-lg border-4 shadow-2xl bg-base-200 border-base-200 rounded-2xl p-6 flex flex-col justify-center items-center w-full h-full hover:bg-primary/20 transition duration-250 animate-fade-down animate-once animate-delay-[500ms] animate-ease-in-out">
-        <figure class="w-full h-28 bg-gradient-to-br from-base-100/60 to-base-200/60 flex items-center justify-center rounded-t-2xl mb-2">
-          <span class="text-3xl text-primary drop-shadow"><i class="fa-solid fa-book"></i></span>
+      <div
+        class="row-span-1 col-span-1 card card-lg shadow-2xl bg-base-200 rounded-2xl p-6 flex flex-col justify-center items-center w-full h-full hover:bg-primary/20 transition duration-250 animate-fade-down animate-once animate-delay-[500ms] animate-ease-in-out"
+      >
+        <figure
+          class="w-full h-28 bg-gradient-to-br from-base-100/60 to-base-200/60 flex items-center justify-center rounded-t-2xl mb-2"
+        >
+          <span class="text-3xl text-primary drop-shadow"
+            ><i class="fa-solid fa-book"></i
+          ></span>
         </figure>
-        <div class="card-body items-center text-center w-full p-0">
-          <h2 class="card-title text-xl font-bold mb-3 text-white">LIBRO RECOMENDADO DEL DÍA!</h2>
+        <div
+          class="card-body items-center text-center w-full p-0 "
+        >
+          <h2 class="card-title text-xl font-bold mb-3 text-white">
+            LIBRO RECOMENDADO DEL DÍA!
+          </h2>
           <% if (recommendedBook) { %>
-            <div class="card-title font-bold text-lg mb-2 line-clamp-2 text-white"><%= recommendedBook.name %></div>
-            <div class="flex flex-wrap gap-2 justify-center mb-2">
-              <span class="badge badge-secondary badge-outline">Autor: <%= recommendedBook.Author ? recommendedBook.Author.name : '-' %></span>
-              <span class="badge badge-accent badge-outline">Categoría: <%= recommendedBook.Category ? recommendedBook.Category.name : '-' %></span>
-              <span class="badge badge-info badge-outline">Editorial: <%= recommendedBook.Publisher ? recommendedBook.Publisher.name : '-' %></span>
-            </div>
-            <div class="text-xs text-gray-300">Publicado: <%= recommendedBook.year_published %></div>
+          <div
+            class="card-title font-bold text-lg mb-2 line-clamp-2 text-white"
+          >
+            <%= recommendedBook.name %>
+          </div>
+          <div class="flex flex-wrap gap-2 justify-center mb-2">
+            <span class="badge badge-secondary badge-outline"
+              >Autor: <%= recommendedBook.Author ? recommendedBook.Author.name :
+              '-' %></span
+            >
+            <span class="badge badge-accent badge-outline"
+              >Categoría: <%= recommendedBook.Category ?
+              recommendedBook.Category.name : '-' %></span
+            >
+            <span class="badge badge-info badge-outline"
+              >Editorial: <%= recommendedBook.Publisher ?
+              recommendedBook.Publisher.name : '-' %></span
+            >
+          </div>
+          <div class="text-xs text-gray-300">
+            Publicado: <%= recommendedBook.year_published %>
+          </div>
           <% } else { %>
-            <div class="alert alert-info mt-4">No hay libros para recomendar.</div>
+          <div class="alert alert-info mt-4">
+            No hay libros para recomendar.
+          </div>
           <% } %>
         </div>
       </div>
     </div>
     <script>
       // Animación de estadísticas
-      document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.stat-animate').forEach(el => {
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".stat-animate").forEach((el) => {
           const end = parseInt(el.dataset.value, 10);
           let current = 0;
           const step = Math.max(1, Math.floor(end / 80));
