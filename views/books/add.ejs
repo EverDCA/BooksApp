@@ -1,22 +1,21 @@
-<!doctype html>
-<html lang="en">
+<!doctype html>  <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Book</title>
+    <title>Agregar Libro</title>
     <link rel="stylesheet" href="/output.css">
   </head>
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs') %>
     <div class="flex flex-1 items-center justify-center py-8">
       <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-2xl w-full min-h-[220px]">
-        <h1 class="card-title text-4xl font-bold mb-8 text-center">Add Book</h1>
+        <h1 class="card-title text-4xl font-bold mb-8 text-center">Agregar Libro</h1>
         <% if (messages.error) { %>
           <div class="alert alert-error mb-6 text-lg"><%- messages.error %></div>
         <% } %>
         <form action="/books/add" method="POST" class="space-y-6">
           <div>
-            <label class="block text-lg font-semibold mb-2">Name</label>
+            <label class="block text-lg font-semibold mb-2">Nombre</label>
             <input type="text" name="name" value="<%= name %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
           </div>
           <div>
@@ -24,15 +23,15 @@
             <input type="text" name="isbn" value="<%= isbn %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
           </div>
           <div>
-            <label class="block text-lg font-semibold mb-2">Year Published</label>
+            <label class="block text-lg font-semibold mb-2">Año de Publicación</label>
             <input type="number" name="year_published" value="<%= year_published %>" class="input input-bordered input-lg w-full" required />
           </div>
           <div>
-            <label class="block text-lg font-semibold mb-2">Number of Pages</label>
+            <label class="block text-lg font-semibold mb-2">Número de Páginas</label>
             <input type="number" name="num_pages" value="<%= num_pages %>" class="input input-bordered input-lg w-full" required />
           </div>
           <div>
-            <label class="block text-lg font-semibold mb-2">Author</label>
+            <label class="block text-lg font-semibold mb-2">Autor</label>
             <select name="id_author" class="select select-bordered select-lg w-full" required>
               <option value="">Selecciona un autor</option>
               <% authors.forEach(author => { %>
@@ -41,7 +40,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-lg font-semibold mb-2">Category</label>
+            <label class="block text-lg font-semibold mb-2">Categoría</label>
             <select name="id_category" class="select select-bordered select-lg w-full" required>
               <option value="">Selecciona una categoría</option>
               <% categories.forEach(category => { %>
@@ -50,7 +49,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-lg font-semibold mb-2">Publisher</label>
+            <label class="block text-lg font-semibold mb-2">Editorial</label>
             <select name="id_publisher" class="select select-bordered select-lg w-full" required>
               <option value="">Selecciona una editorial</option>
               <% publishers.forEach(publisher => { %>
@@ -58,7 +57,7 @@
               <% }) %>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary btn-lg btn-wide mx-auto block">Save</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-wide mx-auto block">Guardar</button>
         </form>
       </div>
     </div>

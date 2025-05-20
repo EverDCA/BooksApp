@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Authors</title>
+    <title>Autores</title>
     <link rel="stylesheet" href="/output.css">
   </head>
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs') %>
     <div class="max-w-2xl mx-auto px-4 pt-6 sm:pt-8 animate-fade">
       <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Authors</h1>
-        <a href="/authors/add" class="btn btn-primary btn-lg">Add Author</a>
+        <h1 class="text-2xl font-bold">Autores</h1>
+        <a href="/authors/add" class="btn btn-primary btn-wide">Agregar Autor</a>
       </div>
       <% if (messages.success) { %>
         <div class="alert alert-success mb-4"><%- messages.success %></div>
@@ -24,8 +24,8 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Name</th>
-              <th>Action</th>
+              <th>Nombre</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -34,8 +34,8 @@
                 <td><%= i + 1 %></td>
                 <td><%= author.name %></td>
                 <td class="flex flex-wrap gap-2">
-                  <a href="/authors/edit/<%= author.id_author %>" class="btn btn-warning btn-sm">Edit</a>
-                  <a href="/authors/delete/<%= author.id_author %>" onclick="return confirm('Are you sure?')" class="btn btn-error btn-sm">Delete</a>
+                  <a href="/authors/edit/<%= author.id_author %>" class="btn btn-warning btn-sm">Editar</a>
+                  <a href="/authors/delete/<%= author.id_author %>" onclick="return confirm('¿Estás seguro?')" class="btn btn-error btn-sm">Eliminar</a>
                 </td>
               </tr>
             <% }) %>
@@ -44,9 +44,9 @@
       </div>
       <div class="mt-6 flex justify-center">
         <div class="join">
-          <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage - 1 %>'" <%= currentPage === 1 ? 'disabled' : '' %>>Previous</button>
-          <span class="join-item btn btn-ghost">Page <%= currentPage %> of <%= totalPages %></span>
-          <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage + 1 %>'" <%= currentPage === totalPages ? 'disabled' : '' %>>Next</button>
+          <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage - 1 %>'" <%= currentPage === 1 ? 'disabled' : '' %>>Anterior</button>
+          <span class="join-item btn btn-ghost">Página <%= currentPage %> de <%= totalPages %></span>
+          <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage + 1 %>'" <%= currentPage === totalPages ? 'disabled' : '' %>>Siguiente</button>
         </div>
       </div>
     </div>

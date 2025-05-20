@@ -1,17 +1,15 @@
-<!doctype html>
-<html lang="en">
+<!doctype html>  <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Books</title>
+    <title>Libros</title>
     <link rel="stylesheet" href="/output.css">
   </head>
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs') %>
     <div class="max-w-2xl mx-auto px-4 pt-6 sm:pt-8">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Books</h1>
-        <a href="/books/add" class="btn btn-primary btn-lg">Add Book</a>
+      <div class="flex justify-between items-center mb-6">        <h1 class="text-2xl font-bold">Libros</h1>
+        <a href="/books/add" class="btn btn-primary btn-wide">Agregar Libro</a>
       </div>
       <% if (messages.success) { %>
         <div class="alert alert-success mb-4"><%- messages.success %></div>
@@ -22,10 +20,15 @@
       <div class="overflow-x-auto card bg-base-200 border border-base-300 shadow-lg">
         <table class="table table-zebra">
           <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Action</th>
+            <tr>              <th>#</th>
+              <th>Nombre</th>
+              <th>ISBN</th>
+              <th>Año</th>
+              <th>Páginas</th>
+              <th>Autor</th>
+              <th>Categoría</th>
+              <th>Editorial</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -33,9 +36,14 @@
               <tr>
                 <td><%= i + 1 %></td>
                 <td><%= book.name %></td>
-                <td class="flex flex-wrap gap-2">
-                  <a href="/books/edit/<%= book.id_book %>" class="btn btn-warning btn-sm">Edit</a>
-                  <a href="/books/delete/<%= book.id_book %>" onclick="return confirm('Are you sure?')" class="btn btn-error btn-sm">Delete</a>
+                <td><%= book.isbn %></td>
+                <td><%= book.year_published %></td>
+                <td><%= book.num_pages %></td>
+                <td><%= book.Author ? book.Author.name : '-' %></td>
+                <td><%= book.Category ? book.Category.name : '-' %></td>
+                <td><%= book.Publisher ? book.Publisher.name : '-' %></td>
+                <td class="flex flex-wrap gap-2">                  <a href="/books/edit/<%= book.id_book %>" class="btn btn-warning btn-sm">Editar</a>
+                  <a href="/books/delete/<%= book.id_book %>" onclick="return confirm('¿Estás seguro?')" class="btn btn-error btn-sm">Eliminar</a>
                 </td>
               </tr>
             <% }) %>
@@ -43,10 +51,9 @@
         </table>
       </div>
       <div class="mt-6 flex justify-center">
-        <div class="join">
-          <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage - 1 %>'" <%= currentPage === 1 ? 'disabled' : '' %>>Previous</button>
-          <span class="join-item btn btn-ghost">Page <%= currentPage %> of <%= totalPages %></span>
-          <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage + 1 %>'" <%= currentPage === totalPages ? 'disabled' : '' %>>Next</button>
+        <div class="join">          <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage - 1 %>'" <%= currentPage === 1 ? 'disabled' : '' %>>Anterior</button>
+          <span class="join-item btn btn-ghost">Página <%= currentPage %> de <%= totalPages %></span>
+          <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage + 1 %>'" <%= currentPage === totalPages ? 'disabled' : '' %>>Siguiente</button>
         </div>
       </div>
     </div>

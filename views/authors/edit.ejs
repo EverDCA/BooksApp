@@ -1,24 +1,24 @@
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Author</title>
+    <title>Editar Autor</title>
     <link rel="stylesheet" href="/output.css">
   </head>
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs') %>
     <div class="flex flex-1 items-center justify-center py-8">
-      <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-2xl w-full min-h-[320px]">
-        <h1 class="card-title text-4xl font-bold mb-8 text-center">Edit Author</h1>
+      <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-2xl w-full min-h-[220px]">
+        <h1 class="card-title text-4xl font-bold mb-8 text-center">Editar Autor</h1>
         <% if (messages.error) { %>
           <div class="alert alert-error mb-6 text-lg"><%- messages.error %></div>
         <% } %>
         <form action="/authors/edit/<%= author.id_author %>" method="POST" class="space-y-6">
           <div>
-            <label class="block text-lg font-semibold mb-2">Name</label>
+            <label class="block text-lg font-semibold mb-2">Nombre</label>
             <input type="text" name="name" value="<%= author.name %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
           </div>
-          <button type="submit" class="btn btn-primary btn-lg btn-wide mx-auto block">Update</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-wide mx-auto block">Guardar</button>
         </form>
       </div>
     </div>
