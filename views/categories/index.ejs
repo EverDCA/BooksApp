@@ -8,45 +8,47 @@
   </head>
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs') %>
-    <div class="max-w-2xl mx-auto px-4 pt-6 sm:pt-8">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Categorías</h1>
-        <a href="/categories/add" class="btn btn-primary btn-wide">Agregar Categoría</a>
-      </div>
-      <% if (messages.success) { %>
-        <div class="alert alert-success mb-4"><%- messages.success %></div>
-      <% } %>
-      <% if (messages.error) { %>
-        <div class="alert alert-error mb-4"><%- messages.error %></div>
-      <% } %>
-      <div class="overflow-x-auto card bg-base-200 border border-base-300 shadow-lg">
-        <table class="table table-zebra">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nombre</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% categories.forEach((category, i) => { %>
+    <div class="flex-1 flex flex-col">
+      <div class="max-w-2xl mx-auto px-4 pt-6 sm:pt-8 flex-1 flex flex-col">
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="text-2xl font-bold">Categorías</h1>
+          <a href="/categories/add" class="btn btn-primary btn-wide">Agregar Categoría</a>
+        </div>
+        <% if (messages.success) { %>
+          <div class="alert alert-success mb-4"><%- messages.success %></div>
+        <% } %>
+        <% if (messages.error) { %>
+          <div class="alert alert-error mb-4"><%- messages.error %></div>
+        <% } %>
+        <div class="overflow-x-auto card bg-base-200 border border-base-300 shadow-lg">
+          <table class="table table-zebra">
+            <thead>
               <tr>
-                <td><%= i + 1 %></td>
-                <td><%= category.name %></td>
-                <td class="flex flex-wrap gap-2">
-                  <a href="/categories/edit/<%= category.id_category %>" class="btn btn-warning btn-sm">Editar</a>
-                  <a href="/categories/delete/<%= category.id_category %>" onclick="return confirm('¿Estás seguro?')" class="btn btn-error btn-sm">Eliminar</a>
-                </td>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
               </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
-      <div class="mt-6 flex justify-center">
-        <div class="join">
-          <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage - 1 %>'" <%= currentPage === 1 ? 'disabled' : '' %>>Anterior</button>
-          <span class="join-item btn btn-ghost">Página <%= currentPage %> de <%= totalPages %></span>
-          <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage + 1 %>'" <%= currentPage === totalPages ? 'disabled' : '' %>>Siguiente</button>
+            </thead>
+            <tbody>
+              <% categories.forEach((category, i) => { %>
+                <tr>
+                  <td><%= i + 1 %></td>
+                  <td><%= category.name %></td>
+                  <td class="flex flex-wrap gap-2">
+                    <a href="/categories/edit/<%= category.id_category %>" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="/categories/delete/<%= category.id_category %>" onclick="return confirm('¿Estás seguro?')" class="btn btn-error btn-sm">Eliminar</a>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-6 flex justify-center">
+          <div class="join">
+            <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage - 1 %>'" <%= currentPage === 1 ? 'disabled' : '' %>>Anterior</button>
+            <span class="join-item btn btn-ghost">Página <%= currentPage %> de <%= totalPages %></span>
+            <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage + 1 %>'" <%= currentPage === totalPages ? 'disabled' : '' %>>Siguiente</button>
+          </div>
         </div>
       </div>
     </div>

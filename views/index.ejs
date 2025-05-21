@@ -54,50 +54,26 @@
         </ul>
       </div>
       <!-- Mejores libros -->
-      <div
-        class="row-span-1 col-span-1 md:col-span-2 flex flex-col justify-center items-center p-6 w-full transition duration-250 group animate-fade-down animate-once animate-delay-[300ms]"
-      >
-        <h2
-          class="card-title text-2xl font-bold mb-4 text-center animate-fade animate-delay-500"
-        >
-          MEJORES LIBROS
-        </h2>
-        <div
-          class="flex gap-8 w-full max-w-5xl justify-center items-center overflow-x-auto pb-4 px-2 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100 snap-x snap-mandatory"
-        >
+      <div class="row-span-1 col-span-1 md:col-span-2 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-primary/20 transition duration-250 group animate-fade-down animate-once animate-delay-[300ms]">
+        <h2 class="card-title text-2xl font-bold mb-4 text-center animate-fade animate-delay-500">Mejores Libros</h2>
+        <div class="flex gap-6 w-full max-w-5xl justify-center items-stretch overflow-x-auto pb-4 px-2 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100 snap-x snap-mandatory">
           <% featuredBooks.slice(0, 3).forEach(function(book, idx) { %>
-          <div
-            class="card card-lg border-4 shadow-2xl min-w-[260px] max-w-xs w-full mx-auto flex flex-col items-center justify-center transition-transform duration-300 hover:scale-95 <% if(idx === 0) { %> border-primary bg-primary/20 <% } else if(idx === 1) { %> border-secondary bg-secondary/20 <% } else { %> border-warning bg-warning/20 <% } %> snap-start"
-          >
-            <figure
-              class="w-full h-28 bg-gradient-to-br from-base-100/60 to-base-200/60 flex items-center justify-center rounded-t-2xl"
-            >
-              <span class="text-3xl text-primary drop-shadow"
-                ><img src="..." alt="Imagen">
+          <div class="card bg-base-200 border border-base-300 rounded-2xl shadow-lg w-full max-w-xs md:max-w-sm lg:max-w-md snap-start transition-transform duration-300 hover:bg-primary/20 flex-shrink-0">
+            <figure class="h-36 flex items-center justify-center bg-base-300 rounded-t-xl">
+              <span class="text-4xl text-neutral drop-shadow">
+                <i class="fa-solid fa-book"></i>
               </span>
             </figure>
             <div class="card-body items-center text-center p-4 w-full">
-              <div
-                class="card-title font-bold text-lg mb-2 line-clamp-2 text-white"
-              >
+              <div class="card-title font-bold text-lg mb-2 line-clamp-2 text-white">
                 <%= book.name %>
               </div>
               <div class="flex flex-wrap gap-2 justify-center mb-2">
-                <span class="badge badge-secondary badge-outline"
-                  >Autor: <%= book.Author ? book.Author.name : '-' %></span
-                >
-                <span class="badge badge-accent badge-outline"
-                  >Categoría: <%= book.Category ? book.Category.name : '-'
-                  %></span
-                >
-                <span class="badge badge-info badge-outline"
-                  >Editorial: <%= book.Publisher ? book.Publisher.name : '-'
-                  %></span
-                >
+                <span class="badge badge-secondary badge-outline">Autor: <%= book.Author ? book.Author.name : '-' %></span>
+                <span class="badge badge-accent badge-outline">Categoría: <%= book.Category ? book.Category.name : '-' %></span>
+                <span class="badge badge-info badge-outline">Editorial: <%= book.Publisher ? book.Publisher.name : '-' %></span>
               </div>
-              <div class="text-xs text-gray-300">
-                Publicado: <%= book.year_published %>
-              </div>
+              <div class="text-xs text-gray-300">Publicado: <%= book.year_published %></div>
             </div>
           </div>
           <% }) %>
@@ -105,7 +81,7 @@
       </div>
       <!-- Estadísticas -->
       <div
-        class="row-span-1 col-span-1 md:col-span-2 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-success/20 transition duration-250 group animate-fade-down animate-once animate-delay-[400ms] glass"
+        class="row-span-1 col-span-1 md:col-span-2 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-success/20 transition duration-250 group animate-fade-down animate-once animate-delay-[400ms]"
       >
         <h2
           class="card-title text-lg font-bold text-center animate-fade animate-delay-100 mb-10"
@@ -157,49 +133,24 @@
         </figure>
       </div>
       <!-- Libro recomendado -->
-      <div
-        class="row-span-1 col-span-1 card card-lg shadow-2xl bg-base-200 rounded-2xl p-6 flex flex-col justify-center items-center w-full h-full hover:bg-primary/20 transition duration-250 animate-fade-down animate-once animate-delay-[500ms] animate-ease-in-out"
-      >
-        <figure
-          class="w-full h-28 bg-gradient-to-br from-base-100/60 to-base-200/60 flex items-center justify-center rounded-t-2xl mb-2"
-        >
-          <span class="text-3xl text-primary drop-shadow"
-            ><i class="fa-solid fa-book"></i
-          ></span>
+      <div class="row-span-1 col-span-1 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-primary/20 transition duration-250 animate-fade-down animate-once animate-delay-[500ms] animate-ease-in-out mx-auto">
+        <figure class="w-full h-28 bg-base-300 flex items-center justify-center rounded-t-2xl mb-2">
+          <span class="text-3xl text-neutral drop-shadow"><i class="fa-solid fa-book"></i></span>
         </figure>
-        <div
-          class="card-body items-center text-center w-full p-0 "
-        >
-          <h2 class="card-title text-xl font-bold mb-3 text-white">
-            LIBRO RECOMENDADO DEL DÍA!
-          </h2>
+        <div class="card-body items-center text-center w-full p-0 ">
+          <h2 class="card-title text-xl font-bold mb-3 text-white">LIBRO RECOMENDADO DEL DÍA!</h2>
           <% if (recommendedBook) { %>
-          <div
-            class="card-title font-bold text-lg mb-2 line-clamp-2 text-white"
-          >
+          <div class="card-title font-bold text-lg mb-2 line-clamp-2 text-white">
             <%= recommendedBook.name %>
           </div>
           <div class="flex flex-wrap gap-2 justify-center mb-2">
-            <span class="badge badge-secondary badge-outline"
-              >Autor: <%= recommendedBook.Author ? recommendedBook.Author.name :
-              '-' %></span
-            >
-            <span class="badge badge-accent badge-outline"
-              >Categoría: <%= recommendedBook.Category ?
-              recommendedBook.Category.name : '-' %></span
-            >
-            <span class="badge badge-info badge-outline"
-              >Editorial: <%= recommendedBook.Publisher ?
-              recommendedBook.Publisher.name : '-' %></span
-            >
+            <span class="badge badge-secondary badge-outline">Autor: <%= recommendedBook.Author ? recommendedBook.Author.name : '-' %></span>
+            <span class="badge badge-accent badge-outline">Categoría: <%= recommendedBook.Category ? recommendedBook.Category.name : '-' %></span>
+            <span class="badge badge-info badge-outline">Editorial: <%= recommendedBook.Publisher ? recommendedBook.Publisher.name : '-' %></span>
           </div>
-          <div class="text-xs text-gray-300">
-            Publicado: <%= recommendedBook.year_published %>
-          </div>
+          <div class="text-xs text-gray-300">Publicado: <%= recommendedBook.year_published %></div>
           <% } else { %>
-          <div class="alert alert-info mt-4">
-            No hay libros para recomendar.
-          </div>
+          <div class="alert alert-info mt-4">No hay libros para recomendar.</div>
           <% } %>
         </div>
       </div>
