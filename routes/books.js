@@ -15,7 +15,8 @@ router.get('/', async (req, res) => {
       where: { state: 1 },
       limit,
       offset,
-      order: [['name', 'ASC']]
+      order: [['name', 'ASC']],
+      include: [Author, Category, Publisher]
     });
     const totalPages = Math.ceil(count / limit);
     res.render('books/index', {

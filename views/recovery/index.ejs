@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recuperar registros</title>
+    <link rel="stylesheet" href="/output.css">
+  </head>
+  <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
+    <%- include('../books/navbar.ejs') %>
+    <div class="flex-1 flex flex-col">
+      <div class="max-w-7xl w-full mx-auto px-4 pt-6 sm:pt-8 flex-1 flex flex-col">
+        <h1 class="text-2xl font-bold mb-8 text-center">Recuperar registros desactivados</h1>
+        <% if (messages.success) { %>
+          <div class="alert alert-success mb-4"><%- messages.success %></div>
+        <% } %>
+        <% if (messages.error) { %>
+          <div class="alert alert-error mb-4"><%- messages.error %></div>
+        <% } %>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1 min-h-[calc(100vh-250px)] w-full">
+          <!-- Libros -->
+          <div class="card bg-base-200 border border-base-300 shadow-lg">
+            <div class="card-body">
+              <h2 class="card-title text-lg mb-4">Libros</h2>
+              <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% books.forEach((book, i) => { %>
+                      <tr>
+                        <td><%= (booksPage - 1) * 5 + i + 1 %></td>
+                        <td><%= book.name %></td>
+                        <td>
+                          <form action="/recovery/books/<%= book.id_book %>/restore" method="POST" class="inline">
+                            <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
+                          </form>
+                        </td>
+                      </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+              <div class="mt-4 flex justify-center">
+                <div class="join">
+                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage - 1 %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %>'" <%= booksPage === 1 ? 'disabled' : '' %>>Anterior</button>
+                  <span class="join-item btn btn-ghost">Página <%= booksPage %> de <%= booksTotalPages %></span>
+                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage + 1 %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %>'" <%= booksPage === booksTotalPages || booksTotalPages === 0 ? 'disabled' : '' %>>Siguiente</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Autores -->
+          <div class="card bg-base-200 border border-base-300 shadow-lg">
+            <div class="card-body">
+              <h2 class="card-title text-lg mb-4">Autores</h2>
+              <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% authors.forEach((author, i) => { %>
+                      <tr>
+                        <td><%= (authorsPage - 1) * 5 + i + 1 %></td>
+                        <td><%= author.name %></td>
+                        <td>
+                          <form action="/recovery/authors/<%= author.id_author %>/restore" method="POST" class="inline">
+                            <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
+                          </form>
+                        </td>
+                      </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+              <div class="mt-4 flex justify-center">
+                <div class="join">
+                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage - 1 %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %>'" <%= authorsPage === 1 ? 'disabled' : '' %>>Anterior</button>
+                  <span class="join-item btn btn-ghost">Página <%= authorsPage %> de <%= authorsTotalPages %></span>
+                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage + 1 %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %>'" <%= authorsPage === authorsTotalPages || authorsTotalPages === 0 ? 'disabled' : '' %>>Siguiente</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Categorías -->
+          <div class="card bg-base-200 border border-base-300 shadow-lg">
+            <div class="card-body">
+              <h2 class="card-title text-lg mb-4">Categorías</h2>
+              <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% categories.forEach((category, i) => { %>
+                      <tr>
+                        <td><%= (categoriesPage - 1) * 5 + i + 1 %></td>
+                        <td><%= category.name %></td>
+                        <td>
+                          <form action="/recovery/categories/<%= category.id_category %>/restore" method="POST" class="inline">
+                            <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
+                          </form>
+                        </td>
+                      </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+              <div class="mt-4 flex justify-center">
+                <div class="join">
+                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage - 1 %>&pagePublishers=<%= publishersPage %>'" <%= categoriesPage === 1 ? 'disabled' : '' %>>Anterior</button>
+                  <span class="join-item btn btn-ghost">Página <%= categoriesPage %> de <%= categoriesTotalPages %></span>
+                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage + 1 %>&pagePublishers=<%= publishersPage %>'" <%= categoriesPage === categoriesTotalPages || categoriesTotalPages === 0 ? 'disabled' : '' %>>Siguiente</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Editoriales -->
+          <div class="card bg-base-200 border border-base-300 shadow-lg">
+            <div class="card-body">
+              <h2 class="card-title text-lg mb-4">Editoriales</h2>
+              <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% publishers.forEach((publisher, i) => { %>
+                      <tr>
+                        <td><%= (publishersPage - 1) * 5 + i + 1 %></td>
+                        <td><%= publisher.name %></td>
+                        <td>
+                          <form action="/recovery/publishers/<%= publisher.id_publisher %>/restore" method="POST" class="inline">
+                            <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
+                          </form>
+                        </td>
+                      </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+              <div class="mt-4 flex justify-center">
+                <div class="join">
+                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage - 1 %>'" <%= publishersPage === 1 ? 'disabled' : '' %>>Anterior</button>
+                  <span class="join-item btn btn-ghost">Página <%= publishersPage %> de <%= publishersTotalPages %></span>
+                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage + 1 %>'" <%= publishersPage === publishersTotalPages || publishersTotalPages === 0 ? 'disabled' : '' %>>Siguiente</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('../footer.ejs') %>
+  </body>
+</html>
