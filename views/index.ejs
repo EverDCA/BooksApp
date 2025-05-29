@@ -11,11 +11,11 @@
     <%- include('./books/navbar.ejs') %>
 
     <div
-      class="flex-1 grid grid-cols-1 md:grid-cols-3 grid-rows-4 md:grid-rows-2 gap-6 p-6 place-items-center h-[100dvh] min-h-0"
+      class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 place-items-center min-h-0"
     >
       <!-- Bienvenida y enlaces -->
       <div
-        class="row-span-1 col-span-1 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center shadow-xl w-full h-full hover:bg-primary/20 transition duration-250 group animate-fade-down animate-once animate-delay-[200ms] animate-ease-in-out"
+        class="card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center shadow-xl w-full h-full hover:bg-primary/20 transition duration-250 group animate-fade-down animate-once animate-delay-[200ms] animate-ease-in-out"
       >
         <h2
           class="card-title text-2xl font-bold mb-4 animate-fade animate-delay-500 self-center"
@@ -60,35 +60,49 @@
           </li>
         </ul>
       </div>
-      <!-- Mejores libros -->
-      <div class="row-span-1 col-span-1 md:col-span-2 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-primary/20 transition duration-250 group animate-fade-down animate-once animate-delay-[300ms]">
-        <h2 class="card-title text-2xl font-bold mb-4 text-center animate-fade animate-delay-500">Mejores Libros</h2>
-        <div class="flex gap-6 w-full max-w-5xl justify-center items-stretch overflow-x-auto pb-4 px-2 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100 snap-x snap-mandatory">
-          <% featuredBooks.slice(0, 3).forEach(function(book, idx) { %>
-          <div class="card bg-base-200 border border-base-300 rounded-2xl shadow-lg w-full max-w-xs md:max-w-sm lg:max-w-md snap-start transition-transform duration-300 hover:bg-primary/20 flex-shrink-0">
-            <figure class="h-36 flex items-center justify-center bg-base-300 rounded-t-xl">
-              <span class="text-4xl text-neutral drop-shadow">
-                <i class="fa-solid fa-book"></i>
-              </span>
-            </figure>
-            <div class="card-body items-center text-center p-4 w-full">
-              <div class="card-title font-bold text-lg mb-2 line-clamp-2 text-white">
-                <%= book.name %>
+      <!-- Slider destacado -->
+      <section class="card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center shadow-xl w-full h-full hover:bg-cyan-500/20 transition duration-250 animate-fade-down animate-once animate-delay-[200ms] animate-ease-in-out md:col-span-2 lg:col-span-2"
+>
+        <h2 class="text-4xl md:text-5xl font-extrabold mb-8 text-center text-white drop-shadow-lg">
+          Libros <span class="text-primary">destacados</span>
+        </h2>
+        <div class="w-full max-w-7xl overflow-x-auto scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100">
+          <div class="flex gap-8 min-w-[320px] pb-4 px-2 sm:px-4 rounded-xl">
+            <% featuredBooks.forEach(function(book, idx) { %>
+              <div class="relative min-w-[180px] max-w-xs flex-shrink-0 sm:min-w-[220px] md:min-w-[220px] lg:min-w-[220px] " style="width:clamp(180px,40vw,220px) ">
+                <div class="overflow-hidden shadow-md h-72 w-full flex flex-col justify-end group md:h-80 rounded-xl">
+                  <img src="<%= book.cover_url ? book.cover_url : 'https://placehold.co/200x300?text=Sin+portada' %>" alt="Portada de <%= book.name %>" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105 rounded-xl" />
+                  <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3 flex flex-col items-start rounded-b-xl">
+                    <span class="text-white font-bold text-base truncate w-full drop-shadow-md"><%= book.name %></span>
+                    <button class="btn btn-primary btn-sm mt-2" onclick="document.getElementById('modal_book_<%= idx %>').showModal()">Ver</button>
+                  </div>
+                </div>
+                <!-- Modal para cada libro -->
+                <dialog id="modal_book_<%= idx %>" class="modal">
+                  <div class="modal-box max-w-md">
+                    <form method="dialog">
+                      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    </form>
+                    <div class="flex flex-col items-center">
+                      <img src="<%= book.cover_url ? book.cover_url : 'https://placehold.co/200x300?text=Sin+portada' %>" alt="Portada de <%= book.name %>" class="rounded-lg w-40 h-60 object-cover mb-4 border border-base-300" />
+                      <h3 class="text-lg font-bold text-primary mb-2"><%= book.name %></h3>
+                      <p class="text-base-content mb-1"><span class="font-semibold">Autor:</span> <%= book.Author ? book.Author.name : 'Desconocido' %></p>
+                      <p class="text-base-content mb-1"><span class="font-semibold">Editorial:</span> <%= book.Publisher ? book.Publisher.name : 'Desconocida' %></p>
+                      <p class="text-base-content mb-1"><span class="font-semibold">Categoría:</span> <%= book.Category ? book.Category.name : 'Sin categoría' %></p>
+                      <% if (book.description) { %>
+                        <p class="text-sm text-base-content mt-2"><%= book.description %></p>
+                      <% } %>
+                    </div>
+                  </div>
+                </dialog>
               </div>
-              <div class="flex flex-wrap gap-2 justify-center mb-2">
-                <span class="badge badge-secondary badge-outline">Autor: <%= book.Author ? book.Author.name : '-' %></span>
-                <span class="badge badge-accent badge-outline">Categoría: <%= book.Category ? book.Category.name : '-' %></span>
-                <span class="badge badge-info badge-outline">Editorial: <%= book.Publisher ? book.Publisher.name : '-' %></span>
-              </div>
-              <div class="text-xs text-gray-300">Publicado: <%= book.year_published %></div>
-            </div>
+            <% }) %>
           </div>
-          <% }) %>
         </div>
-      </div>
+      </section>
       <!-- Estadísticas -->
       <div
-        class="row-span-1 col-span-1 md:col-span-2 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-success/20 transition duration-250 group animate-fade-down animate-once animate-delay-[400ms]"
+        class="card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-success/20 transition duration-250 group animate-fade-down animate-once animate-delay-[400ms] md:col-span-2 lg:col-span-2"
       >
         <h2
           class="card-title text-lg font-bold text-center animate-fade animate-delay-100 mb-10"
@@ -98,68 +112,61 @@
         <p class="text-neutral-content text-center animate-fade animate-delay-500 mb-4">
           (Número de libros, autores, categorías y editoriales)
         </p>
-        <figure
-          class="w-full h-40 bg-base-300 p-6 flex items-center justify-center rounded-box"
-        >
-          <div
-            class="stats stats-horizontal w-full flex gap-8 mt-4 justify-center"
-          >
-            <div class="stat flex flex-col items-center">
-              <span
-                class="stat-value text-primary stat-animate"
-                data-value="<%= stats.books %>"
-                >0</span
-              >
+        <div class="w-full max-w-7xl overflow-x-auto scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100 flex justify-center">
+          <div class="flex gap-8 min-w-[320px] pb-4 px-2 sm:px-4 rounded-xl">
+            <div class="stat flex flex-col items-center min-w-[180px] max-w-xs flex-shrink-0 sm:min-w-[220px] md:min-w-[220px] lg:min-w-[220px] bg-base-300 p-6 rounded-xl shadow-md" style="width:clamp(180px,40vw,220px)">
+              <span class="stat-value text-primary stat-animate" data-value="<%= stats.books %>">0</span>
               <span class="stat-title text-xs text-gray-400">Libros</span>
             </div>
-            <div class="stat flex flex-col items-center">
-              <span
-                class="stat-value text-info stat-animate "
-                data-value="<%= stats.authors %>"
-                >0</span
-              >
+            <div class="stat flex flex-col items-center min-w-[180px] max-w-xs flex-shrink-0 sm:min-w-[220px] md:min-w-[220px] lg:min-w-[220px] bg-base-300 p-6 rounded-xl shadow-md" style="width:clamp(180px,40vw,220px)">
+              <span class="stat-value text-info stat-animate" data-value="<%= stats.authors %>">0</span>
               <span class="stat-title text-xs text-gray-400">Autores</span>
             </div>
-            <div class="stat flex flex-col items-center">
-              <span
-                class="stat-value text-success stat-animate "
-                data-value="<%= stats.categories %>"
-                >0</span
-              >
+            <div class="stat flex flex-col items-center min-w-[180px] max-w-xs flex-shrink-0 sm:min-w-[220px] md:min-w-[220px] lg:min-w-[220px] bg-base-300 p-6 rounded-xl shadow-md" style="width:clamp(180px,40vw,220px)">
+              <span class="stat-value text-success stat-animate" data-value="<%= stats.categories %>">0</span>
               <span class="stat-title text-xs text-gray-400">Categorías</span>
             </div>
-            <div class="stat flex flex-col items-center">
-              <span
-                class="stat-value text-warning stat-animate "
-                data-value="<%= stats.publishers %>"
-                >0</span
-              >
+            <div class="stat flex flex-col items-center min-w-[180px] max-w-xs flex-shrink-0 sm:min-w-[220px] md:min-w-[220px] lg:min-w-[220px] bg-base-300 p-6 rounded-xl shadow-md" style="width:clamp(180px,40vw,220px)">
+              <span class="stat-value text-warning stat-animate" data-value="<%= stats.publishers %>">0</span>
               <span class="stat-title text-xs text-gray-400">Editoriales</span>
             </div>
           </div>
-        </figure>
+        </div>
       </div>
       <!-- Libro recomendado -->
-      <div class="row-span-1 col-span-1 card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-primary/20 transition duration-250 animate-fade-down animate-once animate-delay-[500ms] animate-ease-in-out mx-auto">
-        <figure class="w-full h-28 bg-base-300 flex items-center justify-center rounded-t-2xl mb-2">
-          <span class="text-3xl text-neutral drop-shadow"><i class="fa-solid fa-book"></i></span>
-        </figure>
-        <div class="card-body items-center text-center w-full p-0 ">
-          <h2 class="card-title text-xl font-bold mb-3 text-white">LIBRO RECOMENDADO DEL DÍA!</h2>
-          <% if (recommendedBook) { %>
-          <div class="card-title font-bold text-lg mb-2 line-clamp-2 text-white">
-            <%= recommendedBook.name %>
+      <div class="flex flex-col items-center justify-center w-full h-full bg-base-200 border border-base-300 rounded-2xl p-6 shadow-xl hover:bg-secondary/20 transition duration-250 animate-fade-down animate-once animate-delay-[400ms]">
+        <h2 class="text-2xl font-bold mb-4 text-center animate-fade animate-delay-300">Libro Recomendado</h2>
+        <% if (recommendedBook) { %>
+          <div class="relative min-w-[180px] max-w-xs flex-shrink-0 sm:min-w-[220px] md:min-w-[220px] lg:min-w-[220px] w-full" style="width:clamp(180px,40vw,220px)">
+            <div class="overflow-hidden shadow-md h-72 w-full flex flex-col justify-end group md:h-80 rounded-xl">
+              <img src="<%= recommendedBook.cover_url ? recommendedBook.cover_url : 'https://placehold.co/200x300?text=Sin+portada' %>" alt="Portada de <%= recommendedBook.name %>" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105 rounded-xl" />
+              <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3 flex flex-col items-start rounded-b-xl">
+                <span class="text-white font-bold text-base truncate w-full drop-shadow-md"><%= recommendedBook.name %></span>
+                <button class="btn btn-primary btn-sm mt-2" onclick="document.getElementById('modal_recommended_book').showModal()">Ver</button>
+              </div>
+            </div>
+            <!-- Modal para libro recomendado -->
+            <dialog id="modal_recommended_book" class="modal">
+              <div class="modal-box max-w-md">
+                <form method="dialog">
+                  <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <div class="flex flex-col items-center">
+                  <img src="<%= recommendedBook.cover_url ? recommendedBook.cover_url : 'https://placehold.co/200x300?text=Sin+portada' %>" alt="Portada de <%= recommendedBook.name %>" class="rounded-lg w-40 h-60 object-cover mb-4 border border-base-300" />
+                  <h3 class="text-lg font-bold text-primary mb-2"><%= recommendedBook.name %></h3>
+                  <p class="text-base-content mb-1"><span class="font-semibold">Autor:</span> <%= recommendedBook.Author ? recommendedBook.Author.name : 'Desconocido' %></p>
+                  <p class="text-base-content mb-1"><span class="font-semibold">Editorial:</span> <%= recommendedBook.Publisher ? recommendedBook.Publisher.name : 'Desconocida' %></p>
+                  <p class="text-base-content mb-1"><span class="font-semibold">Categoría:</span> <%= recommendedBook.Category ? recommendedBook.Category.name : 'Sin categoría' %></p>
+                  <% if (recommendedBook.description) { %>
+                    <p class="text-sm text-base-content mt-2"><%= recommendedBook.description %></p>
+                  <% } %>
+                </div>
+              </div>
+            </dialog>
           </div>
-          <div class="flex flex-wrap gap-2 justify-center mb-2">
-            <span class="badge badge-secondary badge-outline">Autor: <%= recommendedBook.Author ? recommendedBook.Author.name : '-' %></span>
-            <span class="badge badge-accent badge-outline">Categoría: <%= recommendedBook.Category ? recommendedBook.Category.name : '-' %></span>
-            <span class="badge badge-info badge-outline">Editorial: <%= recommendedBook.Publisher ? recommendedBook.Publisher.name : '-' %></span>
-          </div>
-          <div class="text-xs text-gray-300">Publicado: <%= recommendedBook.year_published %></div>
-          <% } else { %>
+        <% } else { %>
           <div class="alert alert-info mt-4">No hay libros para recomendar.</div>
-          <% } %>
-        </div>
+        <% } %>
       </div>
     </div>
     <script>

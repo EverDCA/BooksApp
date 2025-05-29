@@ -9,7 +9,7 @@
   <body class="min-h-screen flex flex-col text-white">
     <%- include('./books/navbar.ejs') %>
     <!-- Hero Section: full width/height -->
-    <section class="hero min-h-screen w-full bg-gradient-to-tr from-fuchsia-700/70 to-cyan-700/70 flex items-center justify-center relative overflow-hidden ">
+    <section class="hero min-h-screen w-full bg-gradient-to-tr from-fuchsia-700/60 to-cyan-700/60 flex items-center justify-center relative overflow-hidden ">
       <div class="hero-content flex flex-col items-center z-10 text-center w-full px-4">
         <h1 class="text-5xl md:text-7xl font-extrabold text-white drop-shadow-lg mb-6 animate-fade-down animate-once animate-delay-200 animate-ease-in-out">Bienvenido a <span class="text-accent">BooksApp</span></h1>
         <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl animate-fade animate-delay-500">Gestiona tu biblioteca personal de manera sencilla, moderna y eficiente. Explora, agrega y administra libros, autores, editoriales y categorías con una interfaz amigable y responsiva.</p>
@@ -22,61 +22,83 @@
 
     <!-- Stats Section: datos reales -->
     <section class="w-full flex flex-col items-center py-16 bg-base-100 px-2 sm:px-4">
-      <div class="w-full max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-8">
-        <div class="stat bg-base-200 rounded-xl shadow-md">
-          <div class="stat-figure text-primary">
-            <i class="fa-solid fa-book fa-2x"></i>
+      <h2 class="text-4xl md:text-5xl font-extrabold mb-12 text-center text-white drop-shadow-lg tracking-tight">
+        Estadísticas de tu <span class="text-accent">Biblioteca</span>
+      </h2>
+      <div class="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 auto-rows-fr">
+        <div class="stat hover:bg-primary/20 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center border-4 border-primary/10 hover:border-primary/30 transition-all duration-300 cursor-pointer">
+          <div class="stat-figure mb-2">
+            <i class="fa-solid fa-book fa-3x text-primary drop-shadow"></i>
           </div>
-          <div class="stat-title">Libros</div>
-          <div class="stat-value text-primary"><%= stats.books %></div>
-          <div class="stat-desc">En tu biblioteca</div>
+          <div class="stat-title text-lg font-semibold text-primary">Libros</div>
+          <div class="stat-value text-4xl font-extrabold text-primary"><%= stats.books %></div>
+          <div class="stat-desc text-primary/70">En tu biblioteca</div>
         </div>
-        <div class="stat bg-base-200 rounded-xl shadow-md">
-          <div class="stat-figure text-secondary">
-            <i class="fa-solid fa-user-pen fa-2x"></i>
+        <div class="stat hover:bg-secondary/20 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center border-4 border-secondary/10 hover:border-secondary/30 transition-all duration-300 cursor-pointer">
+          <div class="stat-figure mb-2">
+            <i class="fa-solid fa-user-pen fa-3x text-secondary drop-shadow"></i>
           </div>
-          <div class="stat-title">Autores</div>
-          <div class="stat-value text-secondary"><%= stats.authors %></div>
-          <div class="stat-desc">Registrados</div>
+          <div class="stat-title text-lg font-semibold text-secondary">Autores</div>
+          <div class="stat-value text-4xl font-extrabold text-secondary"><%= stats.authors %></div>
+          <div class="stat-desc text-secondary/70">Registrados</div>
         </div>
-        <div class="stat bg-base-200 rounded-xl shadow-md">
-          <div class="stat-figure text-warning">
-            <i class="fa-solid fa-building fa-2x"></i>
+        <div class="stat hover:bg-warning/20 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center border-4 border-warning/10 hover:border-warning/30 transition-all duration-300 cursor-pointer">
+          <div class="stat-figure mb-2">
+            <i class="fa-solid fa-building fa-3x text-warning drop-shadow"></i>
           </div>
-          <div class="stat-title">Editoriales</div>
-          <div class="stat-value text-warning"><%= stats.publishers %></div>
-          <div class="stat-desc">Colaboradores</div>
+          <div class="stat-title text-lg font-semibold text-warning">Editoriales</div>
+          <div class="stat-value text-4xl font-extrabold text-warning"><%= stats.publishers %></div>
+          <div class="stat-desc text-warning/70">Colaboradores</div>
         </div>
-        <div class="stat bg-base-200 rounded-xl shadow-md">
-          <div class="stat-figure text-success">
-            <i class="fa-solid fa-building fa-2x"></i>
+        <div class="stat hover:bg-success/20 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center border-4 border-success/10 hover:border-success/30 transition-all duration-300 cursor-pointer">
+          <div class="stat-figure mb-2">
+            <i class="fa-solid fa-layer-group fa-3x text-success drop-shadow"></i>
           </div>
-          <div class="stat-title">Categorías</div>
-          <div class="stat-value text-success"><%= stats.categories %></div>
-          <div class="stat-desc">Diferentes géneros</div>
+          <div class="stat-title text-lg font-semibold text-success">Categorías</div>
+          <div class="stat-value text-4xl font-extrabold text-success"><%= stats.categories %></div>
+          <div class="stat-desc text-success/70">Diferentes géneros</div>
+        </div>
+        <!-- Más contenido de estadísticas, creativo -->
+        <div class="stat hover:bg-accent/20 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center border-4 border-accent/10 hover:border-accent/30 transition-all duration-300 cursor-pointer col-span-1 sm:col-span-2">
+          <div class="stat-figure mb-2">
+            <i class="fa-solid fa-chart-line fa-3x text-accent drop-shadow"></i>
+          </div>
+          <div class="stat-title text-lg font-semibold text-accent">Libros más recientes</div>
+          <div class="stat-value text-2xl font-bold text-accent">¡Actualizado!</div>
+          <div class="stat-desc text-accent/70">Consulta los últimos libros agregados en la sección de destacados.</div>
+        </div>
+        <div class="stat hover:bg-info/20 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center border-4 border-info/10 hover:border-info/30 transition-all duration-300 cursor-pointer col-span-1 sm:col-span-2">
+          <div class="stat-figure mb-2">
+            <i class="fa-solid fa-users fa-3x text-info drop-shadow"></i>
+          </div>
+          <div class="stat-title text-lg font-semibold text-info">Usuarios activos</div>
+          <div class="stat-value text-2xl font-bold text-info">Próximamente</div>
+          <div class="stat-desc text-info/70">Funcionalidad de comunidad en desarrollo.</div>
         </div>
       </div>
+      <% if (stats.books === 0 && stats.authors === 0 && stats.publishers === 0 && stats.categories === 0) { %>
+        <div class="flex flex-col items-center justify-center h-full w-full mt-12">
+          <span class="text-2xl text-base-content/70">No hay estadísticas disponibles aún.</span>
+          <span class="text-base text-base-content/50 mt-2">Agrega libros, autores, editoriales o categorías para ver estadísticas aquí.</span>
+        </div>
+      <% } %>
     </section>
 
     <!-- Divider con icono y animación -->
-    <div class="flex items-center justify-center w-full py-8 px-2 sm:px-4">
-      <div class="flex items-center gap-4">
-        <span class="text-3xl text-primary "><i class="fa-solid fa-star"></i></span>
-        <span class="text-xl font-bold text-base-content">Explora más funciones</span>
-        <span class="text-3xl text-secondary e"><i class="fa-solid fa-star"></i></span>
-      </div>
-    </div>
+
 
     <!-- Slider destacado -->
     <section class="w-full bg-base-100 py-16 flex flex-col items-center px-2 sm:px-4">
-      <h2 class="text-3xl font-bold mb-8 text-center text-primary">Libros destacados</h2>
+      <h2 class="text-4xl md:text-5xl font-extrabold mb-8 text-center text-white drop-shadow-lg">
+        Libros <span class="text-primary">destacados</span>
+      </h2>
       <div class="w-full max-w-7xl overflow-x-auto scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100">
         <div class="flex gap-8 min-w-[320px] pb-4 px-2 sm:px-4 rounded-xl">
           <% featuredBooks.forEach(function(book, idx) { %>
             <div class="relative min-w-[180px] max-w-xs flex-shrink-0 sm:min-w-[220px] md:min-w-[220px] lg:min-w-[220px] " style="width:clamp(180px,40vw,220px) ">
-              <div class=" overflow-hidden shadow-md h-72 w-full flex flex-col justify-end group md:h-80">
+              <div class="overflow-hidden shadow-md h-72 w-full flex flex-col justify-end group md:h-80 rounded-xl">
                 <img src="<%= book.cover_url ? book.cover_url : 'https://placehold.co/200x300?text=Sin+portada' %>" alt="Portada de <%= book.name %>" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105 rounded-xl" />
-                <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3 flex flex-col items-start">
+                <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3 flex flex-col items-start rounded-b-xl">
                   <span class="text-white font-bold text-base truncate w-full drop-shadow-md"><%= book.name %></span>
                   <button class="btn btn-primary btn-sm mt-2" onclick="document.getElementById('modal_book_<%= idx %>').showModal()">Ver</button>
                 </div>
@@ -103,11 +125,19 @@
           <% }) %>
         </div>
       </div>
+      <% if (!featuredBooks || featuredBooks.length === 0) { %>
+        <div class="flex flex-col items-center justify-center h-full w-full mt-12">
+          <span class="text-2xl text-base-content/70">No hay libros destacados para mostrar.</span>
+          <span class="text-base text-base-content/50 mt-2">Agrega libros para verlos aquí.</span>
+        </div>
+      <% } %>
     </section>
 
     <!-- FAQ Accordion -->
     <section class="w-full bg-base-200 py-16 flex flex-col items-center px-2 sm:px-4">
-      <h2 class="text-3xl font-bold mb-8 text-center text-secondary">Preguntas Frecuentes</h2>
+      <h2 class="text-4xl md:text-5xl font-extrabold mb-8 text-center text-white drop-shadow-lg">
+        Preguntas <span class="text-secondary">Frecuentes</span>
+      </h2>
       <div class="w-full max-w-4xl">
         <div class="collapse collapse-arrow bg-base-100 mb-4">
           <input type="radio" name="faq" checked="checked" />
@@ -123,24 +153,63 @@
             <p>Sí, desde la sección <a href="/recovery" class="link link-primary">Reestablecer</a> puedes restaurar libros, autores, categorías y editoriales desactivados.</p>
           </div>
         </div>
-        <div class="collapse collapse-arrow bg-base-100">
+        <div class="collapse collapse-arrow bg-base-100 mb-4">
           <input type="radio" name="faq" />
           <div class="collapse-title text-xl font-medium">¿Cómo contacto soporte?</div>
           <div class="collapse-content">
             <p>Puedes escribirnos a <a href="mailto:contacto@booksapp.com" class="link link-secondary">contacto@booksapp.com</a> o visitar nuestro <a href="https://github.com/everdca/BooksApp" class="link link-accent">GitHub</a>.</p>
           </div>
         </div>
+        <!-- Más preguntas frecuentes -->
+        <div class="collapse collapse-arrow bg-base-100 mb-4">
+          <input type="radio" name="faq" />
+          <div class="collapse-title text-xl font-medium">¿Cómo edito o elimino un libro?</div>
+          <div class="collapse-content">
+            <p>Desde la sección de libros, haz clic en el botón de editar o eliminar junto al libro que desees modificar.</p>
+          </div>
+        </div>
+        <div class="collapse collapse-arrow bg-base-100 mb-4">
+          <input type="radio" name="faq" />
+          <div class="collapse-title text-xl font-medium">¿Puedo exportar mi biblioteca?</div>
+          <div class="collapse-content">
+            <p>Próximamente podrás exportar tu biblioteca en diferentes formatos. ¡Mantente atento a las actualizaciones!</p>
+          </div>
+        </div>
+        <div class="collapse collapse-arrow bg-base-100 mb-4">
+          <input type="radio" name="faq" />
+          <div class="collapse-title text-xl font-medium">¿La app es gratuita?</div>
+          <div class="collapse-content">
+            <p>Sí, BooksApp es completamente gratuita para uso personal.</p>
+          </div>
+        </div>
+        <div class="collapse collapse-arrow bg-base-100 mb-4">
+          <input type="radio" name="faq" />
+          <div class="collapse-title text-xl font-medium">¿Puedo sugerir nuevas funciones?</div>
+          <div class="collapse-content">
+            <p>¡Por supuesto! Puedes sugerir mejoras o nuevas funciones escribiendo a nuestro correo o abriendo un issue en GitHub.</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col items-center justify-center h-full w-full mt-12">
+        <span class="text-2xl text-base-content/70">¿Tienes más preguntas?</span>
+        <span class="text-base text-base-content/50 mt-2">Contáctanos en <a href="mailto:contacto@booksapp.com" class="link link-secondary">contacto@booksapp.com</a> o revisa la documentación.</span>
       </div>
     </section>
 
     <!-- CTA Section -->
     <section class="w-full bg-gradient-to-r from-primary/10 to-secondary/10 py-20 flex flex-col items-center m-0 px-2 sm:px-4">
       <div class="mockup-window border bg-base-100 p-8 flex flex-col items-center max-w-2xl w-full">
-        <h2 class="text-2xl font-bold mb-4">¿Listo para comenzar?</h2>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white drop-shadow-lg">
+          ¿Listo para <span class="text-success">comenzar</span>?
+        </h2>
         <p class="mb-6 text-base-content">Crea tu cuenta o explora la app como invitado.</p>
         <div class="join">
           <a href="/users/register" class="btn btn-success join-item">Crear Cuenta</a>
           <a href="/books" class="btn btn-primary join-item">Explorar Libros</a>
+        </div>
+        <div class="flex flex-col items-center justify-center h-full w-full mt-12">
+          <span class="text-2xl text-base-content/70">¿Aún no tienes cuenta?</span>
+          <span class="text-base text-base-content/50 mt-2">Regístrate gratis y comienza a gestionar tu biblioteca hoy mismo.</span>
         </div>
       </div>
     </section>

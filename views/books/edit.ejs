@@ -8,13 +8,14 @@
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs') %>
     <div class="flex flex-1 items-center justify-center py-8 px-2 sm:px-4 animate-fade">
-      <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-3xl w-full min-h-[220px]">
+      <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-4xl w-full min-h-[220px]">
         <h1 class="card-title text-4xl font-bold mb-8 text-center">Editar Libro</h1>
         <% if (messages.error) { %>
           <div class="alert alert-error mb-6 text-lg"><%- messages.error %></div>
         <% } %>
-        <form action="/books/edit/<%= book.id_book %>" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <form action="/books/edit/<%= book.id_book %>" method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div class="space-y-6">
+            <!-- Datos principales -->
             <div>
               <label class="block text-lg font-semibold mb-2">Nombre</label>
               <input type="text" name="name" value="<%= book.name %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
@@ -32,7 +33,8 @@
               <input type="number" name="num_pages" value="<%= book.num_pages %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
             </div>
           </div>
-          <div class="space-y-6">
+          <div class="space-y-6 flex flex-col justify-between h-full">
+            <!-- Selección de autor, categoría, editorial y portada -->
             <div>
               <label class="block text-lg font-semibold mb-2">Autor</label>
               <select name="id_author" class="select select-bordered select-lg w-full" required>
@@ -60,17 +62,17 @@
                 <% }) %>
               </select>
             </div>
-          </div>
-          <div class="space-y-6">
             <div>
               <label class="block text-lg font-semibold mb-2">Portada (URL)</label>
               <input type="url" name="cover_url" id="cover_url" value="<%= book.cover_url || '' %>" autocomplete="off" class="input input-bordered input-lg w-full" placeholder="https://..." oninput="previewCover(this.value)" />
-              <div class="mt-4 flex flex-col items-center">
-                <img id="coverPreview" src="<%= book.cover_url ? book.cover_url : 'https://placehold.co/200x300?text=Vista+previa' %>" alt="Vista previa portada" class="rounded-xl shadow-md max-h-60 object-contain border border-base-300 bg-base-100" style="max-width:200px;" />
-              </div>
             </div>
           </div>
-          <div class="col-span-1 md:col-span-2 flex justify-center mt-8">
+          <div class="flex flex-col items-center justify-center h-full">
+            <!-- Vista previa portada -->
+            <span class="block text-lg font-semibold mb-2">Vista previa</span>
+            <img id="coverPreview" src="<%= book.cover_url ? book.cover_url : 'https://placehold.co/300x440?text=Vista+previa' %>" alt="Vista previa portada" class="rounded-xl shadow-md max-h-80 object-contain border border-base-300 bg-base-100" style="max-width:260px;" />
+          </div>
+          <div class="col-span-1 md:col-span-3 flex justify-center mt-8">
             <button type="submit" class="btn btn-primary btn-lg btn-wide">Guardar</button>
           </div>
         </form>
