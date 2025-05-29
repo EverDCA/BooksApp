@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BooksApp - Bienvenido</title>
+    <link rel="stylesheet" href="/output.css" />
+  </head>
+  <body class="min-h-screen flex flex-col text-white">
+    <%- include('./books/navbar.ejs') %>
+    <!-- Hero Section: full width/height -->
+    <section class="hero min-h-screen w-full bg-gradient-to-tr from-fuchsia-700/70 to-cyan-700/70 flex items-center justify-center relative overflow-hidden ">
+      <div class="hero-content flex flex-col items-center z-10 text-center w-full px-4">
+        <h1 class="text-5xl md:text-7xl font-extrabold text-white drop-shadow-lg mb-6 animate-fade-down animate-once animate-delay-200 animate-ease-in-out">Bienvenido a <span class="text-accent">BooksApp</span></h1>
+        <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl animate-fade animate-delay-500">Gestiona tu biblioteca personal de manera sencilla, moderna y eficiente. Explora, agrega y administra libros, autores, editoriales y categorías con una interfaz amigable y responsiva.</p>
+        <div class="flex flex-col md:flex-row gap-4 justify-center animate-fade-up animate-delay-700">
+          <a href="/books" class="btn btn-primary btn-lg">Explorar Libros</a>
+          <a href="/users/register" class="btn btn-accent btn-lg">Crear Cuenta</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section: datos reales -->
+    <section class="w-full flex flex-col items-center py-16 bg-base-100">
+      <div class="w-full max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-8 px-4">
+        <div class="stat bg-base-200 rounded-xl shadow-md">
+          <div class="stat-figure text-primary">
+            <i class="fa-solid fa-book fa-2x"></i>
+          </div>
+          <div class="stat-title">Libros</div>
+          <div class="stat-value text-primary"><%= stats.books %></div>
+          <div class="stat-desc">En tu biblioteca</div>
+        </div>
+        <div class="stat bg-base-200 rounded-xl shadow-md">
+          <div class="stat-figure text-secondary">
+            <i class="fa-solid fa-user-pen fa-2x"></i>
+          </div>
+          <div class="stat-title">Autores</div>
+          <div class="stat-value text-secondary"><%= stats.authors %></div>
+          <div class="stat-desc">Registrados</div>
+        </div>
+        <div class="stat bg-base-200 rounded-xl shadow-md">
+          <div class="stat-figure text-warning">
+            <i class="fa-solid fa-building fa-2x"></i>
+          </div>
+          <div class="stat-title">Editoriales</div>
+          <div class="stat-value text-warning"><%= stats.publishers %></div>
+          <div class="stat-desc">Colaboradores</div>
+        </div>
+        <div class="stat bg-base-200 rounded-xl shadow-md">
+          <div class="stat-figure text-success">
+            <i class="fa-solid fa-building fa-2x"></i>
+          </div>
+          <div class="stat-title">Categorías</div>
+          <div class="stat-value text-success"><%= stats.categories %></div>
+          <div class="stat-desc">Diferentes géneros</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divider con icono y animación -->
+    <div class="flex items-center justify-center w-full py-8">
+      <div class="flex items-center gap-4">
+        <span class="text-3xl text-primary "><i class="fa-solid fa-star"></i></span>
+        <span class="text-xl font-bold text-base-content">Explora más funciones</span>
+        <span class="text-3xl text-secondary e"><i class="fa-solid fa-star"></i></span>
+      </div>
+    </div>
+
+    <!-- Carousel destacado -->
+    <section class="w-full bg-base-100 py-16 flex flex-col items-center">
+      <h2 class="text-3xl font-bold mb-8 text-center text-primary">Libros destacados</h2>
+      <div id="carousel-libros" class="carousel w-full max-w-7xl rounded-xl shadow-lg overflow-hidden relative group">
+        <% featuredBooks.slice(0, 30).forEach(function(book, idx) { %>
+          <div class="carousel-item w-full flex flex-col md:flex-row items-center justify-center gap-8 p-8 bg-base-200 transition-transform duration-700 ease-in-out">
+            <img src="<%= book.coverUrl || 'https://picsum.photos/seed/' + book.id + '/300/400' %>" class="w-40 sm:w-48 md:w-56 h-56 sm:h-64 md:h-80 object-cover rounded-xl shadow-md mx-auto" alt="<%= book.title %>" />
+            <div class="flex-1 text-left max-w-xl">
+              <h3 class="text-2xl font-bold text-primary mb-2 break-words"><%= book.title %></h3>
+              <p class="mb-1 text-base-content">Autor: <span class="font-semibold"><%= book.Author ? book.Author.name : 'Desconocido' %></span></p>
+              <p class="mb-1 text-base-content">Editorial: <span class="font-semibold"><%= book.Publisher ? book.Publisher.name : 'Desconocida' %></span></p>
+              <p class="mb-1 text-base-content">Categoría: <span class="font-semibold"><%= book.Category ? book.Category.name : 'Sin categoría' %></span></p>
+              <p class="mt-2 text-sm text-base-content/70 break-words"><%= book.description ? book.description.substring(0, 120) + '...' : '' %></p>
+              <a href="/books" class="btn btn-primary btn-sm mt-4">Ver más libros</a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+      <script>
+        // Carousel auto-move suave, máximo 30 libros, loop infinito
+        (function() {
+          const carousel = document.getElementById('carousel-libros');
+          const items = carousel.querySelectorAll('.carousel-item');
+          const total = items.length;
+          let idx = 0;
+          let interval;
+          function show(idx) {
+            carousel.scrollTo({ left: carousel.offsetWidth * idx, behavior: 'smooth' });
+          }
+          function next() {
+            idx = (idx + 1) % total;
+            show(idx);
+          }
+          function start() {
+            interval = setInterval(next, 3000);
+          }
+          function stop() {
+            clearInterval(interval);
+          }
+          carousel.addEventListener('mouseenter', stop);
+          carousel.addEventListener('mouseleave', start);
+          window.addEventListener('resize', () => show(idx));
+          show(0); start();
+        })();
+      </script>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section class="w-full bg-base-200 py-16 flex flex-col items-center">
+      <h2 class="text-3xl font-bold mb-8 text-center text-secondary">Preguntas Frecuentes</h2>
+      <div class="w-full max-w-4xl">
+        <div class="collapse collapse-arrow bg-base-100 mb-4">
+          <input type="radio" name="faq" checked="checked" />
+          <div class="collapse-title text-xl font-medium">¿Cómo agrego un nuevo libro?</div>
+          <div class="collapse-content">
+            <p>Haz clic en "Agregar Libro" en el menú superior y completa el formulario con los datos del libro.</p>
+          </div>
+        </div>
+        <div class="collapse collapse-arrow bg-base-100 mb-4">
+          <input type="radio" name="faq" />
+          <div class="collapse-title text-xl font-medium">¿Puedo restaurar registros eliminados?</div>
+          <div class="collapse-content">
+            <p>Sí, desde la sección <a href="/recovery" class="link link-primary">Reestablecer</a> puedes restaurar libros, autores, categorías y editoriales desactivados.</p>
+          </div>
+        </div>
+        <div class="collapse collapse-arrow bg-base-100">
+          <input type="radio" name="faq" />
+          <div class="collapse-title text-xl font-medium">¿Cómo contacto soporte?</div>
+          <div class="collapse-content">
+            <p>Puedes escribirnos a <a href="mailto:contacto@booksapp.com" class="link link-secondary">contacto@booksapp.com</a> o visitar nuestro <a href="https://github.com/everdca/BooksApp" class="link link-accent">GitHub</a>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="w-full bg-gradient-to-r from-primary/10 to-secondary/10 py-20 flex flex-col items-center m-0 ">
+      <div class="mockup-window border bg-base-100 p-8 flex flex-col items-center max-w-2xl w-full">
+        <h2 class="text-2xl font-bold mb-4">¿Listo para comenzar?</h2>
+        <p class="mb-6 text-base-content">Crea tu cuenta o explora la app como invitado.</p>
+        <div class="join">
+          <a href="/users/register" class="btn btn-success join-item">Crear Cuenta</a>
+          <a href="/books" class="btn btn-primary join-item">Explorar Libros</a>
+        </div>
+      </div>
+    </section>
+    <%- include('./footer.ejs') %>
+  </body>
+</html>

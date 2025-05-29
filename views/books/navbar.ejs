@@ -1,10 +1,60 @@
-<nav class="navbar bg-base-200 shadow-md border-b border-base-300">
-  <div class="container mx-auto px-4 flex items-center justify-between">
-    <a href="/" class="text-xl font-bold tracking-wide text-white hover:text-indigo-600 transition-colors">MyBookApp</a>
-    <div class="flex gap-2">
-      <a href="/" class="btn btn-ghost btn-sm text-base-content">Inicio</a>
-      <a href="/books" class="btn btn-ghost btn-sm text-base-content">Libros</a>
-      <a href="/books/add" class="btn btn-primary btn-sm">Agregar Libro</a>
+<nav class="navbar bg-base-100 shadow-sm z-50 relative w-full">
+  <div class="flex-1 min-w-0">
+    <a href="/" class="btn btn-ghost text-xl font-bold tracking-wide whitespace-nowrap overflow-hidden text-ellipsis">BooksApp</a>
+  </div>
+  <div class="flex-none">
+    <!-- Mobile menu button -->
+    <div class="block lg:hidden">
+      <button id="menu-toggle" class="btn btn-square btn-ghost">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      </button>
     </div>
+    <!-- Desktop menu -->
+    <ul class="menu menu-horizontal px-1 flex-nowrap hidden lg:flex">
+      <li class="relative z-50">
+        <details>
+          <summary class="whitespace-nowrap">Gestión</summary>
+          <ul class="bg-base-100 rounded-t-none p-2 shadow-lg border border-base-200 absolute left-0 top-full min-w-[180px] z-50 w-max">
+            <li><a href="/books" class="whitespace-nowrap">Libros</a></li>
+            <li><a href="/authors" class="whitespace-nowrap">Autores</a></li>
+            <li><a href="/categories" class="whitespace-nowrap">Categorías</a></li>
+            <li><a href="/publishers" class="whitespace-nowrap">Editoriales</a></li>
+            <li><a href="/recovery" class="whitespace-nowrap">Reestablecer</a></li>
+          </ul>
+        </details>
+      </li>
+      <li><a href="/dashboard" class="whitespace-nowrap">Dashboard</a></li>
+    </ul>
+    <!-- Mobile dropdown menu -->
+    <div id="mobile-menu" class="absolute top-full right-2 mt-2 w-56 bg-base-100 rounded-xl shadow-lg border border-base-200 z-50 p-4 space-y-2 lg:hidden hidden">
+      <details>
+        <summary class="whitespace-nowrap cursor-pointer py-2 px-2 rounded hover:bg-base-200">Gestión</summary>
+        <ul class="pl-4">
+          <li><a href="/books" class="block py-1">Libros</a></li>
+          <li><a href="/authors" class="block py-1">Autores</a></li>
+          <li><a href="/categories" class="block py-1">Categorías</a></li>
+          <li><a href="/publishers" class="block py-1">Editoriales</a></li>
+          <li><a href="/recovery" class="block py-1">Reestablecer</a></li>
+        </ul>
+      </details>
+      <a href="/dashboard" class="block py-2 px-2 rounded hover:bg-base-200 whitespace-nowrap">Dashboard</a>
+    </div>
+    <script>
+      const menuToggle = document.getElementById('menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      menuToggle && menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+      // Opcional: cerrar menú al navegar
+      mobileMenu && mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+      });
+      // Cerrar menú al hacer scroll
+      window.addEventListener('scroll', () => {
+        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+        }
+      });
+    </script>
   </div>
 </nav>

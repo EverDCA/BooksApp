@@ -7,7 +7,7 @@ const flash = require('express-flash');
 const session = require('express-session');
 const { connect } = require('./config/database'); // Updated to use Sequelize
 
-const indexRouter = require('./routes/index');
+const mainRouter = require('./routes/main'); // Nueva ruta principal
 const usersRouter = require('./routes/users');
 const booksRouter = require('./routes/books');
 const categoriesRouter = require('./routes/categories');
@@ -58,7 +58,7 @@ app.use(flash());
   }
 })();
 
-app.use('/', indexRouter);
+app.use('/', mainRouter); // Landing y dashboard
 app.use('/users', usersRouter);
 app.use('/books', booksRouter);
 app.use('/categories', categoriesRouter);
