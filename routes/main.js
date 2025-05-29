@@ -45,14 +45,14 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-// Nueva página principal (landing) con datos de la base de datos
+// Nueva página principal (landing)
 router.get('/', async (req, res) => {
   try {
-    // Libros destacados: los 3 más recientes
+    // Libros destacados: los 30 más recientes
     const featuredBooks = await Book.findAll({
       where: { state: 1 },
       order: [['createdAt', 'DESC']],
-      limit: 3,
+      limit: 30,
       include: [Author, Category, Publisher]
     });
     // Estadísticas

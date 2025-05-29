@@ -51,6 +51,11 @@ const Book = sequelize.define('Book', {
     type: DataTypes.TINYINT,
     defaultValue: 1,
   },
+  cover_url: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    comment: 'URL de la imagen de portada del libro',
+  },
 }, {
   tableName: 'books',
   timestamps: true,

@@ -48,7 +48,8 @@ router.get('/add', async (req, res) => {
       num_pages: '',
       id_author: '',
       id_category: '',
-      id_publisher: ''
+      id_publisher: '',
+      cover_url: ''
     });
   } catch (error) {
     res.status(500).send('Error al cargar el formulario de añadir libro');
@@ -58,7 +59,7 @@ router.get('/add', async (req, res) => {
 // Ruta para procesar el formulario de añadir libro
 router.post('/add', async (req, res) => {
   try {
-    const { name, isbn, year_published, num_pages, id_author, id_category, id_publisher } = req.body;
+    const { name, isbn, year_published, num_pages, id_author, id_category, id_publisher, cover_url } = req.body;
     await Book.create({
       name,
       isbn,
@@ -67,6 +68,7 @@ router.post('/add', async (req, res) => {
       id_author,
       id_category,
       id_publisher,
+      cover_url,
       state: 1
     });
     req.flash('success', 'Libro añadido correctamente');
@@ -94,7 +96,7 @@ router.get('/edit/:id', async (req, res) => {
 // Ruta para procesar la edición de un libro
 router.post('/edit/:id', async (req, res) => {
   try {
-    const { name, isbn, year_published, num_pages, id_author, id_category, id_publisher } = req.body;
+    const { name, isbn, year_published, num_pages, id_author, id_category, id_publisher, cover_url } = req.body;
     await Book.update({
       name,
       isbn,
@@ -102,7 +104,8 @@ router.post('/edit/:id', async (req, res) => {
       num_pages,
       id_author,
       id_category,
-      id_publisher
+      id_publisher,
+      cover_url
     }, {
       where: { id_book: req.params.id }
     });

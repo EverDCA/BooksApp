@@ -21,8 +21,8 @@
     </section>
 
     <!-- Stats Section: datos reales -->
-    <section class="w-full flex flex-col items-center py-16 bg-base-100">
-      <div class="w-full max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-8 px-4">
+    <section class="w-full flex flex-col items-center py-16 bg-base-100 px-2 sm:px-4">
+      <div class="w-full max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-8">
         <div class="stat bg-base-200 rounded-xl shadow-md">
           <div class="stat-figure text-primary">
             <i class="fa-solid fa-book fa-2x"></i>
@@ -59,7 +59,7 @@
     </section>
 
     <!-- Divider con icono y animación -->
-    <div class="flex items-center justify-center w-full py-8">
+    <div class="flex items-center justify-center w-full py-8 px-2 sm:px-4">
       <div class="flex items-center gap-4">
         <span class="text-3xl text-primary "><i class="fa-solid fa-star"></i></span>
         <span class="text-xl font-bold text-base-content">Explora más funciones</span>
@@ -67,55 +67,46 @@
       </div>
     </div>
 
-    <!-- Carousel destacado -->
-    <section class="w-full bg-base-100 py-16 flex flex-col items-center">
+    <!-- Slider destacado -->
+    <section class="w-full bg-base-100 py-16 flex flex-col items-center px-2 sm:px-4">
       <h2 class="text-3xl font-bold mb-8 text-center text-primary">Libros destacados</h2>
-      <div id="carousel-libros" class="carousel w-full max-w-7xl rounded-xl shadow-lg overflow-hidden relative group">
-        <% featuredBooks.slice(0, 30).forEach(function(book, idx) { %>
-          <div class="carousel-item w-full flex flex-col md:flex-row items-center justify-center gap-8 p-8 bg-base-200 transition-transform duration-700 ease-in-out">
-            <img src="<%= book.coverUrl || 'https://picsum.photos/seed/' + book.id + '/300/400' %>" class="w-40 sm:w-48 md:w-56 h-56 sm:h-64 md:h-80 object-cover rounded-xl shadow-md mx-auto" alt="<%= book.title %>" />
-            <div class="flex-1 text-left max-w-xl">
-              <h3 class="text-2xl font-bold text-primary mb-2 break-words"><%= book.title %></h3>
-              <p class="mb-1 text-base-content">Autor: <span class="font-semibold"><%= book.Author ? book.Author.name : 'Desconocido' %></span></p>
-              <p class="mb-1 text-base-content">Editorial: <span class="font-semibold"><%= book.Publisher ? book.Publisher.name : 'Desconocida' %></span></p>
-              <p class="mb-1 text-base-content">Categoría: <span class="font-semibold"><%= book.Category ? book.Category.name : 'Sin categoría' %></span></p>
-              <p class="mt-2 text-sm text-base-content/70 break-words"><%= book.description ? book.description.substring(0, 120) + '...' : '' %></p>
-              <a href="/books" class="btn btn-primary btn-sm mt-4">Ver más libros</a>
+      <div class="w-full max-w-7xl overflow-x-auto scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100">
+        <div class="flex gap-8 min-w-[320px] pb-4 px-2 sm:px-4 rounded-xl">
+          <% featuredBooks.forEach(function(book, idx) { %>
+            <div class="relative min-w-[180px] max-w-xs flex-shrink-0 sm:min-w-[220px] md:min-w-[220px] lg:min-w-[220px] " style="width:clamp(180px,40vw,220px) ">
+              <div class=" overflow-hidden shadow-md h-72 w-full flex flex-col justify-end group md:h-80">
+                <img src="<%= book.cover_url ? book.cover_url : 'https://placehold.co/200x300?text=Sin+portada' %>" alt="Portada de <%= book.name %>" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105 rounded-xl" />
+                <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3 flex flex-col items-start">
+                  <span class="text-white font-bold text-base truncate w-full drop-shadow-md"><%= book.name %></span>
+                  <button class="btn btn-primary btn-sm mt-2" onclick="document.getElementById('modal_book_<%= idx %>').showModal()">Ver</button>
+                </div>
+              </div>
+              <!-- Modal para cada libro -->
+              <dialog id="modal_book_<%= idx %>" class="modal">
+                <div class="modal-box max-w-md">
+                  <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                  </form>
+                  <div class="flex flex-col items-center">
+                    <img src="<%= book.cover_url ? book.cover_url : 'https://placehold.co/200x300?text=Sin+portada' %>" alt="Portada de <%= book.name %>" class="rounded-lg w-40 h-60 object-cover mb-4 border border-base-300" />
+                    <h3 class="text-lg font-bold text-primary mb-2"><%= book.name %></h3>
+                    <p class="text-base-content mb-1"><span class="font-semibold">Autor:</span> <%= book.Author ? book.Author.name : 'Desconocido' %></p>
+                    <p class="text-base-content mb-1"><span class="font-semibold">Editorial:</span> <%= book.Publisher ? book.Publisher.name : 'Desconocida' %></p>
+                    <p class="text-base-content mb-1"><span class="font-semibold">Categoría:</span> <%= book.Category ? book.Category.name : 'Sin categoría' %></p>
+                    <% if (book.description) { %>
+                      <p class="text-sm text-base-content mt-2"><%= book.description %></p>
+                    <% } %>
+                  </div>
+                </div>
+              </dialog>
             </div>
-          </div>
-        <% }) %>
+          <% }) %>
+        </div>
       </div>
-      <script>
-        // Carousel auto-move suave, máximo 30 libros, loop infinito
-        (function() {
-          const carousel = document.getElementById('carousel-libros');
-          const items = carousel.querySelectorAll('.carousel-item');
-          const total = items.length;
-          let idx = 0;
-          let interval;
-          function show(idx) {
-            carousel.scrollTo({ left: carousel.offsetWidth * idx, behavior: 'smooth' });
-          }
-          function next() {
-            idx = (idx + 1) % total;
-            show(idx);
-          }
-          function start() {
-            interval = setInterval(next, 3000);
-          }
-          function stop() {
-            clearInterval(interval);
-          }
-          carousel.addEventListener('mouseenter', stop);
-          carousel.addEventListener('mouseleave', start);
-          window.addEventListener('resize', () => show(idx));
-          show(0); start();
-        })();
-      </script>
     </section>
 
     <!-- FAQ Accordion -->
-    <section class="w-full bg-base-200 py-16 flex flex-col items-center">
+    <section class="w-full bg-base-200 py-16 flex flex-col items-center px-2 sm:px-4">
       <h2 class="text-3xl font-bold mb-8 text-center text-secondary">Preguntas Frecuentes</h2>
       <div class="w-full max-w-4xl">
         <div class="collapse collapse-arrow bg-base-100 mb-4">
@@ -143,7 +134,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="w-full bg-gradient-to-r from-primary/10 to-secondary/10 py-20 flex flex-col items-center m-0 ">
+    <section class="w-full bg-gradient-to-r from-primary/10 to-secondary/10 py-20 flex flex-col items-center m-0 px-2 sm:px-4">
       <div class="mockup-window border bg-base-100 p-8 flex flex-col items-center max-w-2xl w-full">
         <h2 class="text-2xl font-bold mb-4">¿Listo para comenzar?</h2>
         <p class="mb-6 text-base-content">Crea tu cuenta o explora la app como invitado.</p>

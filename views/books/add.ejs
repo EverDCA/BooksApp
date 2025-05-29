@@ -7,61 +7,80 @@
   </head>
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs') %>
-    <div class="flex flex-1 items-center justify-center py-8 animate-fade-down">
-      <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-2xl w-full min-h-[220px]">
+    <div class="flex flex-1 items-center justify-center py-8 px-2 sm:px-4 animate-fade">
+      <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-3xl w-full min-h-[220px]">
         <h1 class="card-title text-4xl font-bold mb-8 text-center">Agregar Libro</h1>
         <% if (messages.error) { %>
           <div class="alert alert-error mb-6 text-lg"><%- messages.error %></div>
         <% } %>
-        <form action="/books/add" method="POST" class="space-y-6">
-          <div>
-            <label class="block text-lg font-semibold mb-2">Nombre</label>
-            <input type="text" name="name" value="<%= name %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
+        <form action="/books/add" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-6">
+            <div>
+              <label class="block text-lg font-semibold mb-2">Nombre</label>
+              <input type="text" name="name" value="<%= name %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
+            </div>
+            <div>
+              <label class="block text-lg font-semibold mb-2">ISBN</label>
+              <input type="text" name="isbn" value="<%= isbn %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
+            </div>
+            <div>
+              <label class="block text-lg font-semibold mb-2">Año de Publicación</label>
+              <input type="number" name="year_published" value="<%= year_published %>" class="input input-bordered input-lg w-full" required />
+            </div>
+            <div>
+              <label class="block text-lg font-semibold mb-2">Número de Páginas</label>
+              <input type="number" name="num_pages" value="<%= num_pages %>" class="input input-bordered input-lg w-full" required />
+            </div>
           </div>
-          <div>
-            <label class="block text-lg font-semibold mb-2">ISBN</label>
-            <input type="text" name="isbn" value="<%= isbn %>" autocomplete="off" class="input input-bordered input-lg w-full" required />
+          <div class="space-y-6 flex flex-col justify-between h-full">
+            <div>
+              <label class="block text-lg font-semibold mb-2">Autor</label>
+              <select name="id_author" class="select select-bordered select-lg w-full" required>
+                <option value="">Selecciona un autor</option>
+                <% authors.forEach(author => { %>
+                  <option value="<%= author.id_author %>" <%= id_author == author.id_author ? 'selected' : '' %>><%= author.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div>
+              <label class="block text-lg font-semibold mb-2">Categoría</label>
+              <select name="id_category" class="select select-bordered select-lg w-full" required>
+                <option value="">Selecciona una categoría</option>
+                <% categories.forEach(category => { %>
+                  <option value="<%= category.id_category %>" <%= id_category == category.id_category ? 'selected' : '' %>><%= category.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div>
+              <label class="block text-lg font-semibold mb-2">Editorial</label>
+              <select name="id_publisher" class="select select-bordered select-lg w-full" required>
+                <option value="">Selecciona una editorial</option>
+                <% publishers.forEach(publisher => { %>
+                  <option value="<%= publisher.id_publisher %>" <%= id_publisher == publisher.id_publisher ? 'selected' : '' %>><%= publisher.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div>
+              <label class="block text-lg font-semibold mb-2">Portada (URL)</label>
+              <input type="url" name="cover_url" id="cover_url" value="<%= cover_url || '' %>" autocomplete="off" class="input input-bordered input-lg w-full" placeholder="https://..." oninput="previewCover(this.value)" />
+              <div class="mt-4 flex flex-col items-center">
+                <img id="coverPreview" src="<%= cover_url ? cover_url : 'https://placehold.co/200x300?text=Vista+previa' %>" alt="Vista previa portada" class="rounded-xl shadow-md max-h-60 object-contain border border-base-300 bg-base-100" style="max-width:200px;" />
+              </div>
+            </div>
           </div>
-          <div>
-            <label class="block text-lg font-semibold mb-2">Año de Publicación</label>
-            <input type="number" name="year_published" value="<%= year_published %>" class="input input-bordered input-lg w-full" required />
+          <div class="col-span-1 md:col-span-2 flex justify-center mt-8">
+            <button type="submit" class="btn btn-primary btn-lg btn-wide">Guardar</button>
           </div>
-          <div>
-            <label class="block text-lg font-semibold mb-2">Número de Páginas</label>
-            <input type="number" name="num_pages" value="<%= num_pages %>" class="input input-bordered input-lg w-full" required />
-          </div>
-          <div>
-            <label class="block text-lg font-semibold mb-2">Autor</label>
-            <select name="id_author" class="select select-bordered select-lg w-full" required>
-              <option value="">Selecciona un autor</option>
-              <% authors.forEach(author => { %>
-                <option value="<%= author.id_author %>" <%= id_author == author.id_author ? 'selected' : '' %>><%= author.name %></option>
-              <% }) %>
-            </select>
-          </div>
-          <div>
-            <label class="block text-lg font-semibold mb-2">Categoría</label>
-            <select name="id_category" class="select select-bordered select-lg w-full" required>
-              <option value="">Selecciona una categoría</option>
-              <% categories.forEach(category => { %>
-                <option value="<%= category.id_category %>" <%= id_category == category.id_category ? 'selected' : '' %>><%= category.name %></option>
-              <% }) %>
-            </select>
-          </div>
-          <div>
-            <label class="block text-lg font-semibold mb-2">Editorial</label>
-            <select name="id_publisher" class="select select-bordered select-lg w-full" required>
-              <option value="">Selecciona una editorial</option>
-              <% publishers.forEach(publisher => { %>
-                <option value="<%= publisher.id_publisher %>" <%= id_publisher == publisher.id_publisher ? 'selected' : '' %>><%= publisher.name %></option>
-              <% }) %>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg btn-wide mx-auto block">Guardar</button>
         </form>
       </div>
     </div>
     
     <%- include('../footer.ejs') %>
+    <script>
+      function previewCover(url) {
+        const img = document.getElementById('coverPreview');
+        img.src = url && url.trim() ? url : 'https://placehold.co/200x300?text=Vista+previa';
+      }
+    </script>
   </body>
 </html>
