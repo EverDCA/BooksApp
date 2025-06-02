@@ -21,7 +21,8 @@ router.get('/', async (req, res) => {
       categories,
       messages: req.flash(),
       currentPage: page,
-      totalPages
+      totalPages,
+      user: req.session.user
     });
   } catch (error) {
     res.status(500).send('Error al obtener las categorías');
@@ -30,7 +31,7 @@ router.get('/', async (req, res) => {
 
 // Mostrar formulario para añadir categoría
 router.get('/add', (req, res) => {
-  res.render('categories/add', { name: '', messages: req.flash() });
+  res.render('categories/add', { name: '', messages: req.flash(), user: req.session.user });
 });
 
 // Procesar formulario para añadir categoría
@@ -51,7 +52,7 @@ router.get('/edit/:id', async (req, res) => {
   try {
     const category = await Category.findByPk(req.params.id);
     if (!category) return res.status(404).send('Categoría no encontrada');
-    res.render('categories/edit', { category, messages: req.flash() });
+    res.render('categories/edit', { category, messages: req.flash(), user: req.session.user });
   } catch (error) {
     res.status(500).send('Error al cargar el formulario de edición');
   }

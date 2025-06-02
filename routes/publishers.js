@@ -19,7 +19,8 @@ router.get('/', async (req, res) => {
       publishers,
       messages: req.flash(),
       currentPage: page,
-      totalPages
+      totalPages,
+      user: req.session.user
     });
   } catch (error) {
     res.status(500).send('Error al obtener las editoriales');
@@ -28,7 +29,7 @@ router.get('/', async (req, res) => {
 
 // Mostrar formulario para añadir publisher
 router.get('/add', (req, res) => {
-  res.render('publishers/add', { name: '', messages: req.flash() });
+  res.render('publishers/add', { name: '', messages: req.flash(), user: req.session.user });
 });
 
 // Procesar formulario para añadir publisher
@@ -49,7 +50,7 @@ router.get('/edit/:id', async (req, res) => {
   try {
     const publisher = await Publisher.findByPk(req.params.id);
     if (!publisher) return res.status(404).send('Editorial no encontrada');
-    res.render('publishers/edit', { publisher, messages: req.flash() });
+    res.render('publishers/edit', { publisher, messages: req.flash(), user: req.session.user });
   } catch (error) {
     res.status(500).send('Error al cargar el formulario de edición');
   }

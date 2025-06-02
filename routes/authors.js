@@ -21,7 +21,8 @@ router.get('/', async (req, res) => {
       authors,
       messages: req.flash(),
       currentPage: page,
-      totalPages
+      totalPages,
+      user: req.session.user
     });
   } catch (error) {
     res.status(500).send('Error al obtener los autores');
@@ -30,7 +31,7 @@ router.get('/', async (req, res) => {
 
 // Mostrar formulario para añadir autor
 router.get('/add', (req, res) => {
-  res.render('authors/add', { name: '', messages: req.flash() });
+  res.render('authors/add', { name: '', messages: req.flash(), user: req.session.user });
 });
 
 // Procesar formulario para añadir autor
@@ -51,7 +52,7 @@ router.get('/edit/:id', async (req, res) => {
   try {
     const author = await Author.findByPk(req.params.id);
     if (!author) return res.status(404).send('Autor no encontrado');
-    res.render('authors/edit', { author, messages: req.flash() });
+    res.render('authors/edit', { author, messages: req.flash(), user: req.session.user });
   } catch (error) {
     res.status(500).send('Error al cargar el formulario de edición');
   }

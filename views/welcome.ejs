@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/output.css" />
   </head>
   <body class="min-h-screen flex flex-col text-white">
-    <%- include('./books/navbar.ejs') %>
+    <%- include('./books/navbar.ejs', { user: typeof user !== 'undefined' ? user : null }) %>
     <!-- Hero Section: full width/height -->
     <section class="hero min-h-screen w-full bg-gradient-to-tr from-fuchsia-700/60 to-cyan-700/60 flex items-center justify-center relative overflow-hidden ">
       <div class="hero-content flex flex-col items-center z-10 text-center w-full px-4">

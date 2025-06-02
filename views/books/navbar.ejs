@@ -10,34 +10,92 @@
       </button>
     </div>
     <!-- Desktop menu -->
-    <ul class="menu menu-horizontal px-1 flex-nowrap hidden lg:flex">
-      <li class="relative z-50">
-        <details>
-          <summary class="whitespace-nowrap">Gestión</summary>
-          <ul class="bg-base-100 rounded-t-none p-2 shadow-lg border border-base-200 absolute left-0 top-full min-w-[180px] z-50 w-max">
-            <li><a href="/books" class="whitespace-nowrap">Libros</a></li>
-            <li><a href="/authors" class="whitespace-nowrap">Autores</a></li>
-            <li><a href="/categories" class="whitespace-nowrap">Categorías</a></li>
-            <li><a href="/publishers" class="whitespace-nowrap">Editoriales</a></li>
-            <li><a href="/recovery" class="whitespace-nowrap">Reestablecer</a></li>
-          </ul>
-        </details>
-      </li>
-      <li><a href="/dashboard" class="whitespace-nowrap">Dashboard</a></li>
+    <ul class="menu menu-horizontal px-1 flex-nowrap hidden lg:flex gap-2">
+      <% if (typeof user !== 'undefined' && user) { %>
+        <li><a href="/dashboard" class="btn btn-ghost rounded-btn hover:bg-primary/20 transition-colors whitespace-nowrap">Dashboard</a></li>
+        <li class="relative z-50">
+          <details>
+            <summary class="btn btn-ghost rounded-btn hover:bg-primary/20 transition-colors whitespace-nowrap">Gestión</summary>
+            <ul class="bg-base-100 rounded-t-none p-2 shadow-lg border border-base-200 absolute left-0 top-full min-w-[180px] z-50 w-max">
+              <li><a href="/books" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Libros</a></li>
+              <li><a href="/authors" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Autores</a></li>
+              <li><a href="/categories" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Categorías</a></li>
+              <li><a href="/publishers" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Editoriales</a></li>
+              <li><a href="/recovery" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Reestablecer</a></li>
+            </ul>
+          </details>
+        </li>
+        <li tabindex="0">
+          <details class="dropdown dropdown-end">
+            <summary class="btn btn-ghost rounded-btn flex items-center gap-2 hover:bg-primary/20 transition-colors">
+              <div class="avatar placeholder">
+                <div class="bg-primary text-white rounded-full w-8">
+                  <span class="text-lg font-bold"><%= user.name.charAt(0).toUpperCase() %></span>
+                </div>
+              </div>
+              <span class="font-semibold"><%= user.name %></span>
+            </summary>
+            <ul class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 mt-2">
+              <li><span class="text-xs text-gray-400">Rol: <%= user.role %></span></li>
+              <li><a href="/users/logout" class="btn btn-ghost w-full text-left hover:bg-error/20 transition-colors">Cerrar sesión</a></li>
+            </ul>
+          </details>
+        </li>
+      <% } else { %>
+        <li tabindex="0">
+          <details class="dropdown dropdown-end">
+            <summary class="btn btn-ghost rounded-btn flex items-center gap-2 hover:bg-primary/20 transition-colors">
+              <i class="fa-solid fa-user text-lg"></i>
+              <span class="font-semibold">Cuenta</span>
+            </summary>
+            <ul class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 mt-2">
+              <li><a href="/users/login" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Iniciar sesión</a></li>
+              <li><a href="/users/register" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Registrarse</a></li>
+            </ul>
+          </details>
+        </li>
+      <% } %>
     </ul>
     <!-- Mobile dropdown menu -->
     <div id="mobile-menu" class="absolute top-full right-2 mt-2 w-56 bg-base-100 rounded-xl shadow-lg border border-base-200 z-50 p-4 space-y-2 lg:hidden hidden">
-      <details>
-        <summary class="whitespace-nowrap cursor-pointer py-2 px-2 rounded hover:bg-base-200">Gestión</summary>
-        <ul class="pl-4">
-          <li><a href="/books" class="block py-1">Libros</a></li>
-          <li><a href="/authors" class="block py-1">Autores</a></li>
-          <li><a href="/categories" class="block py-1">Categorías</a></li>
-          <li><a href="/publishers" class="block py-1">Editoriales</a></li>
-          <li><a href="/recovery" class="block py-1">Reestablecer</a></li>
-        </ul>
-      </details>
-      <a href="/dashboard" class="block py-2 px-2 rounded hover:bg-base-200 whitespace-nowrap">Dashboard</a>
+      <% if (typeof user !== 'undefined' && user) { %>
+        <a href="/dashboard" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Dashboard</a>
+        <details>
+          <summary class="btn btn-ghost rounded-btn w-full text-left hover:bg-primary/20 transition-colors">Gestión</summary>
+          <ul class="pl-0">
+            <li><a href="/books" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Libros</a></li>
+            <li><a href="/authors" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Autores</a></li>
+            <li><a href="/categories" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Categorías</a></li>
+            <li><a href="/publishers" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Editoriales</a></li>
+            <li><a href="/recovery" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Reestablecer</a></li>
+          </ul>
+        </details>
+        <details class="dropdown dropdown-end w-full">
+          <summary class="btn btn-ghost rounded-btn flex items-center gap-2 w-full hover:bg-primary/20 transition-colors">
+            <div class="avatar placeholder">
+              <div class="bg-primary text-white rounded-full w-8">
+                <span class="text-lg font-bold"><%= user.name.charAt(0).toUpperCase() %></span>
+              </div>
+            </div>
+            <span class="font-semibold"><%= user.name %></span>
+          </summary>
+          <ul class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 mt-2">
+            <li><span class="text-xs text-gray-400">Rol: <%= user.role %></span></li>
+            <li><a href="/users/logout" class="btn btn-ghost w-full text-left hover:bg-error/20 transition-colors">Cerrar sesión</a></li>
+          </ul>
+        </details>
+      <% } else { %>
+        <details class="dropdown dropdown-end w-full">
+          <summary class="btn btn-ghost rounded-btn flex items-center gap-2 w-full hover:bg-primary/20 transition-colors">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="font-semibold">Cuenta</span>
+          </summary>
+          <ul class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 mt-2">
+            <li><a href="/users/login" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Iniciar sesión</a></li>
+            <li><a href="/users/register" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Registrarse</a></li>
+          </ul>
+        </details>
+      <% } %>
     </div>
     <script>
       const menuToggle = document.getElementById('menu-toggle');
@@ -48,12 +106,6 @@
       // Opcional: cerrar menú al navegar
       mobileMenu && mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-      });
-      // Cerrar menú al hacer scroll
-      window.addEventListener('scroll', () => {
-        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-          mobileMenu.classList.add('hidden');
-        }
       });
     </script>
   </div>

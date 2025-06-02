@@ -23,7 +23,8 @@ router.get('/', async (req, res) => {
       books,
       messages: req.flash(),
       currentPage: page,
-      totalPages
+      totalPages,
+      user: req.session.user // <-- Añadido para el navbar
     });
   } catch (error) {
     res.status(500).send('Error al obtener los libros');
@@ -49,7 +50,8 @@ router.get('/add', async (req, res) => {
       id_author: '',
       id_category: '',
       id_publisher: '',
-      cover_url: ''
+      cover_url: '',
+      user: req.session.user // <-- Añadido para el navbar
     });
   } catch (error) {
     res.status(500).send('Error al cargar el formulario de añadir libro');
@@ -87,7 +89,7 @@ router.get('/edit/:id', async (req, res) => {
     const categories = await Category.findAll({ where: { state: 1 } });
     const publishers = await Publisher.findAll({ where: { state: 1 } });
     if (!book) return res.status(404).send('Libro no encontrado');
-    res.render('books/edit', { book, authors, categories, publishers, messages: req.flash() });
+    res.render('books/edit', { book, authors, categories, publishers, messages: req.flash(), user: req.session.user });
   } catch (error) {
     res.status(500).send('Error al cargar el formulario de edición');
   }

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/output.css">
   </head>
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
-    <%- include('../books/navbar.ejs') %>
+    <%- include('../books/navbar.ejs', { user: typeof user !== 'undefined' ? user : null }) %>
     <div class="flex-1 flex flex-col">
       <div class="flex flex-1 items-center justify-center py-8 animate-fade">
         <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-2xl w-full min-h-[220px]">

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro | BooksApp</title>
+    <link rel="stylesheet" href="/output.css" />
+  </head>
+  <body class="min-h-screen flex flex-col bg-gradient-to-tr from-fuchsia-700/60 to-cyan-700/60">
+    <%- include('../books/navbar.ejs', { user: null }) %>
+    <main class="flex-1 flex flex-col items-center justify-center mb-10">
+      <div class="w-full max-w-md bg-base-100 rounded-3xl shadow-2xl p-10 mt-12 animate-fade-down animate-once animate-delay-200 animate-ease-in-out border-4 border-accent/30">
+        <div class="flex flex-col items-center mb-6">
+          <div class="avatar mb-2">
+            <div class="w-20 rounded-full ring ring-accent ring-offset-base-100 ring-offset-2">
+              <img src="https://api.dicebear.com/7.x/bottts/svg?seed=booksapp" alt="Avatar registro" />
+            </div>
+          </div>
+          <h2 class="text-3xl font-extrabold text-center text-accent mb-2 drop-shadow">Crea tu cuenta</h2>
+          <p class="text-base-content/70 text-center">¡Únete a la comunidad de BooksApp!</p>
+        </div>
+        <% if (messages.error) { %>
+          <div class="alert alert-error mb-4"><%= messages.error %></div>
+        <% } %>
+        <form action="/users/register" method="post" class="flex flex-col gap-5">
+          <label class="form-control w-full">
+            <span class="label-text mb-1 font-semibold">Nombre</span>
+            <input type="text" name="name" class="input input-bordered w-full input-accent" required autocomplete="name" placeholder="Tu nombre completo">
+          </label>
+          <label class="form-control w-full">
+            <span class="label-text mb-1 font-semibold">Correo</span>
+            <input type="email" name="email" class="input input-bordered w-full input-accent" required autocomplete="email" placeholder="ejemplo@email.com">
+          </label>
+          <label class="form-control w-full">
+            <span class="label-text mb-1 font-semibold">Contraseña</span>
+            <input type="password" name="password" class="input input-bordered w-full input-accent" required autocomplete="new-password" placeholder="Crea una contraseña segura">
+          </label>
+          <button type="submit" class="btn btn-accent w-full mt-2 btn-lg shadow-md hover:scale-105 transition-transform">Registrar cuenta <i class="fa-solid fa-arrow-right ml-2"></i></button>
+        </form>
+        <div class="divider my-6">o</div>
+        <div class="text-center">
+          <span>¿Ya tienes cuenta? <a href="/users/login" class="link link-primary font-semibold">Inicia sesión</a></span>
+        </div>
+      </div>
+    </main>
+    <%- include('../footer.ejs') %>
+  </body>
+</html>

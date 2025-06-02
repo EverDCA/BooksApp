@@ -7,7 +7,7 @@ const flash = require('express-flash');
 const session = require('express-session');
 const { connect } = require('./config/database'); // Updated to use Sequelize
 
-const mainRouter = require('./routes/main'); // Nueva ruta principal
+const dashboardRouter = require('./routes/dashboard');
 const usersRouter = require('./routes/users');
 const booksRouter = require('./routes/books');
 const categoriesRouter = require('./routes/categories');
@@ -52,19 +52,26 @@ app.use(flash());
     await Category.sync();
     await Publisher.sync();
     await Book.sync();
+    const User = require('./models/User');
+    await User.sync();
     console.log('Database connection established and all models synchronized.');
   } catch (error) {
     console.error('Database connection failed:', error);
   }
 })();
 
-app.use('/', mainRouter); // Landing y dashboard
-app.use('/users', usersRouter);
-app.use('/books', booksRouter);
-app.use('/categories', categoriesRouter);
-app.use('/authors', authorsRouter); 
-app.use('/publishers', publishersRouter);
+const { isAuthenticated } = require('./routes/users');
+
+// Mantén protegidas las rutas de gestión
+app.use('/books', isAuthenticated, booksRouter);
+app.use('/categories', isAuthenticated, categoriesRouter);
+app.use('/authors', isAuthenticated, authorsRouter);
+app.use('/publishers', isAuthenticated, publishersRouter);
 app.use('/recovery', recoveryRouter); // Use recovery router
+
+// Usa dashboardRouter para las rutas principales
+app.use('/', dashboardRouter);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
