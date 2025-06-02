@@ -4,9 +4,10 @@ const Book = require('../models/Book');
 const Author = require('../models/Author');
 const Category = require('../models/Category');
 const Publisher = require('../models/Publisher');
+const { isAuthenticated } = require('./users');
 
 // Vista principal de recuperación con paginación
-router.get('/', async (req, res) => {
+router.get('/', isAuthenticated, async (req, res) => {
   try {
     const pageBooks = parseInt(req.query.pageBooks) || 1;
     const pageAuthors = parseInt(req.query.pageAuthors) || 1;
@@ -38,7 +39,8 @@ router.get('/', async (req, res) => {
       publishersCount: publishersData.count,
       publishersPage: pagePublishers,
       publishersTotalPages: Math.ceil(publishersData.count / limit),
-      messages: req.flash()
+      messages: req.flash(),
+      user: req.session.user // <-- para el navbar
     });
   } catch (error) {
     res.status(500).send('Error al cargar la vista de recuperación');
