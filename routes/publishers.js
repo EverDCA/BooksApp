@@ -3,6 +3,7 @@ const router = express.Router();
 const Publisher = require('../models/Publisher');
 const { isAuthenticated } = require('./users');
 const { forbidUsuario } = require('./roles');
+const { Op } = require('sequelize');
 
 // Mostrar todas las editoriales activas con paginación
 router.get('/', isAuthenticated, forbidUsuario, async (req, res) => {
@@ -38,6 +39,12 @@ router.get('/add', isAuthenticated, forbidUsuario, (req, res) => {
 router.post('/add', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name } = req.body;
+    // Validar nombre de editorial existente
+    const existing = await Publisher.findOne({ where: { name } });
+    if (existing) {
+      req.flash('error', 'El nombre de la editorial ya está en uso');
+      return res.redirect('/publishers/add');
+    }
     await Publisher.create({ name, state: 1 });
     req.flash('success', 'Editorial añadida correctamente');
     res.redirect('/publishers');
@@ -62,6 +69,12 @@ router.get('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
 router.post('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name } = req.body;
+    // Validar nombre de editorial existente en otro registro
+    const existing = await Publisher.findOne({ where: { name, id_publisher: { [Op.ne]: req.params.id } } });
+    if (existing) {
+      req.flash('error', 'El nombre de la editorial ya está en uso');
+      return res.redirect(`/publishers/edit/${req.params.id}`);
+    }
     await Publisher.update({ name }, { where: { id_publisher: req.params.id } });
     req.flash('success', 'Editorial editada correctamente');
     res.redirect('/publishers');

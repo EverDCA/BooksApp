@@ -3,6 +3,7 @@ const router = express.Router();
 const Author = require('../models/Author');
 const { isAuthenticated } = require('./users');
 const { forbidUsuario } = require('./roles');
+const { Op } = require('sequelize');
 
 // Mostrar todos los autores activos con paginación
 router.get('/', isAuthenticated, forbidUsuario, async (req, res) => {
@@ -40,6 +41,12 @@ router.get('/add', isAuthenticated, forbidUsuario, (req, res) => {
 router.post('/add', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name } = req.body;
+    // Validar nombre de autor existente
+    const existing = await Author.findOne({ where: { name } });
+    if (existing) {
+      req.flash('error', 'El nombre de autor ya está en uso');
+      return res.redirect('/authors/add');
+    }
     await Author.create({ name, state: 1 });
     req.flash('success', 'Autor añadido correctamente');
     res.redirect('/authors');
@@ -64,6 +71,12 @@ router.get('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
 router.post('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name } = req.body;
+    // Validar nombre de autor existente en otro registro
+    const existing = await Author.findOne({ where: { name, id_author: { [Op.ne]: req.params.id } } });
+    if (existing) {
+      req.flash('error', 'El nombre de autor ya está en uso');
+      return res.redirect(`/authors/edit/${req.params.id}`);
+    }
     await Author.update({ name }, { where: { id_author: req.params.id } });
     req.flash('success', 'Autor editado correctamente');
     res.redirect('/authors');

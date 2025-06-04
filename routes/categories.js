@@ -3,6 +3,7 @@ const router = express.Router();
 const Category = require('../models/Category');
 const { isAuthenticated } = require('./users');
 const { forbidUsuario } = require('./roles');
+const { Op } = require('sequelize');
 
 // Mostrar todas las categorías activas con paginación
 router.get('/', isAuthenticated, forbidUsuario, async (req, res) => {
@@ -40,6 +41,12 @@ router.get('/add', isAuthenticated, forbidUsuario, (req, res) => {
 router.post('/add', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name } = req.body;
+    // Validar nombre de categoría existente
+    const existing = await Category.findOne({ where: { name } });
+    if (existing) {
+      req.flash('error', 'El nombre de la categoría ya está en uso');
+      return res.redirect('/categories/add');
+    }
     await Category.create({ name, state: 1 });
     req.flash('success', 'Categoría añadida correctamente');
     res.redirect('/categories');
@@ -64,6 +71,12 @@ router.get('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
 router.post('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name } = req.body;
+    // Validar nombre de categoría existente en otro registro
+    const existing = await Category.findOne({ where: { name, id_category: { [Op.ne]: req.params.id } } });
+    if (existing) {
+      req.flash('error', 'El nombre de la categoría ya está en uso');
+      return res.redirect(`/categories/edit/${req.params.id}`);
+    }
     await Category.update({ name }, { where: { id_category: req.params.id } });
     req.flash('success', 'Categoría editada correctamente');
     res.redirect('/categories');

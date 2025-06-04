@@ -7,6 +7,7 @@ const Publisher = require('../models/Publisher');
 const Loan = require('../models/Loan');
 const { isAuthenticated } = require('./users');
 const { forbidUsuario } = require('./roles');
+const { Op } = require('sequelize');
 
 // Mostrar todos los libros activos con paginación
 router.get('/', async (req, res) => {
@@ -85,6 +86,12 @@ router.post('/add', isAuthenticated, forbidUsuario, async (req, res) => {
       req.flash('error', 'La URL de la portada no puede superar los 255 caracteres.');
       return res.redirect('/books/add');
     }
+    // Validar nombre de libro existente
+    const existing = await Book.findOne({ where: { name } });
+    if (existing) {
+      req.flash('error', 'El nombre del libro ya está en uso');
+      return res.redirect('/books/add');
+    }
     await Book.create({
       name,
       isbn,
@@ -122,6 +129,12 @@ router.get('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
 router.post('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name, isbn, year_published, num_pages, id_author, id_category, id_publisher, cover_url } = req.body;
+    // Validar nombre de libro existente en otro registro
+    const existing = await Book.findOne({ where: { name, id_book: { [Op.ne]: req.params.id } } });
+    if (existing) {
+      req.flash('error', 'El nombre del libro ya está en uso');
+      return res.redirect(`/books/edit/${req.params.id}`);
+    }
     await Book.update({
       name,
       isbn,

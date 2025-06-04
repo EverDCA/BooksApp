@@ -34,10 +34,24 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const isProduction = process.env.NODE_ENV === 'production';
+let sessionStore;
+if (isProduction) {
+  // Ejemplo: usar connect-session-sequelize en producción
+  // const SequelizeStore = require('connect-session-sequelize')(session.Store);
+  // const { sequelize } = require('./config/database');
+  // sessionStore = new SequelizeStore({ db: sequelize });
+  // sessionStore.sync();
+  // Descomenta y configura lo anterior si tienes Sequelize conectado
+  sessionStore = new session.MemoryStore(); // Temporal, reemplaza en producción
+} else {
+  sessionStore = new session.MemoryStore();
+}
+
 app.use(
   session({
-    cookie: { maxAge: 60000 },
-    store: new session.MemoryStore(),
+    cookie: { maxAge: 3600000 }, // 1 hora
+    store: sessionStore,
     saveUninitialized: true,
     resave: true,
     secret: 'secret'

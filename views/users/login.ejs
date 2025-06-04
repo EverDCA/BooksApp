@@ -19,6 +19,9 @@
           <h2 class="text-3xl font-extrabold text-center text-primary mb-2 drop-shadow">Bienvenido de nuevo</h2>
           <p class="text-base-content/70 text-center">Accede a tu cuenta para gestionar tu biblioteca</p>
         </div>
+        <% if (messages.success) { %>
+          <div class="alert alert-success mb-4"><%= messages.success %></div>
+        <% } %>
         <% if (messages.error) { %>
           <div class="alert alert-error mb-4"><%= messages.error %></div>
         <% } %>

@@ -12,9 +12,16 @@ router.get('/register', (req, res) => {
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
   try {
-    const existing = await User.findOne({ where: { email } });
-    if (existing) {
+    // Validar email existente
+    const existingEmail = await User.findOne({ where: { email } });
+    if (existingEmail) {
       req.flash('error', 'El correo ya está registrado');
+      return res.redirect('/users/register');
+    }
+    // Validar nombre de usuario existente
+    const existingName = await User.findOne({ where: { name } });
+    if (existingName) {
+      req.flash('error', 'El nombre de usuario ya está en uso');
       return res.redirect('/users/register');
     }
     const hash = await bcrypt.hash(password, 10);
