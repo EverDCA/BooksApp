@@ -11,10 +11,7 @@ const User = require('../models/User');
 // Mostrar préstamos activos del usuario
 router.get('/', isAuthenticated, async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = 10;
-    const offset = (page - 1) * limit;
-    // Préstamos activos
+    // Préstamos activos (no paginados)
     const loans = await Loan.findAll({
       where: { id_user: req.session.user.id, state: 1 },
       include: [
@@ -22,7 +19,11 @@ router.get('/', isAuthenticated, async (req, res) => {
       ],
       order: [['loan_date', 'DESC']]
     });
+
     // Historial paginado (todos los préstamos)
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5;
+    const offset = (page - 1) * limit;
     const { count, rows: history } = await Loan.findAndCountAll({
       where: { id_user: req.session.user.id },
       include: [

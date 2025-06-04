@@ -1,0 +1,40 @@
+<!-- Página de error general, decorada y con manejo de errores comunes -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error <%= error.status || 500 %> | BooksApp</title>
+    <link rel="stylesheet" href="/output.css" />
+  </head>
+  <body class="min-h-screen flex flex-col bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white">
+    <div class="flex-1 flex flex-col items-center justify-center animate-fade">
+      <div class="max-w-lg w-full mx-auto px-4 py-12 flex flex-col items-center gap-6">
+        <div class="flex flex-col items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-error" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" /></svg>
+          <h1 class="text-4xl font-bold text-error mb-2">Error <%= error.status || 500 %></h1>
+          <p class="text-lg font-semibold text-center"><%= message || 'Ha ocurrido un error inesperado.' %></p>
+        </div>
+        <% if (error.status === 404) { %>
+          <p class="text-base text-center">La página que buscas no existe o ha sido movida.</p>
+        <% } else if (error.status === 403) { %>
+          <p class="text-base text-center">No tienes permisos para acceder a este recurso.</p>
+        <% } else if (error.status === 400) { %>
+          <p class="text-base text-center">Solicitud incorrecta. Por favor revisa los datos enviados.</p>
+        <% } else if (error.status === 401) { %>
+          <p class="text-base text-center">No autorizado. Debes iniciar sesión para continuar.</p>
+        <% } else if (error.status === 500) { %>
+          <p class="text-base text-center">Error interno del servidor. Intenta más tarde.</p>
+        <% } %>
+        <% if (error.stack) { %>
+          <details class="w-full mt-4">
+            <summary class="cursor-pointer text-sm text-gray-400">Detalles técnicos</summary>
+            <pre class="bg-base-300 rounded p-2 text-xs overflow-x-auto mt-2"><%= error.stack %></pre>
+          </details>
+        <% } %>
+        <a href="/" class="btn btn-primary mt-6">Volver al inicio</a>
+      </div>
+    </div>
+    <%- include('../footer.ejs') %>
+  </body>
+</html>

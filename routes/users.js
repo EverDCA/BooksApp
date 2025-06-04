@@ -69,11 +69,21 @@ function isAuthenticated(req, res, next) {
 // Vista de gestión de usuarios (solo admin)
 router.get('/', isAuthenticated, requireRole('admin'), async (req, res) => {
   try {
-    const users = await User.findAll();
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5;
+    const offset = (page - 1) * limit;
+    const { count, rows: users } = await User.findAndCountAll({
+      limit,
+      offset,
+      order: [['name', 'ASC']]
+    });
+    const totalPages = Math.ceil(count / limit);
     res.render('users/index', {
       users,
       user: req.session.user,
-      messages: req.flash()
+      messages: req.flash(),
+      currentPage: page,
+      totalPages
     });
   } catch (error) {
     res.status(500).send('Error al obtener los usuarios');
@@ -112,6 +122,24 @@ router.post('/:id/password', isAuthenticated, requireRole('admin'), async (req, 
     res.redirect('/users');
   } catch (error) {
     req.flash('error', 'Error al actualizar la contraseña');
+    res.redirect('/users');
+  }
+});
+
+// Cambiar estado de usuario (activar/desactivar, solo admin)
+router.post('/:id/state', isAuthenticated, requireRole('admin'), async (req, res) => {
+  try {
+    const { state } = req.body;
+    // No permitir que el admin se desactive a sí mismo
+    if (parseInt(req.params.id) === req.session.user.id) {
+      req.flash('error', 'No puedes desactivar tu propio usuario');
+      return res.redirect('/users');
+    }
+    await User.update({ state }, { where: { id_user: req.params.id } });
+    req.flash('success', 'Estado actualizado');
+    res.redirect('/users');
+  } catch (error) {
+    req.flash('error', 'Error al actualizar el estado');
     res.redirect('/users');
   }
 });

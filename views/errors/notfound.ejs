@@ -1,0 +1,23 @@
+<!-- Página 404 personalizada -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Página no encontrada | BooksApp</title>
+    <link rel="stylesheet" href="/output.css" />
+  </head>
+  <body class="min-h-screen flex flex-col bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white">
+    <div class="flex-1 flex flex-col items-center justify-center animate-fade">
+      <div class="max-w-lg w-full mx-auto px-4 py-12 flex flex-col items-center gap-6">
+        <div class="flex flex-col items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" /></svg>
+          <h1 class="text-4xl font-bold text-warning mb-2">404</h1>
+          <p class="text-lg font-semibold text-center">La página que buscas no existe o ha sido movida.</p>
+        </div>
+        <a href="/" class="btn btn-primary mt-6">Volver al inicio</a>
+      </div>
+    </div>
+    <%- include('../footer.ejs') %>
+  </body>
+</html>

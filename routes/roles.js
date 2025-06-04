@@ -11,7 +11,7 @@ function requireRole(role) {
 // Middleware para permitir solo roles distintos a 'usuario'
 function forbidUsuario(req, res, next) {
   if (req.session.user && req.session.user.role === 'usuario') {
-    return res.status(403).render('forbidden', { user: req.session.user });
+    return res.status(403).render('errors/forbidden', { user: req.session.user });
   }
   next();
 }
@@ -19,7 +19,7 @@ function forbidUsuario(req, res, next) {
 // Middleware para permitir solo roles distintos a 'usuario' y 'bibliotecario'
 function forbidUsuarioYBibliotecario(req, res, next) {
   if (req.session.user && (req.session.user.role === 'usuario' || req.session.user.role === 'bibliotecario')) {
-    return res.status(403).render('forbidden', { user: req.session.user });
+    return res.status(403).render('errors/forbidden', { user: req.session.user });
   }
   next();
 }

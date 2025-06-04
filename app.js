@@ -80,7 +80,7 @@ app.use('/users', usersRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   res.status(404);
-  res.render('notfound', { user: req.session ? req.session.user : null });
+  res.render('errors/notfound', { user: req.session ? req.session.user : null });
 });
 
 // error handler
@@ -89,7 +89,7 @@ app.use((err, req, res, next) => {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   res.status(err.status || 500);
-  res.render('error');
+  res.render('errors/error', { error: err, message: err.message });
 });
 
 // Definir asociaciones después de importar todos los modelos para evitar dependencias circulares
