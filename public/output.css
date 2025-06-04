@@ -7622,6 +7622,9 @@
   .animate-delay-1250 {
     animation-delay: 1250ms;
   }
+  .animate-delay-1300 {
+    animation-delay: 1300ms;
+  }
   .animate-delay-\[200ms\] {
     animation-delay: 200ms;
   }
