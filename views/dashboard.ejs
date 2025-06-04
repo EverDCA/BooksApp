@@ -21,41 +21,28 @@
           Bienvenido
         </h2>
         <ul class="space-y-4 text-center flex flex-col">
-          <li>
-            <a
-              href="/authors"
-              class="btn btn-primary btn-wide animate-fade animate-delay-800"
-              >Autores</a
-            >
-          </li>
-          <li>
-            <a
-              href="/books"
-              class="btn btn-secondary btn-wide animate-fade animate-delay-900"
-              >Libros</a
-            >
-          </li>
-          <li>
-            <a
-              href="/publishers"
-              class="btn btn-warning btn-wide animate-fade animate-delay-1000"
-              >Editoriales</a
-            >
-          </li>
-          <li>
-            <a
-              href="/categories"
-              class="btn btn-success btn-wide animate-fade animate-delay-1100"
-              >Categorías</a
-            >
-          </li>
-          <li>
-            <a
-              href="/recovery"
-              class="btn btn-accent btn-wide animate-fade animate-delay-1200"
-              >Reestablecer</a
-            >
-          </li>
+          <% if (user && user.role === 'usuario') { %>
+            <li>
+              <a href="/books" class="btn btn-secondary btn-wide animate-fade animate-delay-900">Libros</a>
+            </li>
+            <li>
+              <a href="/loans" class="btn btn-info btn-wide animate-fade animate-delay-950">Mis Préstamos</a>
+            </li>
+          <% } else if (user && user.role === 'bibliotecario') { %>
+            <li><a href="/authors" class="btn btn-primary btn-wide animate-fade animate-delay-800">Autores</a></li>
+            <li><a href="/books" class="btn btn-secondary btn-wide animate-fade animate-delay-900">Libros</a></li>
+            <li><a href="/publishers" class="btn btn-warning btn-wide animate-fade animate-delay-1000">Editoriales</a></li>
+            <li><a href="/categories" class="btn btn-success btn-wide animate-fade animate-delay-1100">Categorías</a></li>
+            <li><a href="/loans" class="btn btn-info btn-wide animate-fade animate-delay-950">Mis Préstamos</a></li>
+          <% } else if (user && user.role === 'admin') { %>
+            <li><a href="/authors" class="btn btn-primary btn-wide animate-fade animate-delay-800">Autores</a></li>
+            <li><a href="/books" class="btn btn-secondary btn-wide animate-fade animate-delay-900">Libros</a></li>
+            <li><a href="/publishers" class="btn btn-warning btn-wide animate-fade animate-delay-1000">Editoriales</a></li>
+            <li><a href="/categories" class="btn btn-success btn-wide animate-fade animate-delay-1100">Categorías</a></li>
+            <li><a href="/recovery" class="btn btn-accent btn-wide animate-fade animate-delay-1200">Reestablecer</a></li>
+            <li><a href="/users" class="btn btn-error btn-wide animate-fade animate-delay-1250">Usuarios</a></li>
+            <li><a href="/loans" class="btn btn-info btn-wide animate-fade animate-delay-950">Mis Préstamos</a></li>
+          <% } %>
         </ul>
       </div>
       <!-- Slider destacado -->

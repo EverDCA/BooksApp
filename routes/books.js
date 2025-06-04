@@ -4,6 +4,9 @@ const Book = require('../models/Book');
 const Author = require('../models/Author');
 const Category = require('../models/Category');
 const Publisher = require('../models/Publisher');
+const Loan = require('../models/Loan');
+const { isAuthenticated } = require('./users');
+const { forbidUsuario } = require('./roles');
 
 // Mostrar todos los libros activos con paginación
 router.get('/', async (req, res) => {
@@ -19,12 +22,28 @@ router.get('/', async (req, res) => {
       include: [Author, Category, Publisher]
     });
     const totalPages = Math.ceil(count / limit);
+
+    // --- INICIO: Lógica de préstamos activos por usuario ---
+    let userLoans = {};
+    if (req.session.user) {
+      const loans = await Loan.findAll({
+        where: { id_user: req.session.user.id, state: 1 },
+        attributes: ['id_book'],
+      });
+      userLoans = loans.reduce((acc, loan) => {
+        acc[loan.id_book] = true;
+        return acc;
+      }, {});
+    }
+    // --- FIN: Lógica de préstamos activos por usuario ---
+
     res.render('books/index', {
       books,
       messages: req.flash(),
       currentPage: page,
       totalPages,
-      user: req.session.user // <-- Añadido para el navbar
+      user: req.session.user, // <-- Añadido para el navbar
+      userLoans // <-- Pasar info de préstamos activos a la vista
     });
   } catch (error) {
     res.status(500).send('Error al obtener los libros');
@@ -32,7 +51,7 @@ router.get('/', async (req, res) => {
 });
 
 // Ruta para mostrar el formulario de añadir libro
-router.get('/add', async (req, res) => {
+router.get('/add', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const authors = await Author.findAll({ where: { state: 1 } });
     const categories = await Category.findAll({ where: { state: 1 } });
@@ -59,7 +78,7 @@ router.get('/add', async (req, res) => {
 });
 
 // Ruta para procesar el formulario de añadir libro
-router.post('/add', async (req, res) => {
+router.post('/add', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name, isbn, year_published, num_pages, id_author, id_category, id_publisher, cover_url } = req.body;
     await Book.create({
@@ -82,7 +101,7 @@ router.post('/add', async (req, res) => {
 });
 
 // Ruta para mostrar el formulario de edición de libro
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const book = await Book.findByPk(req.params.id);
     const authors = await Author.findAll({ where: { state: 1 } });
@@ -96,7 +115,7 @@ router.get('/edit/:id', async (req, res) => {
 });
 
 // Ruta para procesar la edición de un libro
-router.post('/edit/:id', async (req, res) => {
+router.post('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name, isbn, year_published, num_pages, id_author, id_category, id_publisher, cover_url } = req.body;
     await Book.update({
@@ -120,7 +139,7 @@ router.post('/edit/:id', async (req, res) => {
 });
 
 // Ruta para eliminar (desactivar) un libro
-router.get('/delete/:id', async (req, res) => {
+router.get('/delete/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     await Book.update({ state: 0 }, { where: { id_book: req.params.id } });
     req.flash('success', 'Libro eliminado correctamente');

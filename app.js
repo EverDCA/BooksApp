@@ -14,11 +14,13 @@ const categoriesRouter = require('./routes/categories');
 const authorsRouter = require('./routes/authors'); 
 const publishersRouter = require('./routes/publishers');
 const recoveryRouter = require('./routes/recovery'); // Import recovery router
+const loansRouter = require('./routes/loans'); // Import loans router
 
 const Author = require('./models/Author');
 const Category = require('./models/Category');
 const Publisher = require('./models/Publisher');
 const Book = require('./models/Book');
+const Loan = require('./models/Loan');
 
 const app = express();
 
@@ -54,6 +56,7 @@ app.use(flash());
     await Book.sync();
     const User = require('./models/User');
     await User.sync();
+    await Loan.sync();
     console.log('Database connection established and all models synchronized.');
   } catch (error) {
     console.error('Database connection failed:', error);
@@ -67,6 +70,7 @@ app.use('/books', isAuthenticated, booksRouter);
 app.use('/categories', isAuthenticated, categoriesRouter);
 app.use('/authors', isAuthenticated, authorsRouter);
 app.use('/publishers', isAuthenticated, publishersRouter);
+app.use('/loans', isAuthenticated, loansRouter); // <-- Agregar esta línea para préstamos
 app.use('/recovery', recoveryRouter); // Use recovery router
 
 // Usa dashboardRouter para las rutas principales
@@ -75,7 +79,8 @@ app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  next(createError(404));
+  res.status(404);
+  res.render('notfound', { user: req.session ? req.session.user : null });
 });
 
 // error handler
@@ -86,5 +91,18 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// Definir asociaciones después de importar todos los modelos para evitar dependencias circulares
+Author.hasMany(Book, { foreignKey: 'id_author' });
+Book.belongsTo(Author, { foreignKey: 'id_author' });
+Category.hasMany(Book, { foreignKey: 'id_category' });
+Book.belongsTo(Category, { foreignKey: 'id_category' });
+Publisher.hasMany(Book, { foreignKey: 'id_publisher' });
+Book.belongsTo(Publisher, { foreignKey: 'id_publisher' });
+const User = require('./models/User');
+Book.hasMany(Loan, { foreignKey: 'id_book' });
+Loan.belongsTo(Book, { foreignKey: 'id_book' });
+User.hasMany(Loan, { foreignKey: 'id_user' });
+Loan.belongsTo(User, { foreignKey: 'id_user' });
 
 module.exports = app;

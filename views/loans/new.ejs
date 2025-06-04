@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prestar Libro</title>
+    <link rel="stylesheet" href="/output.css" />
+  </head>
+  <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
+    <%- include('../books/navbar.ejs', { user: user }) %>
+    <div class="flex-1 flex flex-col animate-fade">
+      <div class="max-w-2xl w-full mx-auto px-4 pt-6 sm:pt-8 flex-1 flex flex-col">
+        <h1 class="text-3xl font-bold mb-8 text-center">Prestar Libro</h1>
+        <% if (messages.error) { %>
+          <div class="alert alert-error mb-4"><%- messages.error %></div>
+        <% } %>
+        <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 w-full">
+          <div class="flex flex-col items-center">
+            <img src="<%= book.cover_url ? book.cover_url : 'https://placehold.co/200x300?text=Sin+portada' %>" alt="Portada de <%= book.name %>" class="rounded-lg w-40 h-60 object-cover mb-4 border border-base-300" />
+            <h3 class="text-lg font-bold text-primary mb-2"><%= book.name %></h3>
+            <p class="text-base-content mb-1"><span class="font-semibold">Autor:</span> <%= book.Author ? book.Author.name : 'Desconocido' %></p>
+            <p class="text-base-content mb-1"><span class="font-semibold">Editorial:</span> <%= book.Publisher ? book.Publisher.name : 'Desconocida' %></p>
+            <p class="text-base-content mb-1"><span class="font-semibold">Categoría:</span> <%= book.Category ? book.Category.name : 'Sin categoría' %></p>
+            <% if (book.description) { %>
+              <p class="text-sm text-base-content mt-2"><%= book.description %></p>
+            <% } %>
+          </div>
+          <form action="/loans/new/<%= book.id_book %>" method="POST" class="mt-8 flex flex-col items-center">
+            <button type="submit" class="btn btn-primary btn-lg">Confirmar Préstamo</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <%- include('../footer.ejs') %>
+  </body>
+</html>

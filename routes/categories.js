@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Category = require('../models/Category');
+const { isAuthenticated } = require('./users');
+const { forbidUsuario } = require('./roles');
 
 // Mostrar todas las categorías activas con paginación
-router.get('/', async (req, res) => {
+router.get('/', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 10; // Cambia este valor si quieres más/menos por página
@@ -30,12 +32,12 @@ router.get('/', async (req, res) => {
 });
 
 // Mostrar formulario para añadir categoría
-router.get('/add', (req, res) => {
+router.get('/add', isAuthenticated, forbidUsuario, (req, res) => {
   res.render('categories/add', { name: '', messages: req.flash(), user: req.session.user });
 });
 
 // Procesar formulario para añadir categoría
-router.post('/add', async (req, res) => {
+router.post('/add', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name } = req.body;
     await Category.create({ name, state: 1 });
@@ -48,7 +50,7 @@ router.post('/add', async (req, res) => {
 });
 
 // Mostrar formulario para editar categoría
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const category = await Category.findByPk(req.params.id);
     if (!category) return res.status(404).send('Categoría no encontrada');
@@ -59,7 +61,7 @@ router.get('/edit/:id', async (req, res) => {
 });
 
 // Procesar edición de categoría
-router.post('/edit/:id', async (req, res) => {
+router.post('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name } = req.body;
     await Category.update({ name }, { where: { id_category: req.params.id } });
@@ -72,7 +74,7 @@ router.post('/edit/:id', async (req, res) => {
 });
 
 // Eliminar (desactivar) categoría
-router.get('/delete/:id', async (req, res) => {
+router.get('/delete/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     await Category.update({ state: 0 }, { where: { id_category: req.params.id } });
     req.flash('success', 'Categoría eliminada correctamente');

@@ -2,11 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-
-/* GET users listing. */
-router.get('/', (req, res) => {
-  res.send('respond with a resource');
-});
+const { requireRole } = require('./roles');
 
 // Registro
 router.get('/register', (req, res) => {
@@ -69,6 +65,56 @@ function isAuthenticated(req, res, next) {
   if (req.session.user) return next();
   res.redirect('/users/login');
 }
+
+// Vista de gestión de usuarios (solo admin)
+router.get('/', isAuthenticated, requireRole('admin'), async (req, res) => {
+  try {
+    const users = await User.findAll();
+    res.render('users/index', {
+      users,
+      user: req.session.user,
+      messages: req.flash()
+    });
+  } catch (error) {
+    res.status(500).send('Error al obtener los usuarios');
+  }
+});
+
+// Cambiar rol de usuario (solo admin)
+router.post('/:id/role', isAuthenticated, requireRole('admin'), async (req, res) => {
+  try {
+    const { role } = req.body;
+    if (!['usuario', 'bibliotecario', 'admin'].includes(role)) {
+      req.flash('error', 'Rol no válido');
+      return res.redirect('/users');
+    }
+    // No permitir que el admin se cambie a sí mismo el rol
+    if (parseInt(req.params.id) === req.session.user.id) {
+      req.flash('error', 'No puedes cambiar tu propio rol');
+      return res.redirect('/users');
+    }
+    await User.update({ role }, { where: { id_user: req.params.id } });
+    req.flash('success', 'Rol actualizado');
+    res.redirect('/users');
+  } catch (error) {
+    req.flash('error', 'Error al actualizar el rol');
+    res.redirect('/users');
+  }
+});
+
+// Cambiar contraseña de usuario (solo admin)
+router.post('/:id/password', isAuthenticated, requireRole('admin'), async (req, res) => {
+  try {
+    const { password } = req.body;
+    const hash = await bcrypt.hash(password, 10);
+    await User.update({ password: hash }, { where: { id_user: req.params.id } });
+    req.flash('success', 'Contraseña actualizada');
+    res.redirect('/users');
+  } catch (error) {
+    req.flash('error', 'Error al actualizar la contraseña');
+    res.redirect('/users');
+  }
+});
 
 module.exports = router;
 module.exports.isAuthenticated = isAuthenticated;

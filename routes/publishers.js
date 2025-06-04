@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Publisher = require('../models/Publisher');
+const { isAuthenticated } = require('./users');
+const { forbidUsuario } = require('./roles');
 
 // Mostrar todas las editoriales activas con paginación
-router.get('/', async (req, res) => {
+router.get('/', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
@@ -28,12 +30,12 @@ router.get('/', async (req, res) => {
 });
 
 // Mostrar formulario para añadir publisher
-router.get('/add', (req, res) => {
+router.get('/add', isAuthenticated, forbidUsuario, (req, res) => {
   res.render('publishers/add', { name: '', messages: req.flash(), user: req.session.user });
 });
 
 // Procesar formulario para añadir publisher
-router.post('/add', async (req, res) => {
+router.post('/add', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name } = req.body;
     await Publisher.create({ name, state: 1 });
@@ -46,7 +48,7 @@ router.post('/add', async (req, res) => {
 });
 
 // Mostrar formulario para editar publisher
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const publisher = await Publisher.findByPk(req.params.id);
     if (!publisher) return res.status(404).send('Editorial no encontrada');
@@ -57,7 +59,7 @@ router.get('/edit/:id', async (req, res) => {
 });
 
 // Procesar edición de publisher
-router.post('/edit/:id', async (req, res) => {
+router.post('/edit/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name } = req.body;
     await Publisher.update({ name }, { where: { id_publisher: req.params.id } });
@@ -70,7 +72,7 @@ router.post('/edit/:id', async (req, res) => {
 });
 
 // Eliminar (desactivar) publisher
-router.get('/delete/:id', async (req, res) => {
+router.get('/delete/:id', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     await Publisher.update({ state: 0 }, { where: { id_publisher: req.params.id } });
     req.flash('success', 'Editorial eliminada correctamente');

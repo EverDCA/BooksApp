@@ -11,7 +11,9 @@
       <div class="max-w-7xl w-full mx-auto px-4 pt-6 sm:pt-8 flex-1 flex flex-col">
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-2xl font-bold">Libros</h1>
-          <a href="/books/add" class="btn btn-primary btn-lg">Agregar Libro</a>
+          <% if (user && user.role !== 'usuario') { %>
+            <a href="/books/add" class="btn btn-primary btn-lg">Agregar Libro</a>
+          <% } %>
         </div>
         <% if (messages.success) { %>
           <div class="alert alert-success mb-4"><%- messages.success %></div>
@@ -46,8 +48,34 @@
                   <td><%= book.Category ? book.Category.name : '-' %></td>
                   <td><%= book.Publisher ? book.Publisher.name : '-' %></td>
                   <td class="flex flex-wrap gap-2">
-                    <a href="/books/edit/<%= book.id_book %>" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="/books/delete/<%= book.id_book %>" onclick="return confirm('¿Estás seguro?')" class="btn btn-error btn-sm">Eliminar</a>
+                    <% if (user && user.role !== 'usuario') { %>
+                      <a href="/books/edit/<%= book.id_book %>" class="btn btn-warning btn-sm">Editar</a>
+                      <a href="/books/delete/<%= book.id_book %>" onclick="return confirm('¿Estás seguro?')" class="btn btn-error btn-sm">Eliminar</a>
+                    <% } %>
+                    <button class="btn btn-info btn-sm" onclick="document.getElementById('modal_book_<%= book.id_book %>').showModal()">Ver</button>
+                    <% if (user && !userLoans[book.id_book]) { %>
+                      <a href="/loans/new/<%= book.id_book %>" class="btn btn-primary btn-sm">Prestar</a>
+                    <% } else if (user && userLoans[book.id_book]) { %>
+                      <span class="btn btn-disabled btn-sm">Prestado</span>
+                    <% } %>
+                    <!-- Modal para ver detalles del libro -->
+                    <dialog id="modal_book_<%= book.id_book %>" class="modal">
+                      <div class="modal-box max-w-md">
+                        <form method="dialog">
+                          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                        </form>
+                        <div class="flex flex-col items-center">
+                          <img src="<%= book.cover_url ? book.cover_url : 'https://placehold.co/200x300?text=Sin+portada' %>" alt="Portada de <%= book.name %>" class="rounded-lg w-40 h-60 object-cover mb-4 border border-base-300" />
+                          <h3 class="text-lg font-bold text-primary mb-2"><%= book.name %></h3>
+                          <p class="text-base-content mb-1"><span class="font-semibold">Autor:</span> <%= book.Author ? book.Author.name : 'Desconocido' %></p>
+                          <p class="text-base-content mb-1"><span class="font-semibold">Editorial:</span> <%= book.Publisher ? book.Publisher.name : 'Desconocida' %></p>
+                          <p class="text-base-content mb-1"><span class="font-semibold">Categoría:</span> <%= book.Category ? book.Category.name : 'Sin categoría' %></p>
+                          <% if (book.description) { %>
+                            <p class="text-sm text-base-content mt-2"><%= book.description %></p>
+                          <% } %>
+                        </div>
+                      </div>
+                    </dialog>
                   </td>
                 </tr>
               <% }) %>
@@ -55,11 +83,13 @@
           </table>
         </div>
         <div class="mt-6 flex justify-center">
+          <% if (totalPages > 0) { %>
           <div class="join">
             <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage - 1 %>'" <%= currentPage === 1 ? 'disabled' : '' %>>Anterior</button>
             <span class="join-item btn btn-ghost">Página <%= currentPage %> de <%= totalPages %></span>
             <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage + 1 %>'" <%= currentPage === totalPages ? 'disabled' : '' %>>Siguiente</button>
           </div>
+          <% } %>
         </div>
       </div>
     </div>

@@ -37,9 +37,11 @@
                         <td><%= (booksPage - 1) * 5 + i + 1 %></td>
                         <td><%= book.name %></td>
                         <td>
-                          <form action="/recovery/books/<%= book.id_book %>/restore" method="POST" class="inline">
-                            <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
-                          </form>
+                          <% if (user && user.role !== 'usuario') { %>
+                            <form action="/recovery/books/<%= book.id_book %>/restore" method="POST" class="inline">
+                              <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
+                            </form>
+                          <% } %>
                         </td>
                       </tr>
                     <% }) %>
@@ -74,9 +76,11 @@
                         <td><%= (authorsPage - 1) * 5 + i + 1 %></td>
                         <td><%= author.name %></td>
                         <td>
-                          <form action="/recovery/authors/<%= author.id_author %>/restore" method="POST" class="inline">
-                            <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
-                          </form>
+                          <% if (user && user.role !== 'usuario') { %>
+                            <form action="/recovery/authors/<%= author.id_author %>/restore" method="POST" class="inline">
+                              <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
+                            </form>
+                          <% } %>
                         </td>
                       </tr>
                     <% }) %>
@@ -111,9 +115,11 @@
                         <td><%= (categoriesPage - 1) * 5 + i + 1 %></td>
                         <td><%= category.name %></td>
                         <td>
-                          <form action="/recovery/categories/<%= category.id_category %>/restore" method="POST" class="inline">
-                            <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
-                          </form>
+                          <% if (user && user.role !== 'usuario') { %>
+                            <form action="/recovery/categories/<%= category.id_category %>/restore" method="POST" class="inline">
+                              <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
+                            </form>
+                          <% } %>
                         </td>
                       </tr>
                     <% }) %>
@@ -148,9 +154,11 @@
                         <td><%= (publishersPage - 1) * 5 + i + 1 %></td>
                         <td><%= publisher.name %></td>
                         <td>
-                          <form action="/recovery/publishers/<%= publisher.id_publisher %>/restore" method="POST" class="inline">
-                            <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
-                          </form>
+                          <% if (user && user.role !== 'usuario') { %>
+                            <form action="/recovery/publishers/<%= publisher.id_publisher %>/restore" method="POST" class="inline">
+                              <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
+                            </form>
+                          <% } %>
                         </td>
                       </tr>
                     <% }) %>

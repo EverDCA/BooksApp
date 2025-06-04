@@ -5,9 +5,10 @@ const Author = require('../models/Author');
 const Category = require('../models/Category');
 const Publisher = require('../models/Publisher');
 const { isAuthenticated } = require('./users');
+const { forbidUsuarioYBibliotecario } = require('./roles');
 
 // Vista principal de recuperación con paginación
-router.get('/', isAuthenticated, async (req, res) => {
+router.get('/', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) => {
   try {
     const pageBooks = parseInt(req.query.pageBooks) || 1;
     const pageAuthors = parseInt(req.query.pageAuthors) || 1;
@@ -48,7 +49,7 @@ router.get('/', isAuthenticated, async (req, res) => {
 });
 
 // Restaurar libro
-router.post('/books/:id/restore', async (req, res) => {
+router.post('/books/:id/restore', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) => {
   try {
     await Book.update({ state: 1 }, { where: { id_book: req.params.id } });
     req.flash('success', 'Libro reestablecido correctamente');
@@ -60,7 +61,7 @@ router.post('/books/:id/restore', async (req, res) => {
 });
 
 // Restaurar autor
-router.post('/authors/:id/restore', async (req, res) => {
+router.post('/authors/:id/restore', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) => {
   try {
     await Author.update({ state: 1 }, { where: { id_author: req.params.id } });
     req.flash('success', 'Autor reestablecido correctamente');
@@ -72,7 +73,7 @@ router.post('/authors/:id/restore', async (req, res) => {
 });
 
 // Restaurar categoría
-router.post('/categories/:id/restore', async (req, res) => {
+router.post('/categories/:id/restore', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) => {
   try {
     await Category.update({ state: 1 }, { where: { id_category: req.params.id } });
     req.flash('success', 'Categoría reestablecida correctamente');
@@ -84,7 +85,7 @@ router.post('/categories/:id/restore', async (req, res) => {
 });
 
 // Restaurar editorial
-router.post('/publishers/:id/restore', async (req, res) => {
+router.post('/publishers/:id/restore', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) => {
   try {
     await Publisher.update({ state: 1 }, { where: { id_publisher: req.params.id } });
     req.flash('success', 'Editorial reestablecida correctamente');

@@ -12,7 +12,9 @@
       <div class="max-w-2xl mx-auto px-4 pt-6 sm:pt-8 flex-1 flex flex-col">
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-2xl font-bold">Categorías</h1>
-          <a href="/categories/add" class="btn btn-primary md:btn-lg sm:btn-sm">Agregar Categoría</a>
+          <% if (user && user.role !== 'usuario') { %>
+            <a href="/categories/add" class="btn btn-primary md:btn-lg sm:btn-sm">Agregar Categoría</a>
+          <% } %>
         </div>
         <% if (messages.success) { %>
           <div class="alert alert-success mb-4"><%- messages.success %></div>
@@ -35,8 +37,10 @@
                   <td><%= i + 1 %></td>
                   <td><%= category.name %></td>
                   <td class="flex flex-wrap gap-2">
-                    <a href="/categories/edit/<%= category.id_category %>" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="/categories/delete/<%= category.id_category %>" onclick="return confirm('¿Estás seguro?')" class="btn btn-error btn-sm">Eliminar</a>
+                    <% if (user && user.role !== 'usuario') { %>
+                      <a href="/categories/edit/<%= category.id_category %>" class="btn btn-warning btn-sm">Editar</a>
+                      <a href="/categories/delete/<%= category.id_category %>" onclick="return confirm('¿Estás seguro?')" class="btn btn-error btn-sm">Eliminar</a>
+                    <% } %>
                   </td>
                 </tr>
               <% }) %>

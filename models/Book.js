@@ -61,9 +61,4 @@ const Book = sequelize.define('Book', {
   timestamps: true,
 });
 
-// Define relationships
-Book.belongsTo(Author, { foreignKey: 'id_author' });
-Book.belongsTo(Category, { foreignKey: 'id_category' });
-Book.belongsTo(Publisher, { foreignKey: 'id_publisher' });
-
 module.exports = Book;

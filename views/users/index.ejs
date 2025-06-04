@@ -1,0 +1,71 @@
+<!-- filepath: views/users/index.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Usuarios | BooksApp</title>
+    <link rel="stylesheet" href="/output.css" />
+  </head>
+  <body class="min-h-screen flex flex-col bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white">
+    <%- include('../books/navbar.ejs', { user: user }) %>
+    <div class="flex-1 flex flex-col animate-fade">
+      <div class="max-w-4xl w-full mx-auto px-4 pt-6 sm:pt-8 flex-1 flex flex-col">
+        <h1 class="text-3xl font-bold mb-8 text-center">Gestión de Usuarios</h1>
+        <% if (messages.success) { %>
+          <div class="alert alert-success mb-4"><%- messages.success %></div>
+        <% } %>
+        <% if (messages.error) { %>
+          <div class="alert alert-error mb-4"><%- messages.error %></div>
+        <% } %>
+        <div class="card bg-base-200 border border-base-300 shadow-lg w-full overflow-x-auto">
+          <table class="table table-zebra w-full min-w-[900px]">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% users.forEach((u, i) => { %>
+                <tr>
+                  <td><%= i + 1 %></td>
+                  <td><%= u.name %></td>
+                  <td><%= u.email %></td>
+                  <td>
+                    <form action="/users/<%= u.id_user %>/role" method="POST" class="flex items-center gap-2">
+                      <select name="role" class="select select-bordered select-sm" <%= u.id_user === user.id ? 'disabled' : '' %>>
+                        <option value="usuario" <%= u.role === 'usuario' ? 'selected' : '' %>>Usuario</option>
+                        <option value="bibliotecario" <%= u.role === 'bibliotecario' ? 'selected' : '' %>>Bibliotecario</option>
+                        <option value="admin" <%= u.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                      </select>
+                      <button type="submit" class="btn btn-primary btn-xs" <%= u.id_user === user.id ? 'disabled' : '' %>>Cambiar</button>
+                    </form>
+                  </td>
+                  <td>
+                    <button class="btn btn-info btn-xs" onclick="document.getElementById('modal_pass_<%= u.id_user %>').showModal()">Cambiar contraseña</button>
+                    <!-- Modal cambiar contraseña -->
+                    <dialog id="modal_pass_<%= u.id_user %>" class="modal">
+                      <div class="modal-box max-w-md">
+                        <form action="/users/<%= u.id_user %>/password" method="POST" class="flex flex-col gap-4">
+                          <button type="button" onclick="this.closest('dialog').close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                          <h3 class="font-bold text-lg mb-2">Cambiar contraseña de <%= u.name %></h3>
+                          <input type="password" name="password" class="input input-bordered w-full" required placeholder="Nueva contraseña">
+                          <button type="submit" class="btn btn-primary">Guardar</button>
+                        </form>
+                      </div>
+                    </dialog>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <%- include('../footer.ejs') %>
+  </body>
+</html>
