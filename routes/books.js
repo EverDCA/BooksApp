@@ -81,6 +81,10 @@ router.get('/add', isAuthenticated, forbidUsuario, async (req, res) => {
 router.post('/add', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const { name, isbn, year_published, num_pages, id_author, id_category, id_publisher, cover_url } = req.body;
+    if (cover_url && cover_url.length > 255) {
+      req.flash('error', 'La URL de la portada no puede superar los 255 caracteres.');
+      return res.redirect('/books/add');
+    }
     await Book.create({
       name,
       isbn,
@@ -95,7 +99,7 @@ router.post('/add', isAuthenticated, forbidUsuario, async (req, res) => {
     req.flash('success', 'Libro añadido correctamente');
     res.redirect('/books');
   } catch (error) {
-    req.flash('error', 'Error al añadir el libro');
+    req.flash('error', error.message || 'Error al añadir el libro');
     res.redirect('/books/add');
   }
 });
