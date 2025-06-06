@@ -2,13 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Gestión de Préstamos</title>
   <link rel="stylesheet" href="/output.css" />
 </head>
 <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
   <%- include('../books/navbar.ejs', { user: user }) %>
   <div class="flex-1 flex flex-col animate-fade">
-    <div class="max-w-7xl w-full mx-auto px-4 pt-8 flex-1 flex flex-col">
+    <div class="max-w-7xl w-full mx-auto px-2 sm:px-4 pt-8 flex-1 flex flex-col">
       <h1 class="text-3xl font-bold mb-8 text-center">Gestión de Préstamos</h1>
       <% if (messages.success) { %>
         <div class="alert alert-success mb-4"><%- messages.success %></div>
@@ -17,40 +18,40 @@
         <div class="alert alert-error mb-4"><%- messages.error %></div>
       <% } %>
       <div class="mb-8">
-        <form method="get" class="flex flex-wrap gap-4 items-end justify-between">
-          <div class="flex flex-col">
-            <label for="search" class="font-semibold mb-1">Buscar por nombre de usuario</label>
-            <input type="text" id="search" name="search" value="<%= typeof search !== 'undefined' ? search : '' %>" class="input input-bordered w-64 text-black" placeholder="Nombre de usuario...">
+        <form method="get" class="flex flex-col sm:flex-row flex-wrap gap-4 items-end justify-between bg-base-100 rounded-lg p-4 shadow-md">
+          <div class="flex flex-col w-full sm:w-auto">
+            <label for="search" class="font-semibold mb-1 text-base-content">Buscar por nombre de usuario</label>
+            <input type="text" id="search" name="search" value="<%= typeof search !== 'undefined' ? search : '' %>" class="input input-bordered w-full sm:w-64 text-white focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Nombre de usuario...">
           </div>
-          <div class="flex flex-col">
-            <label for="state" class="font-semibold mb-1">Estado</label>
-            <select id="state" name="state" class="select select-bordered w-40 text-black">
+          <div class="flex flex-col w-full sm:w-auto">
+            <label for="state" class="font-semibold mb-1 text-base-content">Estado</label>
+            <select id="state" name="state" class="select select-bordered w-full sm:w-40 text-white focus:ring-2 focus:ring-primary focus:outline-none">
               <option value="" <%= !state ? 'selected' : '' %>>Todos</option>
               <option value="1" <%= state == '1' ? 'selected' : '' %>>Activo</option>
               <option value="0" <%= state == '0' ? 'selected' : '' %>>Devuelto</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary">Filtrar</button>
+          <button type="submit" class="btn btn-primary w-full sm:w-auto mt-2 sm:mt-0 shadow-lg transition-transform hover:scale-105">Filtrar</button>
         </form>
       </div>
-      <div class="overflow-x-auto card bg-base-200 border border-base-300 shadow-lg">
-        <table class="table table-zebra w-full min-w-[900px]">
+      <div class="card bg-base-200 border border-base-300 shadow-lg w-full overflow-x-auto">
+        <table class="table table-zebra w-full text-sm md:text-base">
           <thead>
             <tr>
-              <th>Usuario</th>
-              <th>Email</th>
-              <th>Libro</th>
-              <th>Fecha Préstamo</th>
-              <th>Fecha Devolución</th>
-              <th>Acciones</th>
+              <th class="min-w-[120px]">Usuario</th>
+              <th class="min-w-[140px]">Email</th>
+              <th class="min-w-[120px]">Libro</th>
+              <th class="min-w-[110px]">Fecha Préstamo</th>
+              <th class="min-w-[130px]">Fecha Devolución</th>
+              <th class="min-w-[90px]">Acciones</th>
             </tr>
           </thead>
           <tbody>
             <% loans.forEach(loan => { %>
               <tr>
-                <td><%= loan.User ? loan.User.name : '-' %></td>
-                <td><%= loan.User ? loan.User.email : '-' %></td>
-                <td><%= loan.Book ? loan.Book.name : '-' %></td>
+                <td class="break-words max-w-[140px] md:max-w-none"><%= loan.User ? loan.User.name : '-' %></td>
+                <td class="break-words max-w-[160px] md:max-w-none"><%= loan.User ? loan.User.email : '-' %></td>
+                <td class="break-words max-w-[140px] md:max-w-none"><%= loan.Book ? loan.Book.name : '-' %></td>
                 <td><%= loan.loan_date ? loan.loan_date.toLocaleDateString() : '-' %></td>
                 <td><%= loan.return_date ? loan.return_date.toLocaleDateString() : '-' %></td>
                 <td>
