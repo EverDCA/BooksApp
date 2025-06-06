@@ -4,7 +4,7 @@ function requireRole(role) {
     if (req.session.user && req.session.user.role === role) {
       return next();
     }
-    return res.status(403).render('error', { message: 'Acceso denegado', error: { status: 403 }, user: req.session.user });
+    return res.status(403).render('errors/forbidden', { user: req.session.user });
   };
 }
 

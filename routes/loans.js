@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const { isAuthenticated } = require('../routes/users');
+const { requireRole } = require('./roles');
 const Loan = require('../models/Loan');
 const Book = require('../models/Book');
 const Author = require('../models/Author');
 const Category = require('../models/Category');
 const Publisher = require('../models/Publisher');
 const User = require('../models/User');
+const { Op } = require('sequelize');
 
 // Mostrar préstamos activos del usuario
 router.get('/', isAuthenticated, async (req, res) => {
@@ -84,6 +86,78 @@ router.post('/new/:id_book', isAuthenticated, async (req, res) => {
     req.flash('error', 'Error al registrar el préstamo');
     res.redirect('/loans');
   }
+});
+
+// Gestión de préstamos (solo admin)
+router.get('/manage', isAuthenticated, requireRole('admin'), async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5;
+    const offset = (page - 1) * limit;
+    const search = req.query.search ? req.query.search.trim() : '';
+    const state = req.query.state;
+    const where = {};
+    // Solo agregar el filtro de estado si el usuario lo selecciona explícitamente
+    if (state === '1' || state === '0') {
+      where.state = parseInt(state, 10);
+    }
+    
+    // Si hay búsqueda por nombre de usuario
+    // Elimina el uso de ILIKE en el where principal (solo usar en include)
+    // if (search) {
+    //   where[Op.and] = where[Op.and] || [];
+    //   where[Op.and].push({
+    //     '$User.name$': { [Op.iLike]: `%${search}%` }
+    //   });
+    // }
+    
+    // Filtro para el usuario (búsqueda por nombre)
+    const userInclude = {
+      model: User,
+      attributes: ['name', 'email'],
+    };
+    if (search) {
+      userInclude.where = {
+        name: { [Op.like]: `%${search}%` }
+      };
+      userInclude.required = true;
+    }
+
+    const { count, rows: loans } = await Loan.findAndCountAll({
+      where,
+      include: [
+        userInclude,
+        { model: Book, attributes: ['name'] }
+      ],
+      order: [['loan_date', 'DESC']],
+      limit,
+      offset,
+      subQuery: false
+    });
+    const totalPages = Math.ceil(count / limit);
+    res.render('loans/manage', {
+      loans,
+      messages: req.flash(),
+      user: req.session.user,
+      currentPage: page,
+      totalPages,
+      search,
+      state
+    });
+  } catch (error) {
+    res.status(500).send('Error al cargar la gestión de préstamos: ' + error.message + '\n' + error.stack);
+  }
+});
+
+// Eliminar historial de préstamo (solo admin)
+router.post('/manage/delete/:id', isAuthenticated, requireRole('admin'), async (req, res) => {
+  try {
+    await Loan.destroy({ where: { id_loan: req.params.id } });
+    req.flash('success', 'Préstamo eliminado del historial');
+  } catch (error) {
+    req.flash('error', 'No se pudo eliminar el préstamo');
+  }
+  res.redirect('/loans/manage');
 });
 
 module.exports = router;
