@@ -6,8 +6,9 @@ const Category = require('../models/Category');
 const Publisher = require('../models/Publisher');
 const { isAuthenticated } = require('./users');
 const { forbidUsuarioYBibliotecario } = require('./roles');
+const { Op } = require('sequelize');
 
-// Vista principal de recuperación con paginación
+// Vista principal de recuperación con paginación y búsqueda
 router.get('/', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) => {
   try {
     const pageBooks = parseInt(req.query.pageBooks) || 1;
@@ -16,11 +17,38 @@ router.get('/', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) =
     const pagePublishers = parseInt(req.query.pagePublishers) || 1;
     const limit = 5;
 
+    // Parámetros de búsqueda para cada sección
+    const searchBooks = req.query.searchBooks ? req.query.searchBooks.trim() : '';
+    const searchAuthors = req.query.searchAuthors ? req.query.searchAuthors.trim() : '';
+    const searchCategories = req.query.searchCategories ? req.query.searchCategories.trim() : '';
+    const searchPublishers = req.query.searchPublishers ? req.query.searchPublishers.trim() : '';
+
+    // Construir filtros para cada modelo
+    const booksWhere = { state: 0 };
+    if (searchBooks) {
+      booksWhere.name = { [Op.like]: `%${searchBooks}%` };
+    }
+
+    const authorsWhere = { state: 0 };
+    if (searchAuthors) {
+      authorsWhere.name = { [Op.like]: `%${searchAuthors}%` };
+    }
+
+    const categoriesWhere = { state: 0 };
+    if (searchCategories) {
+      categoriesWhere.name = { [Op.like]: `%${searchCategories}%` };
+    }
+
+    const publishersWhere = { state: 0 };
+    if (searchPublishers) {
+      publishersWhere.name = { [Op.like]: `%${searchPublishers}%` };
+    }
+
     const [booksData, authorsData, categoriesData, publishersData] = await Promise.all([
-      Book.findAndCountAll({ where: { state: 0 }, limit, offset: (pageBooks - 1) * limit }),
-      Author.findAndCountAll({ where: { state: 0 }, limit, offset: (pageAuthors - 1) * limit }),
-      Category.findAndCountAll({ where: { state: 0 }, limit, offset: (pageCategories - 1) * limit }),
-      Publisher.findAndCountAll({ where: { state: 0 }, limit, offset: (pagePublishers - 1) * limit })
+      Book.findAndCountAll({ where: booksWhere, limit, offset: (pageBooks - 1) * limit, order: [['name', 'ASC']] }),
+      Author.findAndCountAll({ where: authorsWhere, limit, offset: (pageAuthors - 1) * limit, order: [['name', 'ASC']] }),
+      Category.findAndCountAll({ where: categoriesWhere, limit, offset: (pageCategories - 1) * limit, order: [['name', 'ASC']] }),
+      Publisher.findAndCountAll({ where: publishersWhere, limit, offset: (pagePublishers - 1) * limit, order: [['name', 'ASC']] })
     ]);
 
     res.render('recovery/index', {
@@ -40,6 +68,10 @@ router.get('/', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) =
       publishersCount: publishersData.count,
       publishersPage: pagePublishers,
       publishersTotalPages: Math.ceil(publishersData.count / limit),
+      searchBooks,
+      searchAuthors,
+      searchCategories,
+      searchPublishers,
       messages: req.flash(),
       user: req.session.user // <-- para el navbar
     });

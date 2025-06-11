@@ -9,15 +9,17 @@
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs', { user: user }) %>
     <div class="flex-1 flex flex-col animate-fade">
-      <div class="max-w-4xl w-full mx-auto px-4 pt-6 sm:pt-8 flex-1 flex flex-col">
-        <h1 class="text-3xl font-bold mb-8 text-center">Mis Préstamos</h1>
+      
+      <div class="max-w-9xl w-full mx-auto p-6 sm:pt-8 flex-1 flex flex-col">
         <% if (user && user.role === 'admin') { %>
-          <div class="flex justify-end mb-6">
+          <div class="flex justify-end mb-6 mr-7">
             <a href="/loans/manage" class="btn btn-warning btn-md shadow-md">
-              <i class="fa-solid fa-table-list mr-2"></i> Gestión de Préstamos
+               Gestión de Préstamos
             </a>
           </div>
         <% } %>
+        <h1 class="text-3xl font-bold mb-8 text-center">Mis Préstamos</h1>
+        
         <% if (messages.success) { %>
           <div class="alert alert-success mb-4"><%- messages.success %></div>
         <% } %>

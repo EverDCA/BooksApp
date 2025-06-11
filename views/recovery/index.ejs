@@ -17,11 +17,23 @@
         <% if (messages.error) { %>
           <div class="alert alert-error mb-4"><%- messages.error %></div>
         <% } %>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1 min-h-[calc(100vh-250px)] w-full">
-          <!-- Libros -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1 min-h-[calc(100vh-250px)] w-full">          <!-- Libros -->
           <div class="card bg-base-200 border border-base-300 shadow-lg">
             <div class="card-body">
               <h2 class="card-title text-lg mb-4">Libros</h2>
+              <!-- Formulario de búsqueda para libros -->
+              <div class="mb-4">
+                <form method="get" class="flex gap-2">
+                  <input type="hidden" name="pageAuthors" value="<%= authorsPage %>">
+                  <input type="hidden" name="pageCategories" value="<%= categoriesPage %>">
+                  <input type="hidden" name="pagePublishers" value="<%= publishersPage %>">
+                  <input type="hidden" name="searchAuthors" value="<%= typeof searchAuthors !== 'undefined' ? searchAuthors : '' %>">
+                  <input type="hidden" name="searchCategories" value="<%= typeof searchCategories !== 'undefined' ? searchCategories : '' %>">
+                  <input type="hidden" name="searchPublishers" value="<%= typeof searchPublishers !== 'undefined' ? searchPublishers : '' %>">
+                  <input type="text" name="searchBooks" value="<%= typeof searchBooks !== 'undefined' ? searchBooks : '' %>" class="input input-bordered input-sm flex-1 text-white" placeholder="Buscar libro...">
+                  <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+                </form>
+              </div>
               <div class="overflow-x-auto">
                 <table class="table table-zebra">
                   <thead>
@@ -51,20 +63,33 @@
                     <% }) %>
                   </tbody>
                 </table>
-              </div>
-              <div class="mt-4 flex justify-center">
+              </div>              <div class="mt-4 flex justify-center">
+                <% if (booksTotalPages > 1) { %>
                 <div class="join">
-                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage - 1 %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %>'" <%= booksPage === 1 ? 'disabled' : '' %>>Anterior</button>
+                  <a class="join-item btn <%= booksPage === 1 ? 'btn-disabled' : '' %>" href="?pageBooks=<%= booksPage - 1 %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %><%= searchBooks ? '&searchBooks=' + encodeURIComponent(searchBooks) : '' %><%= searchAuthors ? '&searchAuthors=' + encodeURIComponent(searchAuthors) : '' %><%= searchCategories ? '&searchCategories=' + encodeURIComponent(searchCategories) : '' %><%= searchPublishers ? '&searchPublishers=' + encodeURIComponent(searchPublishers) : '' %>">Anterior</a>
                   <span class="join-item btn btn-ghost">Página <%= booksPage %> de <%= booksTotalPages %></span>
-                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage + 1 %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %>'" <%= booksPage === booksTotalPages || booksTotalPages === 0 ? 'disabled' : '' %>>Siguiente</button>
+                  <a class="join-item btn <%= booksPage === booksTotalPages ? 'btn-disabled' : '' %>" href="?pageBooks=<%= booksPage + 1 %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %><%= searchBooks ? '&searchBooks=' + encodeURIComponent(searchBooks) : '' %><%= searchAuthors ? '&searchAuthors=' + encodeURIComponent(searchAuthors) : '' %><%= searchCategories ? '&searchCategories=' + encodeURIComponent(searchCategories) : '' %><%= searchPublishers ? '&searchPublishers=' + encodeURIComponent(searchPublishers) : '' %>">Siguiente</a>
                 </div>
+                <% } %>
               </div>
             </div>
-          </div>
-          <!-- Autores -->
+          </div>          <!-- Autores -->
           <div class="card bg-base-200 border border-base-300 shadow-lg">
             <div class="card-body">
               <h2 class="card-title text-lg mb-4">Autores</h2>
+              <!-- Formulario de búsqueda para autores -->
+              <div class="mb-4">
+                <form method="get" class="flex gap-2">
+                  <input type="hidden" name="pageBooks" value="<%= booksPage %>">
+                  <input type="hidden" name="pageCategories" value="<%= categoriesPage %>">
+                  <input type="hidden" name="pagePublishers" value="<%= publishersPage %>">
+                  <input type="hidden" name="searchBooks" value="<%= typeof searchBooks !== 'undefined' ? searchBooks : '' %>">
+                  <input type="hidden" name="searchCategories" value="<%= typeof searchCategories !== 'undefined' ? searchCategories : '' %>">
+                  <input type="hidden" name="searchPublishers" value="<%= typeof searchPublishers !== 'undefined' ? searchPublishers : '' %>">
+                  <input type="text" name="searchAuthors" value="<%= typeof searchAuthors !== 'undefined' ? searchAuthors : '' %>" class="input input-bordered input-sm flex-1 text-white" placeholder="Buscar autor...">
+                  <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+                </form>
+              </div>
               <div class="overflow-x-auto">
                 <table class="table table-zebra">
                   <thead>
@@ -94,20 +119,33 @@
                     <% }) %>
                   </tbody>
                 </table>
-              </div>
-              <div class="mt-4 flex justify-center">
+              </div>              <div class="mt-4 flex justify-center">
+                <% if (authorsTotalPages > 1) { %>
                 <div class="join">
-                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage - 1 %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %>'" <%= authorsPage === 1 ? 'disabled' : '' %>>Anterior</button>
+                  <a class="join-item btn <%= authorsPage === 1 ? 'btn-disabled' : '' %>" href="?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage - 1 %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %><%= searchBooks ? '&searchBooks=' + encodeURIComponent(searchBooks) : '' %><%= searchAuthors ? '&searchAuthors=' + encodeURIComponent(searchAuthors) : '' %><%= searchCategories ? '&searchCategories=' + encodeURIComponent(searchCategories) : '' %><%= searchPublishers ? '&searchPublishers=' + encodeURIComponent(searchPublishers) : '' %>">Anterior</a>
                   <span class="join-item btn btn-ghost">Página <%= authorsPage %> de <%= authorsTotalPages %></span>
-                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage + 1 %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %>'" <%= authorsPage === authorsTotalPages || authorsTotalPages === 0 ? 'disabled' : '' %>>Siguiente</button>
+                  <a class="join-item btn <%= authorsPage === authorsTotalPages ? 'btn-disabled' : '' %>" href="?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage + 1 %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage %><%= searchBooks ? '&searchBooks=' + encodeURIComponent(searchBooks) : '' %><%= searchAuthors ? '&searchAuthors=' + encodeURIComponent(searchAuthors) : '' %><%= searchCategories ? '&searchCategories=' + encodeURIComponent(searchCategories) : '' %><%= searchPublishers ? '&searchPublishers=' + encodeURIComponent(searchPublishers) : '' %>">Siguiente</a>
                 </div>
+                <% } %>
               </div>
             </div>
-          </div>
-          <!-- Categorías -->
+          </div>          <!-- Categorías -->
           <div class="card bg-base-200 border border-base-300 shadow-lg">
             <div class="card-body">
               <h2 class="card-title text-lg mb-4">Categorías</h2>
+              <!-- Formulario de búsqueda para categorías -->
+              <div class="mb-4">
+                <form method="get" class="flex gap-2">
+                  <input type="hidden" name="pageBooks" value="<%= booksPage %>">
+                  <input type="hidden" name="pageAuthors" value="<%= authorsPage %>">
+                  <input type="hidden" name="pagePublishers" value="<%= publishersPage %>">
+                  <input type="hidden" name="searchBooks" value="<%= typeof searchBooks !== 'undefined' ? searchBooks : '' %>">
+                  <input type="hidden" name="searchAuthors" value="<%= typeof searchAuthors !== 'undefined' ? searchAuthors : '' %>">
+                  <input type="hidden" name="searchPublishers" value="<%= typeof searchPublishers !== 'undefined' ? searchPublishers : '' %>">
+                  <input type="text" name="searchCategories" value="<%= typeof searchCategories !== 'undefined' ? searchCategories : '' %>" class="input input-bordered input-sm flex-1 text-white" placeholder="Buscar categoría...">
+                  <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+                </form>
+              </div>
               <div class="overflow-x-auto">
                 <table class="table table-zebra">
                   <thead>
@@ -137,20 +175,33 @@
                     <% }) %>
                   </tbody>
                 </table>
-              </div>
-              <div class="mt-4 flex justify-center">
+              </div>              <div class="mt-4 flex justify-center">
+                <% if (categoriesTotalPages > 1) { %>
                 <div class="join">
-                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage - 1 %>&pagePublishers=<%= publishersPage %>'" <%= categoriesPage === 1 ? 'disabled' : '' %>>Anterior</button>
+                  <a class="join-item btn <%= categoriesPage === 1 ? 'btn-disabled' : '' %>" href="?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage - 1 %>&pagePublishers=<%= publishersPage %><%= searchBooks ? '&searchBooks=' + encodeURIComponent(searchBooks) : '' %><%= searchAuthors ? '&searchAuthors=' + encodeURIComponent(searchAuthors) : '' %><%= searchCategories ? '&searchCategories=' + encodeURIComponent(searchCategories) : '' %><%= searchPublishers ? '&searchPublishers=' + encodeURIComponent(searchPublishers) : '' %>">Anterior</a>
                   <span class="join-item btn btn-ghost">Página <%= categoriesPage %> de <%= categoriesTotalPages %></span>
-                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage + 1 %>&pagePublishers=<%= publishersPage %>'" <%= categoriesPage === categoriesTotalPages || categoriesTotalPages === 0 ? 'disabled' : '' %>>Siguiente</button>
+                  <a class="join-item btn <%= categoriesPage === categoriesTotalPages ? 'btn-disabled' : '' %>" href="?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage + 1 %>&pagePublishers=<%= publishersPage %><%= searchBooks ? '&searchBooks=' + encodeURIComponent(searchBooks) : '' %><%= searchAuthors ? '&searchAuthors=' + encodeURIComponent(searchAuthors) : '' %><%= searchCategories ? '&searchCategories=' + encodeURIComponent(searchCategories) : '' %><%= searchPublishers ? '&searchPublishers=' + encodeURIComponent(searchPublishers) : '' %>">Siguiente</a>
                 </div>
+                <% } %>
               </div>
             </div>
-          </div>
-          <!-- Editoriales -->
+          </div>          <!-- Editoriales -->
           <div class="card bg-base-200 border border-base-300 shadow-lg">
             <div class="card-body">
               <h2 class="card-title text-lg mb-4">Editoriales</h2>
+              <!-- Formulario de búsqueda para editoriales -->
+              <div class="mb-4">
+                <form method="get" class="flex gap-2">
+                  <input type="hidden" name="pageBooks" value="<%= booksPage %>">
+                  <input type="hidden" name="pageAuthors" value="<%= authorsPage %>">
+                  <input type="hidden" name="pageCategories" value="<%= categoriesPage %>">
+                  <input type="hidden" name="searchBooks" value="<%= typeof searchBooks !== 'undefined' ? searchBooks : '' %>">
+                  <input type="hidden" name="searchAuthors" value="<%= typeof searchAuthors !== 'undefined' ? searchAuthors : '' %>">
+                  <input type="hidden" name="searchCategories" value="<%= typeof searchCategories !== 'undefined' ? searchCategories : '' %>">
+                  <input type="text" name="searchPublishers" value="<%= typeof searchPublishers !== 'undefined' ? searchPublishers : '' %>" class="input input-bordered input-sm flex-1 text-white" placeholder="Buscar editorial...">
+                  <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+                </form>
+              </div>
               <div class="overflow-x-auto">
                 <table class="table table-zebra">
                   <thead>
@@ -180,13 +231,14 @@
                     <% }) %>
                   </tbody>
                 </table>
-              </div>
-              <div class="mt-4 flex justify-center">
+              </div>              <div class="mt-4 flex justify-center">
+                <% if (publishersTotalPages > 1) { %>
                 <div class="join">
-                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage - 1 %>'" <%= publishersPage === 1 ? 'disabled' : '' %>>Anterior</button>
+                  <a class="join-item btn <%= publishersPage === 1 ? 'btn-disabled' : '' %>" href="?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage - 1 %><%= searchBooks ? '&searchBooks=' + encodeURIComponent(searchBooks) : '' %><%= searchAuthors ? '&searchAuthors=' + encodeURIComponent(searchAuthors) : '' %><%= searchCategories ? '&searchCategories=' + encodeURIComponent(searchCategories) : '' %><%= searchPublishers ? '&searchPublishers=' + encodeURIComponent(searchPublishers) : '' %>">Anterior</a>
                   <span class="join-item btn btn-ghost">Página <%= publishersPage %> de <%= publishersTotalPages %></span>
-                  <button class="join-item btn" onclick="window.location.href='?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage + 1 %>'" <%= publishersPage === publishersTotalPages || publishersTotalPages === 0 ? 'disabled' : '' %>>Siguiente</button>
+                  <a class="join-item btn <%= publishersPage === publishersTotalPages ? 'btn-disabled' : '' %>" href="?pageBooks=<%= booksPage %>&pageAuthors=<%= authorsPage %>&pageCategories=<%= categoriesPage %>&pagePublishers=<%= publishersPage + 1 %><%= searchBooks ? '&searchBooks=' + encodeURIComponent(searchBooks) : '' %><%= searchAuthors ? '&searchAuthors=' + encodeURIComponent(searchAuthors) : '' %><%= searchCategories ? '&searchCategories=' + encodeURIComponent(searchCategories) : '' %><%= searchPublishers ? '&searchPublishers=' + encodeURIComponent(searchPublishers) : '' %>">Siguiente</a>
                 </div>
+                <% } %>
               </div>
             </div>
           </div>
