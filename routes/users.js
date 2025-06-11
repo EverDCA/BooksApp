@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const { requireRole } = require('./roles');
+const { Op } = require('sequelize');
 
 // Registro
 router.get('/register', (req, res) => {
@@ -73,13 +74,27 @@ function isAuthenticated(req, res, next) {
   res.redirect('/users/login');
 }
 
-// Vista de gestión de usuarios (solo admin)
+// Vista de gestión de usuarios (solo admin) con búsqueda
 router.get('/', isAuthenticated, requireRole('admin'), async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 5;
     const offset = (page - 1) * limit;
+    const search = req.query.search ? req.query.search.trim() : '';
+
+    // Construcción de filtros
+    const where = {};
+
+    // Búsqueda por nombre o email
+    if (search) {
+      where[Op.or] = [
+        { name: { [Op.like]: `%${search}%` } },
+        { email: { [Op.like]: `%${search}%` } }
+      ];
+    }
+
     const { count, rows: users } = await User.findAndCountAll({
+      where,
       limit,
       offset,
       order: [['name', 'ASC']]
@@ -90,7 +105,8 @@ router.get('/', isAuthenticated, requireRole('admin'), async (req, res) => {
       user: req.session.user,
       messages: req.flash(),
       currentPage: page,
-      totalPages
+      totalPages,
+      search
     });
   } catch (error) {
     res.status(500).send('Error al obtener los usuarios');

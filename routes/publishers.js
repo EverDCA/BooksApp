@@ -5,24 +5,34 @@ const { isAuthenticated } = require('./users');
 const { forbidUsuario } = require('./roles');
 const { Op } = require('sequelize');
 
-// Mostrar todas las editoriales activas con paginación
+// Mostrar todas las editoriales activas con paginación y búsqueda
 router.get('/', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;
+    const search = req.query.search ? req.query.search.trim() : '';
+
+    // Construcción de filtros
+    const where = { state: 1 };
+
+    // Búsqueda por nombre de editorial
+    if (search) {
+      where.name = { [Op.like]: `%${search}%` };
+    }
+
     const { count, rows: publishers } = await Publisher.findAndCountAll({
-      where: { state: 1 },
+      where,
       limit,
       offset,
       order: [['name', 'ASC']]
-    });
-    const totalPages = Math.ceil(count / limit);
+    });    const totalPages = Math.ceil(count / limit);
     res.render('publishers/index', {
       publishers,
       messages: req.flash(),
       currentPage: page,
       totalPages,
+      search,
       user: req.session.user
     });
   } catch (error) {

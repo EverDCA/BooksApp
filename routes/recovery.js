@@ -96,4 +96,52 @@ router.post('/publishers/:id/restore', isAuthenticated, forbidUsuarioYBiblioteca
   }
 });
 
+// Eliminar permanentemente libro
+router.post('/books/:id/delete', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) => {
+  try {
+    await Book.destroy({ where: { id_book: req.params.id } });
+    req.flash('success', 'Libro eliminado permanentemente');
+    res.redirect('/recovery');
+  } catch (error) {
+    req.flash('error', 'Error al eliminar el libro permanentemente');
+    res.redirect('/recovery');
+  }
+});
+
+// Eliminar permanentemente autor
+router.post('/authors/:id/delete', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) => {
+  try {
+    await Author.destroy({ where: { id_author: req.params.id } });
+    req.flash('success', 'Autor eliminado permanentemente');
+    res.redirect('/recovery');
+  } catch (error) {
+    req.flash('error', 'Error al eliminar el autor permanentemente');
+    res.redirect('/recovery');
+  }
+});
+
+// Eliminar permanentemente categoría
+router.post('/categories/:id/delete', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) => {
+  try {
+    await Category.destroy({ where: { id_category: req.params.id } });
+    req.flash('success', 'Categoría eliminada permanentemente');
+    res.redirect('/recovery');
+  } catch (error) {
+    req.flash('error', 'Error al eliminar la categoría permanentemente');
+    res.redirect('/recovery');
+  }
+});
+
+// Eliminar permanentemente editorial
+router.post('/publishers/:id/delete', isAuthenticated, forbidUsuarioYBibliotecario, async (req, res) => {
+  try {
+    await Publisher.destroy({ where: { id_publisher: req.params.id } });
+    req.flash('success', 'Editorial eliminada permanentemente');
+    res.redirect('/recovery');
+  } catch (error) {
+    req.flash('error', 'Error al eliminar la editorial permanentemente');
+    res.redirect('/recovery');
+  }
+});
+
 module.exports = router;

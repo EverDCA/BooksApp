@@ -35,12 +35,16 @@
                     <% books.forEach((book, i) => { %>
                       <tr>
                         <td><%= (booksPage - 1) * 5 + i + 1 %></td>
-                        <td><%= book.name %></td>
-                        <td>
+                        <td><%= book.name %></td>                        <td>
                           <% if (user && user.role !== 'usuario') { %>
-                            <form action="/recovery/books/<%= book.id_book %>/restore" method="POST" class="inline">
-                              <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
-                            </form>
+                            <div class="flex flex-wrap gap-1">
+                              <form action="/recovery/books/<%= book.id_book %>/restore" method="POST" class="inline">
+                                <button class="btn btn-success btn-xs" type="submit">Reestablecer</button>
+                              </form>
+                              <form action="/recovery/books/<%= book.id_book %>/delete" method="POST" class="inline" onsubmit="return confirm('¿Eliminar permanentemente este libro? Esta acción no se puede deshacer.');">
+                                <button class="btn btn-error btn-xs" type="submit">Eliminar</button>
+                              </form>
+                            </div>
                           <% } %>
                         </td>
                       </tr>
@@ -74,12 +78,16 @@
                     <% authors.forEach((author, i) => { %>
                       <tr>
                         <td><%= (authorsPage - 1) * 5 + i + 1 %></td>
-                        <td><%= author.name %></td>
-                        <td>
+                        <td><%= author.name %></td>                        <td>
                           <% if (user && user.role !== 'usuario') { %>
-                            <form action="/recovery/authors/<%= author.id_author %>/restore" method="POST" class="inline">
-                              <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
-                            </form>
+                            <div class="flex flex-wrap gap-1">
+                              <form action="/recovery/authors/<%= author.id_author %>/restore" method="POST" class="inline">
+                                <button class="btn btn-success btn-xs" type="submit">Reestablecer</button>
+                              </form>
+                              <form action="/recovery/authors/<%= author.id_author %>/delete" method="POST" class="inline" onsubmit="return confirm('¿Eliminar permanentemente este autor? Esta acción no se puede deshacer.');">
+                                <button class="btn btn-error btn-xs" type="submit">Eliminar</button>
+                              </form>
+                            </div>
                           <% } %>
                         </td>
                       </tr>
@@ -113,12 +121,16 @@
                     <% categories.forEach((category, i) => { %>
                       <tr>
                         <td><%= (categoriesPage - 1) * 5 + i + 1 %></td>
-                        <td><%= category.name %></td>
-                        <td>
+                        <td><%= category.name %></td>                        <td>
                           <% if (user && user.role !== 'usuario') { %>
-                            <form action="/recovery/categories/<%= category.id_category %>/restore" method="POST" class="inline">
-                              <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
-                            </form>
+                            <div class="flex flex-wrap gap-1">
+                              <form action="/recovery/categories/<%= category.id_category %>/restore" method="POST" class="inline">
+                                <button class="btn btn-success btn-xs" type="submit">Reestablecer</button>
+                              </form>
+                              <form action="/recovery/categories/<%= category.id_category %>/delete" method="POST" class="inline" onsubmit="return confirm('¿Eliminar permanentemente esta categoría? Esta acción no se puede deshacer.');">
+                                <button class="btn btn-error btn-xs" type="submit">Eliminar</button>
+                              </form>
+                            </div>
                           <% } %>
                         </td>
                       </tr>
@@ -152,12 +164,16 @@
                     <% publishers.forEach((publisher, i) => { %>
                       <tr>
                         <td><%= (publishersPage - 1) * 5 + i + 1 %></td>
-                        <td><%= publisher.name %></td>
-                        <td>
+                        <td><%= publisher.name %></td>                        <td>
                           <% if (user && user.role !== 'usuario') { %>
-                            <form action="/recovery/publishers/<%= publisher.id_publisher %>/restore" method="POST" class="inline">
-                              <button class="btn btn-success btn-sm" type="submit">Reestablecer</button>
-                            </form>
+                            <div class="flex flex-wrap gap-1">
+                              <form action="/recovery/publishers/<%= publisher.id_publisher %>/restore" method="POST" class="inline">
+                                <button class="btn btn-success btn-xs" type="submit">Reestablecer</button>
+                              </form>
+                              <form action="/recovery/publishers/<%= publisher.id_publisher %>/delete" method="POST" class="inline" onsubmit="return confirm('¿Eliminar permanentemente esta editorial? Esta acción no se puede deshacer.');">
+                                <button class="btn btn-error btn-xs" type="submit">Eliminar</button>
+                              </form>
+                            </div>
                           <% } %>
                         </td>
                       </tr>

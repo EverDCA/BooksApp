@@ -9,20 +9,54 @@ const { isAuthenticated } = require('./users');
 const { forbidUsuario } = require('./roles');
 const { Op } = require('sequelize');
 
-// Mostrar todos los libros activos con paginación
+// Mostrar todos los libros activos con paginación, búsqueda y filtrado
 router.get('/', async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;
+    const search = req.query.search ? req.query.search.trim() : '';
+    const categoryFilter = req.query.category;
+    const authorFilter = req.query.author;
+    const publisherFilter = req.query.publisher;
+
+    // Construcción de filtros
+    const where = { state: 1 };
+    const include = [Author, Category, Publisher];
+
+    // Búsqueda por nombre de libro
+    if (search) {
+      where.name = { [Op.like]: `%${search}%` };
+    }
+
+    // Filtrado por categoría
+    if (categoryFilter && categoryFilter !== '') {
+      where.id_category = categoryFilter;
+    }
+
+    // Filtrado por autor
+    if (authorFilter && authorFilter !== '') {
+      where.id_author = authorFilter;
+    }
+
+    // Filtrado por editorial
+    if (publisherFilter && publisherFilter !== '') {
+      where.id_publisher = publisherFilter;
+    }
+
     const { count, rows: books } = await Book.findAndCountAll({
-      where: { state: 1 },
+      where,
       limit,
       offset,
       order: [['name', 'ASC']],
-      include: [Author, Category, Publisher]
+      include
     });
     const totalPages = Math.ceil(count / limit);
+
+    // Obtener todas las categorías, autores y editoriales para los filtros
+    const categories = await Category.findAll({ where: { state: 1 }, order: [['name', 'ASC']] });
+    const authors = await Author.findAll({ where: { state: 1 }, order: [['name', 'ASC']] });
+    const publishers = await Publisher.findAll({ where: { state: 1 }, order: [['name', 'ASC']] });
 
     // --- INICIO: Lógica de préstamos activos por usuario ---
     let userLoans = {};
@@ -43,11 +77,18 @@ router.get('/', async (req, res) => {
       messages: req.flash(),
       currentPage: page,
       totalPages,
-      user: req.session.user, // <-- Añadido para el navbar
-      userLoans // <-- Pasar info de préstamos activos a la vista
+      user: req.session.user,
+      userLoans,
+      search,
+      categoryFilter,
+      authorFilter,
+      publisherFilter,
+      categories,
+      authors,
+      publishers
     });
   } catch (error) {
-    res.status(500).send('Error al obtener los libros');
+    res.status(500).send('Error al obtener los libros: ' + error.message);
   }
 });
 

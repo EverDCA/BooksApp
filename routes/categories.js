@@ -5,26 +5,35 @@ const { isAuthenticated } = require('./users');
 const { forbidUsuario } = require('./roles');
 const { Op } = require('sequelize');
 
-// Mostrar todas las categorías activas con paginación
+// Mostrar todas las categorías activas con paginación y búsqueda
 router.get('/', isAuthenticated, forbidUsuario, async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 10; // Cambia este valor si quieres más/menos por página
     const offset = (page - 1) * limit;
+    const search = req.query.search ? req.query.search.trim() : '';
 
-    // Obtener categorías activas con paginación
+    // Construcción de filtros
+    const where = { state: 1 };
+
+    // Búsqueda por nombre de categoría
+    if (search) {
+      where.name = { [Op.like]: `%${search}%` };
+    }
+
+    // Obtener categorías activas con paginación y búsqueda
     const { count, rows: categories } = await Category.findAndCountAll({
-      where: { state: 1 },
+      where,
       limit,
       offset,
       order: [['name', 'ASC']]
-    });
-    const totalPages = Math.ceil(count / limit);
+    });    const totalPages = Math.ceil(count / limit);
     res.render('categories/index', {
       categories,
       messages: req.flash(),
       currentPage: page,
       totalPages,
+      search,
       user: req.session.user
     });
   } catch (error) {

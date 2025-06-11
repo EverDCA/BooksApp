@@ -18,10 +18,21 @@
         </div>
         <% if (messages.success) { %>
           <div class="alert alert-success mb-4"><%- messages.success %></div>
-        <% } %>
-        <% if (messages.error) { %>
+        <% } %>        <% if (messages.error) { %>
           <div class="alert alert-error mb-4"><%- messages.error %></div>
         <% } %>
+        
+        <!-- Formulario de búsqueda -->
+        <div class="mb-8">
+          <form method="get" class="flex flex-col sm:flex-row gap-4 items-end justify-between bg-base-100 rounded-lg p-4 shadow-md">
+            <div class="flex flex-col w-full sm:w-auto">
+              <label for="search" class="font-semibold mb-1 text-base-content">Buscar por nombre</label>
+              <input type="text" id="search" name="search" value="<%= typeof search !== 'undefined' ? search : '' %>" class="input input-bordered w-full sm:w-64 text-white focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Nombre de la categoría...">
+            </div>
+            <button type="submit" class="btn btn-primary w-full sm:w-auto mt-2 sm:mt-0 shadow-lg transition-transform hover:scale-105">Buscar</button>
+          </form>
+        </div>
+        
         <div class="overflow-x-auto card bg-base-200 border border-base-300 shadow-lg">
           <table class="table table-zebra">
             <thead>
@@ -46,13 +57,14 @@
               <% }) %>
             </tbody>
           </table>
-        </div>
-        <div class="mt-6 flex justify-center">
+        </div>        <div class="mt-6 flex justify-center">
+          <% if (totalPages > 1) { %>
           <div class="join">
-            <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage - 1 %>'" <%= currentPage === 1 ? 'disabled' : '' %>>Anterior</button>
+            <a class="join-item btn <%= currentPage === 1 ? 'btn-disabled' : '' %>" href="?page=<%= currentPage - 1 %><%= search ? '&search=' + encodeURIComponent(search) : '' %>" <%= currentPage === 1 ? 'tabindex="-1" aria-disabled="true"' : '' %>>Anterior</a>
             <span class="join-item btn btn-ghost">Página <%= currentPage %> de <%= totalPages %></span>
-            <button class="join-item btn" onclick="window.location.href='?page=<%= currentPage + 1 %>'" <%= currentPage === totalPages ? 'disabled' : '' %>>Siguiente</button>
+            <a class="join-item btn <%= currentPage === totalPages ? 'btn-disabled' : '' %>" href="?page=<%= currentPage + 1 %><%= search ? '&search=' + encodeURIComponent(search) : '' %>" <%= currentPage === totalPages ? 'tabindex="-1" aria-disabled="true"' : '' %>>Siguiente</a>
           </div>
+          <% } %>
         </div>
       </div>
     </div>

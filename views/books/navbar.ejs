@@ -12,10 +12,14 @@
     <!-- Desktop menu -->
     <ul class="menu menu-horizontal px-1 flex-nowrap hidden lg:flex gap-2">
       <% if (typeof user !== 'undefined' && user) { %>
-        <li><a href="/dashboard" class="btn btn-ghost rounded-btn hover:bg-primary/20 transition-colors whitespace-nowrap">Dashboard</a></li>
-        <li class="relative z-50">
+        <li><a href="/dashboard" class="btn btn-ghost rounded-btn hover:bg-primary/20 transition-colors whitespace-nowrap">Dashboard</a></li>        <li class="relative z-50">
           <details>
-            <summary class="btn btn-ghost rounded-btn hover:bg-primary/20 transition-colors whitespace-nowrap">Gestión</summary>
+            <summary class="btn btn-ghost rounded-btn hover:bg-primary/20 transition-colors whitespace-nowrap flex items-center gap-1">
+              Gestión
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
             <ul class="bg-base-100 rounded-t-none p-2 shadow-lg border border-base-200 absolute left-0 top-full min-w-[180px] z-50 w-max">
               <li><a href="/books" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Libros</a></li>
               <% if (user.role !== 'usuario') { %>
@@ -29,8 +33,7 @@
               <% } %>
             </ul>
           </details>
-        </li>
-        <li tabindex="0">
+        </li>        <li tabindex="0">
           <details class="dropdown dropdown-end">
             <summary class="btn btn-ghost rounded-btn flex items-center gap-2 hover:bg-primary/20 transition-colors">
               <div class="avatar placeholder">
@@ -39,6 +42,9 @@
                 </div>
               </div>
               <span class="font-semibold"><%= user.name %></span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
             </summary>
             <ul class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 mt-2">
               <li><span class="text-xs text-gray-400">Rol: <%= user.role %></span></li>
@@ -46,12 +52,14 @@
             </ul>
           </details>
         </li>
-      <% } else { %>
-        <li tabindex="0">
+      <% } else { %>        <li tabindex="0">
           <details class="dropdown dropdown-end">
             <summary class="btn btn-ghost rounded-btn flex items-center gap-2 hover:bg-primary/20 transition-colors">
               <i class="fa-solid fa-user text-lg"></i>
               <span class="font-semibold">Cuenta</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
             </summary>
             <ul class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 mt-2">
               <li><a href="/users/login" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Iniciar sesión</a></li>
@@ -64,9 +72,13 @@
     <!-- Mobile dropdown menu -->
     <div id="mobile-menu" class="absolute top-full right-2 mt-2 w-56 bg-base-100 rounded-xl shadow-lg border border-base-200 z-50 p-4 space-y-2 lg:hidden hidden">
       <% if (typeof user !== 'undefined' && user) { %>
-        <a href="/dashboard" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Dashboard</a>
-        <details>
-          <summary class="btn btn-ghost rounded-btn w-full text-left hover:bg-primary/20 transition-colors">Gestión</summary>
+        <a href="/dashboard" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Dashboard</a>        <details>
+          <summary class="btn btn-ghost rounded-btn w-full text-left hover:bg-primary/20 transition-colors flex items-center justify-between">
+            <span>Gestión</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
           <ul class="pl-0">
             <li><a href="/books" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Libros</a></li>
             <% if (user.role !== 'usuario') { %>
@@ -79,26 +91,34 @@
               <li><a href="/users" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Usuarios</a></li>
             <% } %>
           </ul>
-        </details>
-        <details class="dropdown dropdown-end w-full">
-          <summary class="btn btn-ghost rounded-btn flex items-center gap-2 w-full hover:bg-primary/20 transition-colors">
-            <div class="avatar placeholder">
-              <div class="bg-primary text-white rounded-full w-8">
-                <span class="text-lg font-bold"><%= user.name.charAt(0).toUpperCase() %></span>
+        </details>        <details class="dropdown dropdown-end w-full">
+          <summary class="btn btn-ghost rounded-btn flex items-center gap-2 w-full hover:bg-primary/20 transition-colors justify-between">
+            <div class="flex items-center gap-2">
+              <div class="avatar placeholder">
+                <div class="bg-primary text-white rounded-full w-8">
+                  <span class="text-lg font-bold"><%= user.name.charAt(0).toUpperCase() %></span>
+                </div>
               </div>
+              <span class="font-semibold"><%= user.name %></span>
             </div>
-            <span class="font-semibold"><%= user.name %></span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
           </summary>
           <ul class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 mt-2">
             <li><span class="text-xs text-gray-400">Rol: <%= user.role %></span></li>
             <li><a href="/users/logout" class="btn btn-ghost w-full text-left hover:bg-error/20 transition-colors">Cerrar sesión</a></li>
           </ul>
         </details>
-      <% } else { %>
-        <details class="dropdown dropdown-end w-full">
-          <summary class="btn btn-ghost rounded-btn flex items-center gap-2 w-full hover:bg-primary/20 transition-colors">
-            <i class="fa-solid fa-user text-lg"></i>
-            <span class="font-semibold">Cuenta</span>
+      <% } else { %>        <details class="dropdown dropdown-end w-full">
+          <summary class="btn btn-ghost rounded-btn flex items-center gap-2 w-full hover:bg-primary/20 transition-colors justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-user text-lg"></i>
+              <span class="font-semibold">Cuenta</span>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
           </summary>
           <ul class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 mt-2">
             <li><a href="/users/login" class="btn btn-ghost w-full text-left hover:bg-primary/20 transition-colors">Iniciar sesión</a></li>
@@ -106,8 +126,7 @@
           </ul>
         </details>
       <% } %>
-    </div>
-    <script>
+    </div>    <script>
       const menuToggle = document.getElementById('menu-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
       menuToggle && menuToggle.addEventListener('click', () => {
@@ -116,6 +135,23 @@
       // Opcional: cerrar menú al navegar
       mobileMenu && mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+      });
+      
+      // Rotar flechas de dropdown
+      document.addEventListener('DOMContentLoaded', function() {
+        const details = document.querySelectorAll('details');
+        details.forEach(detail => {
+          detail.addEventListener('toggle', function() {
+            const arrow = this.querySelector('summary svg');
+            if (arrow) {
+              if (this.open) {
+                arrow.style.transform = 'rotate(180deg)';
+              } else {
+                arrow.style.transform = 'rotate(0deg)';
+              }
+            }
+          });
+        });
       });
     </script>
   </div>
