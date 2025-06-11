@@ -9,9 +9,17 @@
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
     <%- include('../books/navbar.ejs', { user: typeof user !== 'undefined' ? user : null }) %>
     <div class="flex-1 flex flex-col animate-fade">
-      <div class="flex flex-1 items-center justify-center py-8">
-        <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-2xl w-full min-h-[320px]">
-          <h1 class="card-title text-4xl font-bold mb-8 text-center">Edit Category</h1>
+      <div class="flex flex-1 items-center justify-center py-20">        <div class="card bg-base-200 border border-base-300 shadow-2xl p-6 max-w-2xl w-full min-h-[320px]">
+          <div class="flex items-center justify-between mb-8">
+            <a href="/categories" class="btn btn-ghost btn-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              Volver
+            </a>
+            <h1 class="card-title text-4xl font-bold text-center flex-1">Editar Categoría</h1>
+            <div class="w-20"></div> <!-- Spacer para centrar el título -->
+          </div>
           <% if (messages.error) { %>
             <div class="alert alert-error mb-6 text-lg"><%- messages.error %></div>
           <% } %>

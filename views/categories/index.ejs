@@ -7,12 +7,18 @@
     <link rel="stylesheet" href="/output.css">
   </head>
   <body class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col">
-    <%- include('../books/navbar.ejs', { user: typeof user !== 'undefined' ? user : null }) %>    <div class="flex-1 flex flex-col mb-10 animate-fade">
-      <div class="max-w-2xl lg:max-w-5xl xl:max-w-6xl mx-auto px-4 pt-6 sm:pt-8 flex-1 flex flex-col">
-        <div class="flex justify-between items-center mb-6">
-          <h1 class="text-2xl font-bold">Categorías</h1>
+    <%- include('../books/navbar.ejs', { user: typeof user !== 'undefined' ? user : null }) %>    <div class="flex-1 flex flex-col mb-10 animate-fade">        <div class="max-w-2xl lg:max-w-5xl xl:max-w-6xl mx-auto px-4 pt-20 sm:pt-24 flex-1 flex flex-col"><div class="flex justify-between items-center mb-6">
+          <div class="flex items-center gap-4">
+            <a href="/dashboard" class="btn btn-ghost btn-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              Volver
+            </a>
+            <h1 class="text-2xl font-bold">Categorías</h1>
+          </div>
           <% if (user && user.role !== 'usuario') { %>
-            <a href="/categories/add" class="btn btn-primary md:btn-lg sm:btn-sm">Agregar Categoría</a>
+            <a href="/categories/add" class="btn btn-primary md:btn-md sm:btn-sm">Agregar Categoría</a>
           <% } %>
         </div>
         <% if (messages.success) { %>

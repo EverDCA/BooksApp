@@ -8,14 +8,12 @@
   <body
     class="min-h-screen bg-gradient-to-t from-zinc-900 via-gray-900 to-slate-900 text-white flex flex-col"
   >
-    <%- include('./books/navbar.ejs', { user: typeof user !== 'undefined' ? user : null }) %>
-
-    <div
-      class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 place-items-center min-h-0"
+    <%- include('./books/navbar.ejs', { user: typeof user !== 'undefined' ? user : null }) %>    <div
+      class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 pt-24 place-items-center min-h-0"
     >
       <!-- Bienvenida y enlaces -->
       <div
-        class="card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center shadow-xl w-full h-full hover:bg-primary/20 transition duration-250 group animate-fade-down animate-once animate-delay-[200ms] animate-ease-in-out"
+        class="card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center shadow-xl w-full h-full hover:bg-primary/20 transition duration-250 group animate-fade-down animate-once animate-ease-in-out"
       >
         <h2 class="card-title text-2xl md:text-3xl font-bold mb-4 text-center text-white drop-shadow-lg animate-fade animate-delay-500 self-center">
           Bienvenido
@@ -23,32 +21,32 @@
         <ul class="space-y-4 text-center flex flex-col">
           <% if (user && user.role === 'usuario') { %>
             <li>
-              <a href="/books" class="btn btn-secondary btn-wide animate-fade animate-delay-900">Libros</a>
+              <a href="/books" class="btn btn-secondary btn-wide animate-fade animate-delay-600">Libros</a>
             </li>
             <li>
-              <a href="/loans" class="btn btn-info btn-wide animate-fade animate-delay-950">Mis Préstamos</a>
+              <a href="/loans" class="btn btn-info btn-wide animate-fade animate-delay-650">Mis Préstamos</a>
             </li>
           <% } else if (user && user.role === 'bibliotecario') { %>
-            <li><a href="/books" class="btn btn-secondary btn-wide animate-fade animate-delay-800">Libros</a></li>
-            <li><a href="/authors" class="btn btn-primary btn-wide animate-fade animate-delay-900">Autores</a></li>
+            <li><a href="/books" class="btn btn-secondary btn-wide animate-fade animate-delay-600">Libros</a></li>
+            <li><a href="/authors" class="btn btn-primary btn-wide animate-fade animate-delay-650">Autores</a></li>
             
-            <li><a href="/publishers" class="btn btn-warning btn-wide animate-fade animate-delay-1000">Editoriales</a></li>
-            <li><a href="/categories" class="btn btn-success btn-wide animate-fade animate-delay-1100">Categorías</a></li>
-            <li><a href="/loans" class="btn btn-info btn-wide animate-fade animate-delay-950">Mis Préstamos</a></li>
+            <li><a href="/publishers" class="btn btn-warning btn-wide animate-fade animate-delay-700">Editoriales</a></li>
+            <li><a href="/categories" class="btn btn-success btn-wide animate-fade animate-delay-750">Categorías</a></li>
+            <li><a href="/loans" class="btn btn-info btn-wide animate-fade animate-delay-800">Mis Préstamos</a></li>
           <% } else if (user && user.role === 'admin') { %>
-             <li><a href="/books" class="btn btn-secondary btn-wide animate-fade animate-delay-800">Libros</a></li>
-            <li><a href="/authors" class="btn btn-primary btn-wide animate-fade animate-delay-900">Autores</a></li>
+             <li><a href="/books" class="btn btn-secondary btn-wide animate-fade animate-delay-600">Libros</a></li>
+            <li><a href="/authors" class="btn btn-primary btn-wide animate-fade animate-delay-650">Autores</a></li>
            
-            <li><a href="/publishers" class="btn btn-warning btn-wide animate-fade animate-delay-1000">Editoriales</a></li>
-            <li><a href="/categories" class="btn btn-success btn-wide animate-fade animate-delay-1100">Categorías</a></li>
-            <li><a href="/recovery" class="btn btn-accent btn-wide animate-fade animate-delay-1200">Reestablecer</a></li>
-            <li><a href="/users" class="btn btn-error btn-wide animate-fade animate-delay-1250">Usuarios</a></li>
-            <li><a href="/loans" class="btn btn-info btn-wide animate-fade animate-delay-1300">Mis Préstamos</a></li>
+            <li><a href="/publishers" class="btn btn-warning btn-wide animate-fade animate-delay-700">Editoriales</a></li>
+            <li><a href="/categories" class="btn btn-success btn-wide animate-fade animate-delay-750">Categorías</a></li>
+            <li><a href="/recovery" class="btn btn-accent btn-wide animate-fade animate-delay-800">Reestablecer</a></li>
+            <li><a href="/users" class="btn btn-error btn-wide animate-fade animate-delay-850">Usuarios</a></li>
+            <li><a href="/loans" class="btn btn-info btn-wide animate-fade animate-delay-900">Mis Préstamos</a></li>
           <% } %>
         </ul>
       </div>
       <!-- Slider destacado -->
-      <section class="card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center shadow-xl w-full h-full hover:bg-cyan-500/20 transition duration-250 animate-fade-down animate-once animate-delay-[200ms] animate-ease-in-out md:col-span-2 lg:col-span-2"
+      <section class="card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center shadow-xl w-full h-full hover:bg-cyan-500/20 transition duration-250 animate-fade-down animate-once animate-delay-[100ms] animate-ease-in-out md:col-span-2 lg:col-span-2"
 >
         <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center text-white drop-shadow-lg">
           Libros <span class="text-primary">destacados</span>
@@ -89,7 +87,7 @@
       </section>
       <!-- Estadísticas -->
       <div
-        class="card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-success/20 transition duration-250 group animate-fade-down animate-once animate-delay-[400ms] md:col-span-2 lg:col-span-2"
+        class="card bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col justify-center items-center shadow-xl w-full h-full hover:bg-success/20 transition duration-250 group animate-fade-down animate-once animate-delay-[200ms] md:col-span-2 lg:col-span-2"
       >
         <h2 class="card-title text-2xl md:text-3xl font-bold mb-10 text-center text-white drop-shadow-lg">
           Estadísticas <span class="text-success">Generales</span>
@@ -119,7 +117,7 @@
         </div>
       </div>
       <!-- Libro recomendado -->
-      <div class="flex flex-col items-center justify-center w-full h-full bg-base-200 border border-base-300 rounded-2xl p-6 shadow-xl hover:bg-secondary/20 transition duration-250 animate-fade-down animate-once animate-delay-[400ms]">
+      <div class="flex flex-col items-center justify-center w-full h-full bg-base-200 border border-base-300 rounded-2xl p-6 shadow-xl hover:bg-secondary/20 transition duration-250 animate-fade-down animate-once animate-delay-[300ms]">
         <h2 class="text-2xl md:text-3xl font-bold mb-4 text-center text-white drop-shadow-lg">
           Libro <span class="text-secondary">Recomendado</span>
         </h2>

@@ -1,4 +1,4 @@
-<nav class="navbar bg-base-100 shadow-sm z-50 relative w-full">
+<nav id="main-navbar" class="navbar bg-base-100/90 z-50 fixed top-0 w-full transition-all duration-300">
   <div class="flex-1 min-w-0">
     <a href="/" class="btn btn-ghost text-xl font-bold tracking-wide whitespace-nowrap overflow-hidden text-ellipsis">BooksApp</a>
   </div>
@@ -112,6 +112,9 @@
     </div>    <script>
       const menuToggle = document.getElementById('menu-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
+      const navbar = document.getElementById('main-navbar');
+      
+      // Toggle mobile menu
       menuToggle && menuToggle.addEventListener('click', () => {
         mobileMenu.classList.toggle('hidden');
       });
@@ -136,6 +139,27 @@
           });
         }
       });
+
+      // Efecto de transparencia en scroll
+      function handleScroll() {
+        const scrollY = window.scrollY;
+        
+        if (scrollY > 0) {
+          // Cuando se hace scroll, hacer el navbar más transparente
+          navbar.style.backgroundColor = '';
+          navbar.style.backdropFilter = '';
+        } else {
+          // En la posición 0, navbar opaco normal
+          navbar.style.backgroundColor = 'rgba(var(--fallback-b1, oklch(var(--b1))), 0.2)';
+          navbar.style.backdropFilter = 'glass';
+        }
+      }
+
+      // Escuchar eventos de scroll
+      window.addEventListener('scroll', handleScroll);
+      
+      // Ejecutar una vez al cargar para establecer el estado inicial
+      handleScroll();
     </script>
   </div>
 </nav>
