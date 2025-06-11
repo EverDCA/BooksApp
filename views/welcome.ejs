@@ -57,23 +57,30 @@
           <div class="stat-title text-lg font-semibold text-success">Categorías</div>
           <div class="stat-value text-4xl font-extrabold text-success"><%= stats.categories %></div>
           <div class="stat-desc text-success/70">Diferentes géneros</div>
-        </div>
-        <!-- Más contenido de estadísticas, creativo -->
+        </div>        <!-- Más contenido de estadísticas, creativo -->
         <div class="stat hover:bg-accent/20 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center border-4 border-accent/10 hover:border-accent/30 transition-all duration-300 cursor-pointer col-span-1 sm:col-span-2">
           <div class="stat-figure mb-2">
             <i class="fa-solid fa-chart-line fa-3x text-accent drop-shadow"></i>
-          </div>
-          <div class="stat-title text-lg font-semibold text-accent">Libros más recientes</div>
-          <div class="stat-value text-2xl font-bold text-accent">¡Actualizado!</div>
-          <div class="stat-desc text-accent/70">Consulta los últimos libros agregados en la sección de destacados.</div>
+          </div>          <div class="stat-title text-lg font-semibold text-accent">Libro más reciente</div>
+          <% if (recentBooks && recentBooks.length > 0) { %>
+            <div class="stat-value text-lg font-bold text-accent mb-2"><%= recentBooks[0].name %></div>
+            <div class="stat-desc text-accent/70 text-sm">
+              <div class="flex items-center justify-center">
+                <span class="text-xs">por <%= recentBooks[0].Author ? recentBooks[0].Author.name : 'N/A' %></span>
+              </div>
+            </div>
+          <% } else { %>
+            <div class="stat-value text-2xl font-bold text-accent">Sin libros</div>
+            <div class="stat-desc text-accent/70">Agrega libros para verlos aquí.</div>
+          <% } %>
         </div>
         <div class="stat hover:bg-info/20 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center border-4 border-info/10 hover:border-info/30 transition-all duration-300 cursor-pointer col-span-1 sm:col-span-2">
           <div class="stat-figure mb-2">
             <i class="fa-solid fa-users fa-3x text-info drop-shadow"></i>
           </div>
           <div class="stat-title text-lg font-semibold text-info">Usuarios activos</div>
-          <div class="stat-value text-2xl font-bold text-info">Próximamente</div>
-          <div class="stat-desc text-info/70">Funcionalidad de comunidad en desarrollo.</div>
+          <div class="stat-value text-2xl font-bold text-info"><%= activeUsers %></div>
+          <div class="stat-desc text-info/70">Miembros registrados en la plataforma.</div>
         </div>
       </div>
       <% if (stats.books === 0 && stats.authors === 0 && stats.publishers === 0 && stats.categories === 0) { %>

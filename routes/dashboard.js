@@ -4,6 +4,7 @@ const Book = require('../models/Book');
 const Author = require('../models/Author');
 const Category = require('../models/Category');
 const Publisher = require('../models/Publisher');
+const User = require('../models/User');
 const { isAuthenticated } = require('./users');
 
 // Página principal (dashboard)
@@ -27,19 +28,30 @@ router.get('/dashboard', isAuthenticated, async (req, res) => {
         offset: randomOffset,
         limit: 1
       });
-      recommendedBook = books[0];
-    }
+      recommendedBook = books[0];    }
     // Estadísticas
     const stats = {
       books: countBooks,
       authors: await Author.count({ where: { state: 1 } }),
       categories: await Category.count({ where: { state: 1 } }),
       publishers: await Publisher.count({ where: { state: 1 } })
-    };
+    };    // Libros más recientes para la funcionalidad específica (solo el más reciente)
+    const recentBooks = await Book.findAll({
+      where: { state: 1 },
+      order: [['createdAt', 'DESC']],
+      limit: 1,
+      include: [Author, Category, Publisher]
+    });
+
+    // Usuarios activos (con state = 1)
+    const activeUsers = await User.count({ where: { state: 1 } });
+
     res.render('dashboard', {
       featuredBooks,
       recommendedBook,
       stats,
+      recentBooks,
+      activeUsers,
       user: req.session.user
     });
   } catch (error) {
@@ -56,17 +68,28 @@ router.get('/', async (req, res) => {
       order: [['createdAt', 'DESC']],
       limit: 30,
       include: [Author, Category, Publisher]
-    });
-    // Estadísticas
+    });    // Estadísticas
     const stats = {
       books: await Book.count({ where: { state: 1 } }),
       authors: await Author.count({ where: { state: 1 } }),
       categories: await Category.count({ where: { state: 1 } }),
       publishers: await Publisher.count({ where: { state: 1 } })
-    };
+    };    // Libros más recientes para la funcionalidad específica (solo el más reciente)
+    const recentBooks = await Book.findAll({
+      where: { state: 1 },
+      order: [['createdAt', 'DESC']],
+      limit: 1,
+      include: [Author, Category, Publisher]
+    });
+
+    // Usuarios activos (con state = 1)
+    const activeUsers = await User.count({ where: { state: 1 } });
+
     res.render('welcome', {
       featuredBooks,
       stats,
+      recentBooks,
+      activeUsers,
       user: req.session.user
     });
   } catch (error) {
